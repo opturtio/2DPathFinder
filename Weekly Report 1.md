@@ -1,7 +1,7 @@
-# Weekly raport 1
+# Weekly report 1
 
 ### Monday 30.11.2023
-I started check what the course is about. I read everything from the moodle page.
+I started to check what the course was about. I read everything from the Moodle page.
 
 ### Friday 2.11.2023
-I read partly the moodle page, created the project and added it to Labtool. 
+I read partly the Moodle page, created the project, and added it to Labtool. 
