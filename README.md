@@ -6,6 +6,7 @@ Language of implementation is C#. This project is for the Algorithms and AI Lab,
 
 ## Documentation
 [Requirement Specification](./Doc/requirement_specification.md)
+
 [Timesheet](./Doc/timesheet.md)
 
 ## Weekly reports
