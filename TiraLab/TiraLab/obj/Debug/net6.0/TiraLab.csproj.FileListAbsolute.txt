@@ -12,3 +12,5 @@ C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\refi
 C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.pdb
 C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.genruntimeconfig.cache
 C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\ref\TiraLab.dll
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.Resources.AllStrings.resources
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.csproj.GenerateResource.cache

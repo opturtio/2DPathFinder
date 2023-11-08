@@ -7,6 +7,7 @@ namespace TiraLab
         static void Main(string[] args)
         {
             UI uiModule = new UI();
+            uiModule.WelcomeText();
             uiModule.MainText();
         }
     }

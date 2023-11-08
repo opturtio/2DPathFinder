@@ -8,10 +8,22 @@ namespace TiraLab
 {
     public class UI
     {
+        private OutputManager _outputManager;
+
+        public UI()
+        {
+            // Instantiates the OutputManager
+            _outputManager = new OutputManager();
+        }
+
+        public void WelcomeText()
+        {
+            _outputManager.PrintText("Welcome");
+        }
+
         public void MainText()
         {
-            string mainText = "";
-            Console.WriteLine("Hello, Welcome to AlgorithmComparion!");
+            _outputManager.PrintText("MainText");
         }
     }
 }
