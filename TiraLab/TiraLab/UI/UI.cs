@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TiraLab.Managers;
 
-namespace TiraLab
+namespace TiraLab.UI
 {
     public class UI
     {
@@ -18,7 +19,7 @@ namespace TiraLab
 
         public void WelcomeText()
         {
-            _outputManager.PrintText("Welcome");
+            _outputManager.PrintText("WelcomeText");
         }
 
         public void MainText()

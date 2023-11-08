@@ -1,4 +1,6 @@
 ﻿using System;
+using TiraLab.Managers;
+using UserInterface = TiraLab.UI.UI;
 
 namespace TiraLab
 {
@@ -6,9 +8,14 @@ namespace TiraLab
     {
         static void Main(string[] args)
         {
-            UI uiModule = new UI();
-            uiModule.WelcomeText();
-            uiModule.MainText();
+            UserInterface uiModule = new UserInterface();
+            InputManager inputManager = new InputManager();
+            while (true)
+            {
+                uiModule.WelcomeText();
+                uiModule.MainText();
+                inputManager.ReadInput();
+            }
         }
     }
 }

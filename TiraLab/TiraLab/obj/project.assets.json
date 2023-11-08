@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Pepiado\\.nuget\\packages\\": {}
+    "C:\\Users\\optur\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Pepiado\\Documents\\tiralab\\Tiralab\\TiraLab\\TiraLab\\TiraLab.csproj",
+      "projectUniqueName": "C:\\Users\\optur\\Documents\\Tiralab\\TiraLab\\TiraLab\\TiraLab.csproj",
       "projectName": "TiraLab",
-      "projectPath": "C:\\Users\\Pepiado\\Documents\\tiralab\\Tiralab\\TiraLab\\TiraLab\\TiraLab.csproj",
-      "packagesPath": "C:\\Users\\Pepiado\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Pepiado\\Documents\\tiralab\\Tiralab\\TiraLab\\TiraLab\\obj\\",
+      "projectPath": "C:\\Users\\optur\\Documents\\Tiralab\\TiraLab\\TiraLab\\TiraLab.csproj",
+      "packagesPath": "C:\\Users\\optur\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\optur\\Documents\\Tiralab\\TiraLab\\TiraLab\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Pepiado\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\optur\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
