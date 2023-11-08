@@ -1,0 +1,14 @@
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\bin\Debug\net6.0\TiraLab.exe
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\bin\Debug\net6.0\TiraLab.deps.json
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\bin\Debug\net6.0\TiraLab.runtimeconfig.json
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\bin\Debug\net6.0\TiraLab.dll
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\bin\Debug\net6.0\TiraLab.pdb
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.AssemblyInfoInputs.cache
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.AssemblyInfo.cs
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.csproj.CoreCompileInputs.cache
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.dll
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\refint\TiraLab.dll
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.pdb
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\TiraLab.genruntimeconfig.cache
+C:\Users\Pepiado\Documents\tiralab\Tiralab\TiraLab\TiraLab\obj\Debug\net6.0\ref\TiraLab.dll
