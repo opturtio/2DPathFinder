@@ -1,2 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+
+namespace TiraLab
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            UI uiModule = new UI();
+            uiModule.MainText();
+        }
+    }
+}
