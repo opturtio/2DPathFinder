@@ -25,5 +25,12 @@ namespace PathFinder.Managers
             string outputText = _resourceManager.GetString(stringName);
             Console.WriteLine(outputText);
         }
+        public void PrintMapNames(List<Tuple<string, string>> mapNames)
+        {
+            for (int i = 0; i < mapNames.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {mapNames[i].Item1} - {mapNames[i].Item2}");
+            }
+        }
     }
 }

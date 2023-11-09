@@ -119,7 +119,9 @@
   </resheader>
   <data name="MainText" xml:space="preserve">
     <value>1. Compare Dijkstra-algorithm and Jump Point Search-algorithm
-2. Quit</value>
+2. Choose Map
+3. Upload Map
+0. Exit</value>
   </data>
   <data name="WelcomeText" xml:space="preserve">
     <value>Welcome to compare algorithms!</value>

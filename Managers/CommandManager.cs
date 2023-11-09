@@ -8,6 +8,11 @@ namespace PathFinder.Managers
 {
     public class CommandManager
     {
+        private FileManager _fileManager;
+        public CommandManager()
+        {
+            _fileManager = new FileManager();
+        }
         // processes users input
         public void ProcessMainMenuInput(string input)
         {
@@ -17,6 +22,9 @@ namespace PathFinder.Managers
                     Console.WriteLine("Pääsit tänne!");
                     break;
                 case "2":
+                    _fileManager.Initialize();
+                    break;
+                case "0":
                     Environment.Exit(0);
                     break;
             }

@@ -59,10 +59,12 @@ namespace PathFinder.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 1. Compare Dijkstra-algorithm and Jump Point Search-algorithm
-        ///2. Quit.
+        ///2. Choose Map
+        ///3. Upload Map
+        ///0. Exit.
         /// </summary>
         internal static string MainText {
             get {
