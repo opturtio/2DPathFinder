@@ -21,7 +21,7 @@ namespace TiraLab
             {
                 return;
             }
-            _commandManager.ProcessInput(userInput);
+            _commandManager.ProcessMainMenuInput(userInput);
         }
 
     }

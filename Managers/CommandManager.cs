@@ -9,7 +9,7 @@ namespace TiraLab.Managers
     public class CommandManager
     {
         // processes users input
-        public void ProcessInput(string input)
+        public void ProcessMainMenuInput(string input)
         {
             switch (input)
             {
