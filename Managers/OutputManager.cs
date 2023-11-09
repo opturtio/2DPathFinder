@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Resources;
 using System.Reflection;
 
-namespace TiraLab.Managers
+namespace PathFinder.Managers
 {
     public class OutputManager
     {
@@ -16,7 +16,7 @@ namespace TiraLab.Managers
         public OutputManager()
         {
             // Instantiates the ResourceManager
-            _resourceManager = new ResourceManager("TiraLab.Resources.AllStrings", Assembly.GetExecutingAssembly());
+            _resourceManager = new ResourceManager("PathFinder.Resources.AllStrings", Assembly.GetExecutingAssembly());
         }
 
         // Prints the given string from AllStrings-ResX file using stringName as the key

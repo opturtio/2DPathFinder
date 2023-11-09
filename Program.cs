@@ -1,8 +1,8 @@
 ﻿using System;
-using TiraLab.Managers;
-using UserInterface = TiraLab.UI.UI;
+using PathFinder.Managers;
+using UserInterface = PathFinder.UI.UI;
 
-namespace TiraLab
+namespace PathFinder
 {
     class Program
     {

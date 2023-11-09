@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TiraLab.Resources {
+namespace PathFinder.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace TiraLab.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TiraLab.Resources.AllStrings", typeof(AllStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PathFinder.Resources.AllStrings", typeof(AllStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -59,7 +59,7 @@ namespace TiraLab.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 1. Compare Dijkstra-algorithm and Jump Point Search-algorithm
         ///2. Quit.

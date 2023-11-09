@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TiraLab.Managers
+namespace PathFinder.Managers
 {
     public class CommandManager
     {
