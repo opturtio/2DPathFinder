@@ -14,3 +14,4 @@ Date       | Time | Target |
 -----------|------|--------|
 2023-11-08 | 6h	  | Created program logic and file structure |
 2023-11-09 | 8h   | Reorganized and renamed my project to PathFinder, added new functionalities for map handling, and enhanced my understanding of lists and tuples in C#. |
+2023-11-11 | 4h   | Refactored and commented the classes. Created possibility to load the map from the resources as a string |
