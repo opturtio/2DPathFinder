@@ -3,6 +3,9 @@ using PathFinder.Managers;
 
 namespace PathFinder.Managers
 {
+    /// <summary>
+    /// Manages the processing of user input commands.
+    /// </summary>
     public class CommandManager
     {
         private FileManager _fileManager;
@@ -16,6 +19,10 @@ namespace PathFinder.Managers
             _outputManager = new OutputManager();
         }
 
+        /// <summary>
+        /// Processes the user's input received from the main menu.
+        /// </summary>
+        /// <param name="input">The user input as a string.</param>
         public void ProcessMainMenuInput(string input)
         {
             switch (input)
@@ -36,10 +43,23 @@ namespace PathFinder.Managers
             }
         }
 
+        /// <summary>
+        /// Processes the user's input received from the map menu.
+        /// </summary>
+        /// <param name="input">The user input as a string, representing the index number of a map.</param>
         public void ProcessMapMenuInput(string input)
         {
             currentMap = _fileManager.LoadMap(input);
             Console.WriteLine($"Debug, print map:\n {currentMap}");
+        }
+
+        /// <summary>
+        /// Retrieves the current map.
+        /// </summary>
+        /// <returns>The current map as a string.</returns>
+        public string GetCurrentMap()
+        {
+            return currentMap;
         }
     }
 }
