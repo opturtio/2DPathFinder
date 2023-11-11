@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Resources;
 using System.Reflection;
+using System.Resources;
 
 namespace PathFinder.Managers
 {
@@ -25,6 +22,7 @@ namespace PathFinder.Managers
             string outputText = _resourceManager.GetString(stringName);
             Console.WriteLine(outputText);
         }
+        
         public void PrintMapNames(List<Tuple<string, string>> mapNames)
         {
             for (int i = 0; i < mapNames.Count; i++)

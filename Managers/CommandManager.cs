@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PathFinder.Managers;
 
 namespace PathFinder.Managers
 {
     public class CommandManager
     {
         private FileManager _fileManager;
+        private OutputManager _outputManager;
+
         public CommandManager()
         {
             _fileManager = new FileManager();
+            _outputManager = new OutputManager();
         }
-        // processes users input
+
         public void ProcessMainMenuInput(string input)
         {
             switch (input)
@@ -22,12 +22,21 @@ namespace PathFinder.Managers
                     Console.WriteLine("Pääsit tänne!");
                     break;
                 case "2":
-                    _fileManager.Initialize();
+                    _fileManager.LoadAndCleanMapFileNames();
+                    var cleanedFileNames = _fileManager.GetCleanedFileNames();
+                    _outputManager.PrintMapNames(cleanedFileNames);
+                    input = Console.ReadLine();
+                    ProcessMapMenuInput(input);
                     break;
                 case "0":
                     Environment.Exit(0);
                     break;
             }
+        }
+
+        public void ProcessMapMenuInput(string input)
+        {
+            Console.WriteLine(input);
         }
     }
 }
