@@ -27,5 +27,10 @@ namespace PathFinder.Managers
         {
             return _cleanedFileNames;
         }
+
+        public string LoadMap(string indexNum)
+        {
+            return _fileLoader.LoadMap(indexNum);
+        }
     }
 }

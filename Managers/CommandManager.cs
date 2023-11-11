@@ -8,6 +8,8 @@ namespace PathFinder.Managers
         private FileManager _fileManager;
         private OutputManager _outputManager;
 
+        private string currentMap;
+
         public CommandManager()
         {
             _fileManager = new FileManager();
@@ -36,7 +38,8 @@ namespace PathFinder.Managers
 
         public void ProcessMapMenuInput(string input)
         {
-            Console.WriteLine(input);
+            currentMap = _fileManager.LoadMap(input);
+            Console.WriteLine($"Debug, print map:\n {currentMap}");
         }
     }
 }
