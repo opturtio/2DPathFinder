@@ -3,6 +3,9 @@
 bin
 obj
 
+# Specific files
+PathFinder.csproj.user
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
