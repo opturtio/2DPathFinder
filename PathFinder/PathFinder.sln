@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder", "PathFinder.csproj", "{A5A840F3-E2A4-4A18-A74E-1836C6A62915}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Tests", "..\PathFinder.Tests\PathFinder.Tests\PathFinder.Tests.csproj", "{97297813-571C-4EF8-86AA-9521E8DA36B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PathFinder.Tests", "..\PathFinder.Tests\PathFinder.Tests\PathFinder.Tests.csproj", "{09D7A9A1-09D4-4065-96F8-6C158ED7E18F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{A5A840F3-E2A4-4A18-A74E-1836C6A62915}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5A840F3-E2A4-4A18-A74E-1836C6A62915}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5A840F3-E2A4-4A18-A74E-1836C6A62915}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97297813-571C-4EF8-86AA-9521E8DA36B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97297813-571C-4EF8-86AA-9521E8DA36B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97297813-571C-4EF8-86AA-9521E8DA36B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97297813-571C-4EF8-86AA-9521E8DA36B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D7A9A1-09D4-4065-96F8-6C158ED7E18F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D7A9A1-09D4-4065-96F8-6C158ED7E18F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D7A9A1-09D4-4065-96F8-6C158ED7E18F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D7A9A1-09D4-4065-96F8-6C158ED7E18F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

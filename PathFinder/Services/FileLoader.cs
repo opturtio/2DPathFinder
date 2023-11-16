@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace PathFinder.Services
@@ -9,8 +10,13 @@ namespace PathFinder.Services
     /// </summary>
     public class FileLoader
     {
-        private readonly string _mapsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Resources", "Maps");
+        private string _mapsDirectory;
         private string map = "";
+
+        public FileLoader()
+        {
+             _mapsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Resources", "Maps");
+        }
 
         /// <summary>
         /// Loads the names of map files from the directory at .Resources/Maps/.
@@ -22,7 +28,7 @@ namespace PathFinder.Services
 
             if (!Directory.Exists(_mapsDirectory))
             {
-                Console.WriteLine("Maps directory not found!");
+                Console.WriteLine($"Maps directory not found at: {_mapsDirectory}");
                 return mapFileNames;
             }
 
@@ -41,16 +47,34 @@ namespace PathFinder.Services
         /// <returns>The content of the selected map file as a string.</returns>
         public string LoadMap(string indexNum)
         {
-            int indexNumber = int.Parse(indexNum)-1;
-            var mapFileNames = LoadMapFileNames();
-            if (indexNumber >= 0 && indexNumber <= mapFileNames.Count)
+            try
             {
-                string selectedMapFilePath = Path.Combine(_mapsDirectory, mapFileNames[indexNumber]);
-                map = File.ReadAllText(selectedMapFilePath);
+                int indexNumber = int.Parse(indexNum) - 1;
+                var mapFileNames = LoadMapFileNames();
+                if (indexNumber >= 0 && indexNumber <= mapFileNames.Count)
+                {
+                    string selectedMapFilePath = Path.Combine(_mapsDirectory, mapFileNames[indexNumber]);
+                    map = File.ReadAllText(selectedMapFilePath);
+                }
+                else
+                    Console.WriteLine("Invalid map index number!");
+                return map;
             }
-            else
-                Console.WriteLine("Invalid map index number!");
-            return map;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading map: {ex.Message}");
+                return "";
+            }
+        }
+
+        public void SetMapsDirectoryPath(string newPath)
+        {
+            _mapsDirectory = newPath;
+        }
+
+        public string ReturnDirectoryPath()
+        {
+            return _mapsDirectory;
         }
     }
 }
