@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.26539999999999997" branch-rate="0.20829999999999999" version="1.9" timestamp="1700172119" lines-covered="43" lines-valid="162" branches-covered="5" branches-valid="24">
+<coverage line-rate="0.26539999999999997" branch-rate="0.20829999999999999" version="1.9" timestamp="1700173538" lines-covered="43" lines-valid="162" branches-covered="5" branches-valid="24">
   <sources>
     <source>C:\Users\Pepiado\Documents\tiralab\Tiralab\PathFinder\</source>
   </sources>
