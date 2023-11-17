@@ -7,6 +7,7 @@ namespace PathFinder.Tests
     public class Tests
     {
         private CommandManager _commandManager;
+        private FileManager _fileManager;
         private FileLoader _fileLoader;
         private StringReader _consoleInput;
         private StringWriter _consoleOutput;
@@ -17,6 +18,7 @@ namespace PathFinder.Tests
         {
             _commandManager = new CommandManager();
             _fileLoader = new FileLoader();
+            _fileManager = new FileManager();
             _fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
             _expectedMapContent =
                 ".......................................\r\n" +
@@ -66,9 +68,9 @@ namespace PathFinder.Tests
         public void ProcessMainMenuInput_OptionTwo_Returns_Map_As_String_Test()
         {
             // Arrange
-            var mainMenuInput = "2"; // The initial input to select option 2
-            var mapSelectionInput = "1"; // The input for map selection
-            var simulatedInput = mapSelectionInput; // Only the map selection input is needed for the console
+            var mainMenuInput = "2"; 
+            var mapSelectionInput = "1";
+            var simulatedInput = mapSelectionInput;
 
             _consoleInput = new StringReader(simulatedInput);
             Console.SetIn(_consoleInput);
@@ -79,14 +81,11 @@ namespace PathFinder.Tests
             _commandManager = new CommandManager();
 
             // Act
-            // Call ProcessMainMenuInput with the initial choice ("2")
             _commandManager.ProcessMainMenuInput(mainMenuInput);
-            // After processing "2", the command manager will read the map selection ("1") from the console
 
             string actualOutput = _consoleOutput.ToString();
 
             // Assert
-            // The actualOutput should contain the content of the map file selected (in this case, map index "1")
             Assert.AreEqual(_expectedMapContent, actualOutput);
         }
         */
@@ -100,5 +99,64 @@ namespace PathFinder.Tests
             // Assert
             Assert.AreEqual(_expectedMapContent, fileContent);
         }
+
+        /*
+        [Test]
+        public void ProcessMainMenuOptionTwo_BehavesAsExpected()
+        {
+
+            _fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "Maps"));
+
+            // Arrange
+            var simulatedInput = "1" + Environment.NewLine; // Simulate selecting the first map
+            _consoleInput = new StringReader(simulatedInput);
+            Console.SetIn(_consoleInput);
+
+            _consoleOutput = new StringWriter();
+            Console.SetOut(_consoleOutput);
+
+            // Act
+            _commandManager.ProcessMainMenuOptionTwo();
+            // Assert
+            // Check if the correct map content is loaded and output
+            string actualOutput = _consoleOutput.ToString();
+            Console.WriteLine(actualOutput);
+            // Assuming that the output contains the map name or some identifier
+            Assert.AreEqual(_expectedMapContent, actualOutput);
+        }
+        
+        [Test]
+        public void Check_Inputs_Test()
+        {
+            _commandManager.ProcessMainMenuInput("2");
+            Console.WriteLine("Toimii");
+            //_commandManager.ProcessMapMenuInput("1");
+            string currentMap = _commandManager.GetCurrentMap();
+            Console.WriteLine(currentMap);
+
+            Assert.AreEqual(_expectedMapContent, currentMap);
+        }
+
+        
+        [Test]
+        public void Cleaned_Files_Names_Are_Correct_Test()
+        {
+            _fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
+
+            // Arrange
+            var _correctFormMapNames = new List<Tuple<string, string>>
+            {
+                Tuple.Create("Test", "40x40")
+            };
+
+            // Act
+            string fileContent = _fileLoader.LoadMap("1");
+            _fileManager.LoadAndCleanMapFileNames();
+            var cleanedMapFileNames = _fileManager.GetCleanedFileNames();
+
+            // Assert
+            Assert.AreEqual(_correctFormMapNames, cleanedMapFileNames);
+        }
+        */
     }
 }

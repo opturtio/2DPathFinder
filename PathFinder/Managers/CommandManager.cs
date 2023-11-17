@@ -31,16 +31,24 @@ namespace PathFinder.Managers
                     Console.WriteLine("Pääsit tänne!");
                     break;
                 case "2":
-                    _fileManager.LoadAndCleanMapFileNames();
-                    var cleanedFileNames = _fileManager.GetCleanedFileNames();
-                    _outputManager.PrintMapNames(cleanedFileNames);
-                    input = Console.ReadLine();
-                    ProcessMapMenuInput(input);
+                    ProcessMainMenuOptionTwo();
                     break;
                 case "0":
                     Environment.Exit(0);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Processes main menu option two
+        /// </summary>
+        public void ProcessMainMenuOptionTwo()
+        {
+            _fileManager.LoadAndCleanMapFileNames();
+            var cleanedFileNames = _fileManager.GetCleanedFileNames();
+            _outputManager.PrintMapNames(cleanedFileNames);
+            var mapInput = Console.ReadLine();
+            if (mapInput != null) { ProcessMapMenuInput(mapInput); }
         }
 
         /// <summary>

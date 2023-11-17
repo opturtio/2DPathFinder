@@ -20,4 +20,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\PathFinder\PathFinder.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="\bin\Debug\net8.0\..\..\..\Resources\Maps\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
