@@ -73,6 +73,15 @@ namespace PathFinder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Map not found! Choose the map before comparing the algorithms!.
+        /// </summary>
+        internal static string MapNotFound {
+            get {
+                return ResourceManager.GetString("MapNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Welcome to compare algorithms!.
         /// </summary>
         internal static string WelcomeText {

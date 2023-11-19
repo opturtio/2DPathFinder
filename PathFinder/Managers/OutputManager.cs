@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
-
-namespace PathFinder.Managers
+﻿namespace PathFinder.Managers
 {
+    using System.Reflection;
+    using System.Resources;
+    using PathFinder.DataStructures;
+
     /// <summary>
     /// Manages the output of the text to the console.
     /// </summary>
     public class OutputManager
     {
-        private ResourceManager _resourceManager;
+        private ResourceManager resourceManager;
 
         public OutputManager()
         {
             // Instantiates the ResourceManager
-            _resourceManager = new ResourceManager("PathFinder.Resources.AllStrings", Assembly.GetExecutingAssembly());
+            this.resourceManager = new ResourceManager("PathFinder.Resources.AllStrings", Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
-        /// Prints the given string from AllStrings-ResX file using stringName as the key
+        /// Prints the given string from AllStrings-ResX file using stringName as the key.
         /// </summary>
         /// <param name="stringName">The key used to find and print the string from the resource file.</param>
         public void PrintText(string stringName)
         {
-            string outputText = _resourceManager.GetString(stringName);
+            string outputText = this.resourceManager.GetString(stringName);
             Console.WriteLine(outputText);
         }
 
@@ -37,6 +36,23 @@ namespace PathFinder.Managers
             for (int i = 0; i < mapNames.Count; i++)
             {
                 Console.WriteLine($"{i + 1}. {mapNames[i].Item1} - {mapNames[i].Item2}");
+            }
+        }
+
+        /// <summary>
+        /// Prints detailed information for each node in the graph.
+        /// This method iterates through all the nodes in the graph and prints the information returned by GetNodeInfo(),
+        /// which includes the node's position, whether it's an obstacle, its cost, and its parent.
+        /// </summary>
+        /// <param name="graph">The graph whose nodes' information is to be printed.</param>
+        public void PrintNodeInfo(Graph graph)
+        {
+            for (int i = 0; i < graph.Nodes.Count; i++)
+            {
+                for (int j = 0; j < graph.Nodes[i].Count; j++)
+                {
+                    Console.WriteLine(graph.Nodes[i][j].GetNodeInfo());
+                }
             }
         }
     }

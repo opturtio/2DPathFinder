@@ -1,22 +1,22 @@
-﻿using System;
-using PathFinder.Managers;
-
-namespace PathFinder.Managers
+﻿namespace PathFinder.Managers
 {
+    using PathFinder.DataStructures;
+
     /// <summary>
     /// Manages the processing of user input commands.
     /// </summary>
     public class CommandManager
     {
-        private FileManager _fileManager;
-        private OutputManager _outputManager;
+        private readonly FileManager fileManager;
+        private readonly OutputManager outputManager;
 
         private string currentMap;
 
+        // Constructor that initializes the necessary components
         public CommandManager()
         {
-            _fileManager = new FileManager();
-            _outputManager = new OutputManager();
+            this.fileManager = new FileManager();
+            this.outputManager = new OutputManager();
         }
 
         /// <summary>
@@ -28,10 +28,10 @@ namespace PathFinder.Managers
             switch (input)
             {
                 case "1":
-                    Console.WriteLine("Pääsit tänne!");
+                    this.ProcessMainMenuOptionOne();
                     break;
                 case "2":
-                    ProcessMainMenuOptionTwo();
+                    this.ProcessMainMenuOptionTwo();
                     break;
                 case "0":
                     Environment.Exit(0);
@@ -40,15 +40,33 @@ namespace PathFinder.Managers
         }
 
         /// <summary>
-        /// Processes main menu option two
+        /// Processes main menu option one.
+        /// </summary>
+        public void ProcessMainMenuOptionOne()
+        {
+            if (this.currentMap == null)
+            {
+                this.outputManager.PrintText("MapNotFound");
+                return;
+            }
+
+            Graph graph = GraphBuilder.CreateGraphFromString(this.currentMap);
+            this.outputManager.PrintNodeInfo(graph);
+        }
+
+        /// <summary>
+        /// Processes main menu option two.
         /// </summary>
         public void ProcessMainMenuOptionTwo()
         {
-            _fileManager.LoadAndCleanMapFileNames();
-            var cleanedFileNames = _fileManager.GetCleanedFileNames();
-            _outputManager.PrintMapNames(cleanedFileNames);
+            this.fileManager.LoadAndCleanMapFileNames();
+            var cleanedFileNames = this.fileManager.GetCleanedFileNames();
+            this.outputManager.PrintMapNames(cleanedFileNames);
             var mapInput = Console.ReadLine();
-            if (mapInput != null) { ProcessMapMenuInput(mapInput); }
+            if (mapInput != null)
+            {
+                this.ProcessMapMenuInput(mapInput);
+            }
         }
 
         /// <summary>
@@ -57,8 +75,7 @@ namespace PathFinder.Managers
         /// <param name="input">The user input as a string, representing the index number of a map.</param>
         public void ProcessMapMenuInput(string input)
         {
-            currentMap = _fileManager.LoadMap(input);
-            Console.WriteLine($"Debug, print map:\n {currentMap}");
+            this.currentMap = this.fileManager.LoadMap(input);
         }
 
         /// <summary>
@@ -67,7 +84,7 @@ namespace PathFinder.Managers
         /// <returns>The current map as a string.</returns>
         public string GetCurrentMap()
         {
-            return currentMap;
+            return this.currentMap;
         }
     }
 }

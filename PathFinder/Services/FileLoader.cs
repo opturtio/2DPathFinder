@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-
-namespace PathFinder.Services
+﻿namespace PathFinder.Services
 {
     /// <summary>
     /// Manages the loading of files from a specified directory.
     /// </summary>
     public class FileLoader
     {
-        private string _mapsDirectory;
-        private string map = "";
+        private string mapsDirectory;
+        private string map = string.Empty;
 
         public FileLoader()
         {
-             _mapsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Resources", "Maps");
+             this.mapsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Resources", "Maps");
         }
 
         /// <summary>
@@ -26,17 +21,18 @@ namespace PathFinder.Services
         {
             var mapFileNames = new List<string>();
 
-            if (!Directory.Exists(_mapsDirectory))
+            if (!Directory.Exists(this.mapsDirectory))
             {
-                Console.WriteLine($"Maps directory not found at: {_mapsDirectory}");
+                Console.WriteLine($"Maps directory not found at: {this.mapsDirectory}");
                 return mapFileNames;
             }
 
-            foreach (var filePath in Directory.GetFiles(_mapsDirectory))
+            foreach (var filePath in Directory.GetFiles(this.mapsDirectory))
             {
                 string fileName = Path.GetFileName(filePath);
                 mapFileNames.Add(fileName);
             }
+
             return mapFileNames;
         }
 
@@ -50,31 +46,39 @@ namespace PathFinder.Services
             try
             {
                 int indexNumber = int.Parse(indexNum) - 1;
-                var mapFileNames = LoadMapFileNames();
+                var mapFileNames = this.LoadMapFileNames();
                 if (indexNumber >= 0 && indexNumber <= mapFileNames.Count)
                 {
-                    string selectedMapFilePath = Path.Combine(_mapsDirectory, mapFileNames[indexNumber]);
-                    map = File.ReadAllText(selectedMapFilePath);
+                    string selectedMapFilePath = Path.Combine(this.mapsDirectory, mapFileNames[indexNumber]);
+                    this.map = File.ReadAllText(selectedMapFilePath);
                 }
                 else
                     Console.WriteLine("Invalid map index number!");
-                return map;
+                return this.map;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error loading map: {ex.Message}");
-                return "";
+                return string.Empty;
             }
         }
 
+        /// <summary>
+        /// Sets the maps directory path. This method is used for testing.
+        /// </summary>
+        /// <param name="newPath">The new path for the map directory.</param>
         public void SetMapsDirectoryPath(string newPath)
         {
-            _mapsDirectory = newPath;
+            this.mapsDirectory = newPath;
         }
 
+        /// <summary>
+        /// Gets the path of the map directory.
+        /// </summary>
+        /// <returns>The path to the directory where map files are stored.</returns>
         public string ReturnDirectoryPath()
         {
-            return _mapsDirectory;
+            return this.mapsDirectory;
         }
     }
 }

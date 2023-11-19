@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-namespace PathFinder.Services
+﻿namespace PathFinder.Services
 {
     /// <summary>
     /// Provides functionality to modify files.

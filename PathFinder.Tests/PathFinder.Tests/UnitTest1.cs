@@ -1,26 +1,26 @@
-using PathFinder.Managers;
-using PathFinder.Services;
-using System.IO;
 
 namespace PathFinder.Tests
 {
+    using PathFinder.Managers;
+    using PathFinder.Services;
+
     public class Tests
     {
-        private CommandManager _commandManager;
-        private FileManager _fileManager;
-        private FileLoader _fileLoader;
-        private StringReader _consoleInput;
-        private StringWriter _consoleOutput;
-        private string _expectedMapContent = "";
+        private CommandManager commandManager;
+        private FileManager fileManager;
+        private FileLoader fileLoader;
+        private StringReader consoleInput;
+        private StringWriter consoleOutput;
+        private string expectedMapContent = string.Empty;
 
         [SetUp]
         public void Setup()
         {
-            _commandManager = new CommandManager();
-            _fileLoader = new FileLoader();
-            _fileManager = new FileManager();
-            _fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
-            _expectedMapContent =
+            this.commandManager = new CommandManager();
+            this.fileLoader = new FileLoader();
+            this.fileManager = new FileManager();
+            this.fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
+            this.expectedMapContent =
                 ".......................................\r\n" +
                 "..................................@@@@@\r\n" +
                 ".................................@@@@@@\r\n" +
@@ -63,7 +63,6 @@ namespace PathFinder.Tests
                 ".@@@@@@@........@@@@@@@....@@@@@@@@@...";
         }
 
-        
         [Test]
         public void ProcessMainMenuInput_OptionTwo_Returns_Map_As_String_Test()
         {
@@ -72,32 +71,31 @@ namespace PathFinder.Tests
             var mapSelectionInput = "1";
             var simulatedInput = mapSelectionInput;
 
-            _consoleInput = new StringReader(simulatedInput);
-            Console.SetIn(_consoleInput);
+            this.consoleInput = new StringReader(simulatedInput);
+            Console.SetIn(this.consoleInput);
 
-            _consoleOutput = new StringWriter();
-            Console.SetOut(_consoleOutput);
+            this.consoleOutput = new StringWriter();
+            Console.SetOut(this.consoleOutput);
 
-            _commandManager = new CommandManager();
+            this.commandManager = new CommandManager();
 
             // Act
-            _commandManager.ProcessMainMenuInput(mainMenuInput);
+            this.commandManager.ProcessMainMenuInput(mainMenuInput);
 
-            string actualOutput = _consoleOutput.ToString();
+            string actualOutput = this.consoleOutput.ToString();
 
             // Assert
-            Assert.AreEqual(_expectedMapContent, actualOutput);
+            Assert.AreEqual(this.expectedMapContent, actualOutput);
         }
-        
 
         [Test]
         public void File_Can_Be_Loaded_Test()
         {
             // Act
-            string fileContent = _fileLoader.LoadMap("1");
+            string fileContent = this.fileLoader.LoadMap("1");
 
             // Assert
-            Assert.AreEqual(_expectedMapContent, fileContent);
+            Assert.AreEqual(this.expectedMapContent, fileContent);
         }
 
         /*

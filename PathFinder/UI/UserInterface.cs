@@ -1,20 +1,19 @@
-﻿using System;
-using PathFinder.Managers;
-
-namespace PathFinder.UI
+﻿namespace PathFinder.UI
 {
+    using PathFinder.Managers;
+
     /// <summary>
     /// Manages the user interface, including displaying text and reading user input.
     /// </summary>
     public class UserInterface
     {
-        private OutputManager _outputManager;
-        private CommandManager _commandManager;
+        private OutputManager outputManager;
+        private CommandManager commandManager;
 
         public UserInterface()
         {
-            _outputManager = new OutputManager();
-            _commandManager = new CommandManager();
+            this.outputManager = new OutputManager();
+            this.commandManager = new CommandManager();
         }
 
         /// <summary>
@@ -24,9 +23,9 @@ namespace PathFinder.UI
         {
             while (true)
             {
-                WelcomeText();
-                MainText();
-                ReadMainMenuInput();
+                this.WelcomeText();
+                this.MainText();
+                this.ReadMainMenuInput();
             }
         }
 
@@ -35,7 +34,7 @@ namespace PathFinder.UI
         /// </summary>
         public void WelcomeText()
         {
-            _outputManager.PrintText("WelcomeText");
+            this.outputManager.PrintText("WelcomeText");
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace PathFinder.UI
         /// </summary>
         public void MainText()
         {
-            _outputManager.PrintText("MainText");
+            this.outputManager.PrintText("MainText");
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace PathFinder.UI
             string userInput = Console.ReadLine();
             if (userInput != null)
             {
-                _commandManager.ProcessMainMenuInput(userInput);
+                this.commandManager.ProcessMainMenuInput(userInput);
             }
         }
     }

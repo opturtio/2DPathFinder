@@ -1,4 +1,4 @@
-# Weekly report 3
+# Weekly report 4
 
 ### Sunday 19.11.2023
-I started to get stress because I feel like I am not proceeding in my project so I decided to spent this day doing this project even that I feel sick. I hope I feel better next week. I started to create the Graph and GraphBuilder classes.
+I started to get stressed because I feel like I am not proceeding with my project, so I decided to spent this day doing this project even that I feel sick. I hope I feel better next week. I started to create the Graph and GraphBuilder classes. I installed StyleCop to take care of the style check. I find out there is a lot of style checking to do. I fixed most of the style checks, which was extremely educating. I learned also how to use "this." in class variables and methods. I realized it highly improves the code readability. I have to sit in front of the computer the whole day and do not really feel sick anymore. It was a nice day because I could do the Graph and GraphBuilder classes. Now that the graph is built, I can start creating the Dijkstra algorithm. I hope to create both Dijkstra and JPS algorithms this week.

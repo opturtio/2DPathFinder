@@ -123,6 +123,9 @@
 3. Upload Map
 0. Exit</value>
   </data>
+  <data name="MapNotFound" xml:space="preserve">
+    <value>Map not found! Choose the map before comparing the algorithms!</value>
+  </data>
   <data name="WelcomeText" xml:space="preserve">
     <value>Welcome to compare algorithms!</value>
   </data>

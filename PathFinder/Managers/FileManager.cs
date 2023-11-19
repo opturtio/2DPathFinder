@@ -1,23 +1,22 @@
-﻿using System.Collections.Generic;
-using PathFinder.Services;
-
-namespace PathFinder.Managers
+﻿namespace PathFinder.Managers
 {
+    using PathFinder.Services;
+
     /// <summary>
     /// Manages file operations related to files.
     /// </summary>
     public class FileManager
     {
-        private FileLoader _fileLoader;
-        private FileModifier _fileModifier;
+        private readonly FileLoader fileLoader;
+        private readonly FileModifier fileModifier;
 
-        private List<string> _fileNames;
-        private List<Tuple<string, string>> _cleanedFileNames;
+        private List<string> fileNames;
+        private List<Tuple<string, string>> cleanedFileNames;
 
         public FileManager()
         {
-            _fileLoader = new FileLoader();
-            _fileModifier = new FileModifier();
+            this.fileLoader = new FileLoader();
+            this.fileModifier = new FileModifier();
         }
 
         /// <summary>
@@ -25,8 +24,8 @@ namespace PathFinder.Managers
         /// </summary>
         public void LoadAndCleanMapFileNames()
         {
-            _fileNames = _fileLoader.LoadMapFileNames();
-            _cleanedFileNames = _fileModifier.ModifyMapNames(_fileNames);
+            this.fileNames = this.fileLoader.LoadMapFileNames();
+            this.cleanedFileNames = this.fileModifier.ModifyMapNames(this.fileNames);
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace PathFinder.Managers
         /// <returns>A list of tuples, where each tuple contains two strings representing the name and size of a map file.</returns>
         public List<Tuple<string, string>> GetCleanedFileNames()
         {
-            return _cleanedFileNames;
+            return this.cleanedFileNames;
         }
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace PathFinder.Managers
         /// <returns>The content of the map file as a string.</returns>
         public string LoadMap(string indexNum)
         {
-            return _fileLoader.LoadMap(indexNum);
+            return this.fileLoader.LoadMap(indexNum);
         }
     }
 }

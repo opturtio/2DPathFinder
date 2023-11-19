@@ -1,31 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PathFinder.DataStructures
+﻿namespace PathFinder.DataStructures
 {
-    internal class Node
+    /// <summary>
+    /// Represents a node in a graph.
+    /// </summary>
+    public class Node
     {
-        // X-coordinate of the node
-        public int X { get; }
-        // Y-coordinate of the node
-        public int Y { get; }
-        // Boolean value declearing whether the node is an obstacle
-        public bool isObstacle {  get; }
-        // Cost from the start to this value
-        public double cost { get; set; }
-        // Parent node in the path
-        public Node Parent { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Node"/> class.
+        /// </summary>
+        /// <param name="x">The X-coordinate of the node.</param>
+        /// <param name="y">The Y-coordinate of the node.</param>
+        /// <param name="isObstacle">Indicates whether the node is an obstacle.</param>
         public Node(int x, int y, bool isObstacle)
         {
-            X = x;
-            Y = y;
-            this.isObstacle = isObstacle;
-            this.cost = double.MaxValue;
-            Parent = null;
+            this.X = x;
+            this.Y = y;
+            this.IsObstacle = isObstacle;
+            this.Cost = double.MaxValue;
+            this.Parent = null;
+        }
+
+        /// <summary>
+        /// Gets the X-coordinate of the node.
+        /// </summary>
+        public int X { get; }
+
+        /// <summary>
+        /// Gets the Y-coordinate of the node.
+        /// </summary>
+        public int Y { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the node is an obstacle.
+        /// </summary>
+        public bool IsObstacle { get; }
+
+        /// <summary>
+        /// Gets or sets the cost from the start node to this node.
+        /// </summary>
+        public double Cost { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parent node in the pathfinding process.
+        /// </summary>
+        public Node? Parent { get; set; }
+
+        /// <summary>
+        /// Returns a string that represents the current node.
+        /// </summary>
+        /// <returns>A string representation of the node e.g. "." or "@".</returns>
+        public string GetNodeSymbol()
+        {
+            return this.IsObstacle ? "@" : ".";
+        }
+
+        /// <summary>
+        /// Returns a string that represents the information of the node.
+        /// </summary>
+        /// <returns>A string representation of the node's information.</returns>
+        public string GetNodeInfo()
+        {
+            return $"Node position: ({this.X}, {this.Y}). Obstacle: {this.IsObstacle}. Cost: {this.Cost}. Parent: {this.Parent}";
         }
     }
 }
