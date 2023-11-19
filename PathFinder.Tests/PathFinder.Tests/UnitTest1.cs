@@ -63,7 +63,7 @@ namespace PathFinder.Tests
                 ".@@@@@@@........@@@@@@@....@@@@@@@@@...";
         }
 
-        /*
+        
         [Test]
         public void ProcessMainMenuInput_OptionTwo_Returns_Map_As_String_Test()
         {
@@ -88,7 +88,7 @@ namespace PathFinder.Tests
             // Assert
             Assert.AreEqual(_expectedMapContent, actualOutput);
         }
-        */
+        
 
         [Test]
         public void File_Can_Be_Loaded_Test()
