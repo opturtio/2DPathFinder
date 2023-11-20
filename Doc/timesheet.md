@@ -10,4 +10,5 @@ Date       | Time | Target |
 2023-11-11 | 4h   | Refactored and commented the classes. Created possibility to load the map from the resources as a string |
 2023-11-16 | 8h	  | Set up testing environment. Created generate-coverage-report.bat file to create coverage report |
 2023-11-17 | 7h | Continued to figure out the problems with testing and created Node class |
-SUM | 42h | |
+2023-11-19 | 9h | Created GraphBuilder and Graph algorithms. Added stylecheck and fixed dozens of stylecheck warnings |
+SUM | 51h | |
