@@ -21,6 +21,9 @@
             // Iterates through each row of the string
             for (int y = 0; y < rows.Length; y++)
             {
+                // Cleans the row from carriage return if one occurs.
+                rows[y] = rows[y].Trim();
+
                 // Initializes a new list to represent a row of nodes
                 var row = new List<Node>();
 

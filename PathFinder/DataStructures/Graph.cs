@@ -39,7 +39,7 @@
             // Defines all eight directions and their costs
             var directions = new (int deltaX, int deltaY, double cost)[]
             {
-            // Horizontal movements (movement cost: 1)
+            // Horizontal and vertical movements (movement cost: 1)
             (1, 0, 1), // Move RIGHT by 1 unit (X + 1), no change in Y.
             (-1, 0, 1), // Move LEFT by 1 unit (X - 1), no change in Y.
             (0, 1, 1), // Move UP by 1 unit (Y + 1), no change in X.

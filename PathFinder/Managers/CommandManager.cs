@@ -51,7 +51,12 @@
             }
 
             Graph graph = GraphBuilder.CreateGraphFromString(this.currentMap);
+            AlgorithmComparisonManager algorithmComparisonManager = new AlgorithmComparisonManager(graph);
+            algorithmComparisonManager.Initialize();
+
+            // For debug
             this.outputManager.PrintNodeInfo(graph);
+            Console.WriteLine(currentMap);
         }
 
         /// <summary>

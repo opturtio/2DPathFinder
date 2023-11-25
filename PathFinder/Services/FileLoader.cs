@@ -8,6 +8,9 @@
         private string mapsDirectory;
         private string map = string.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileLoader"/> class.
+        /// </summary>
         public FileLoader()
         {
              this.mapsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Resources", "Maps");

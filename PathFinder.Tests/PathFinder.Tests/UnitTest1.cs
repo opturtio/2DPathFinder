@@ -1,4 +1,3 @@
-
 namespace PathFinder.Tests
 {
     using PathFinder.Managers;
