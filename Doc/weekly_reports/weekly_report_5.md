@@ -1,0 +1,4 @@
+# Weekly report 5
+
+### Sunday 26.11.2023
+Today,  I focused a lot on the Dijkstra algorithm. I learned how to put it into action with current classes. At first, I thought I needed to make my own heap structure for it, but then I figured out I could just use a PriorityQueue instead. I do not have much time left, so I decided to use a ready data structure. Creating my own heap structure could have been nice. After deciding to use PriorityQueue, I got down to business and created the Dijkstra algorithm. It was a good feeling to see it all come together after many weeks of planning, digging into the details and figuring out the smartest way to do it.

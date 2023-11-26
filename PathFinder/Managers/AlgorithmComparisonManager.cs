@@ -26,6 +26,7 @@
         public void Initialize()
         {
             this.dijkstra = new Dijkstra(this.graph);
+            //this.dijkstra.FindShortestPath(graph.Nodes[0][0], graph.Nodes[9][9]);
         }
     }
 }

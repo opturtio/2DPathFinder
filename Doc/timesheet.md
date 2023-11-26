@@ -12,4 +12,5 @@ Date       | Time | Target |
 2023-11-17 | 7h | Continued to figure out the problems with testing and created Node class |
 2023-11-19 | 9h | Created GraphBuilder and Graph algorithms. Added stylecheck and fixed dozens of stylecheck warnings |
 2023-11-25 | 6h | Created bases for Heap, Dijkstra and AlgorithmComparisonManager classes. Fixed extra node bug. |
-SUM | 57h | |
+2023-11-26 | 4h | Created Dijkstra algorithm. |
+SUM | 61h | |
