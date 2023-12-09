@@ -13,4 +13,9 @@ Date       | Time | Target |
 2023-11-19 | 9h | Created GraphBuilder and Graph algorithms. Added stylecheck and fixed dozens of stylecheck warnings |
 2023-11-25 | 6h | Created bases for Heap, Dijkstra and AlgorithmComparisonManager classes. Fixed extra node bug. |
 2023-11-26 | 4h | Created Dijkstra algorithm. |
-SUM | 61h | |
+2023-11-28 | 3h | Studied JPS algorithm |
+2023-12-05 | 2h | Studied JPS algorithm |
+2023-12-06 | 3h | Studied JPS algorithm and tried to figure out how to implement it |
+
+
+SUM | 69h | |

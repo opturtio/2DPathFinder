@@ -1,0 +1,6 @@
+# Weekly report 6
+
+### Saturday 09.12.2023
+I have been studying how the JPS algorithm works and how to implement it. I studied it 28.11, 5.12 and 6.12. I watched some videos and read different sources. I've been busy with my two other courses and have felt very tired. Now, I am trying to finish this project. It took a lot of effort to write the peer reviews, but both were educating. I realized the CoverageReport folder is added to GitHub, so the Languages bar showed I mainly use HTML and CSS. I wanted to fix this first thing today. For the rest of the day, I decided to update the documentation. Tomorrow, I will start implementing the JPS algorithm and figure out how to write tests. Tuesday is the final return of the math course. Then I have another course, and I am not many weeks late in it because I was sick earlier. I think I can finish all of them.
+
+I created design documentation. I will update it later, but at least now, the basics of it are done. I will create a user guide, but it is not my main priority.
