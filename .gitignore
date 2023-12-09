@@ -3,6 +3,9 @@
 bin
 obj
 
+# Coverage report
+./PathFinder.Tests/CoverageReport
+
 # Specific files
 PathFinder.csproj.user
 
