@@ -16,6 +16,7 @@ Date       | Time | Target |
 2023-11-28 | 3h | Studied JPS algorithm |
 2023-12-05 | 2h | Studied JPS algorithm |
 2023-12-06 | 3h | Studied JPS algorithm and tried to figure out how to implement it |
+2023-12-09 | 4h | Updating documentation |
+2023-12-10 | 
 
-
-SUM | 69h | |
+SUM | 73h | |
