@@ -9,15 +9,20 @@
     public class AlgorithmComparisonManager
     {
         private readonly Graph graph;
+        private readonly string currentMap;
         private Dijkstra dijkstra;
+        private PathVisualizer pathVisualizer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AlgorithmComparisonManager"/> class.
         /// </summary>
         /// <param name="comparisonGraph">The graph used to compare the Dijkstra and JPS algorithms.</param>
-        public AlgorithmComparisonManager(Graph comparisonGraph)
+        /// /// <param name="currentMap">Current map in a string form.</param>
+        public AlgorithmComparisonManager(Graph comparisonGraph, string currentMap)
         {
             this.graph = comparisonGraph;
+            this.currentMap = currentMap;
+            this.pathVisualizer = new PathVisualizer(this.graph, this.currentMap);
         }
 
         /// <summary>
@@ -25,8 +30,8 @@
         /// </summary>
         public void Initialize()
         {
-            this.dijkstra = new Dijkstra(this.graph);
-            //this.dijkstra.FindShortestPath(graph.Nodes[0][0], graph.Nodes[9][9]);
+            this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
+            this.dijkstra.FindShortestPath(this.graph.Nodes[0][0], this.graph.Nodes[0][7]);
         }
     }
 }

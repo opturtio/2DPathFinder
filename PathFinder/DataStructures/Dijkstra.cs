@@ -8,14 +8,16 @@
     public class Dijkstra
     {
         private readonly Graph graph;
+        private PathVisualizer pathVisualizer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Dijkstra"/> class.
         /// </summary>
         /// <param name="graph">The graph to be processed by the Dijkstra algorithm</param>
-        public Dijkstra(Graph graph)
+        public Dijkstra(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
+            this.pathVisualizer = visualizer;
         }
 
         /// <summary>
@@ -36,13 +38,16 @@
                 // Selects the node with the shortest distance from the queue.
                 var currentNode = priorityQueue.Dequeue();
 
+                // Visualizes the path.
+                this.pathVisualizer.VisualizePath(currentNode);
+
                 if (currentNode == end)
                 {
                     break;
                 }
 
                 // Check the nodes connected to the current point.
-                foreach (var (neighborNode, cost) in graph.GetNeighborsWithCosts(currentNode))
+                foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
                     double newDistance = currentNode.Cost + cost;
 

@@ -57,6 +57,15 @@
                 }
                 else
                     Console.WriteLine("Invalid map index number!");
+
+                string[] rows = this.map.Split('\n');
+
+                // Cleans the rows from carriage returns.
+                for (int y = 0; y < rows.Length; y++)
+                {
+                    rows[y] = rows[y].Trim();
+                }
+
                 return this.map;
             }
             catch (Exception ex)
