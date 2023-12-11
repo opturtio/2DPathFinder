@@ -8,7 +8,7 @@
     public class Dijkstra
     {
         private readonly Graph graph;
-        private PathVisualizer pathVisualizer;
+        private readonly PathVisualizer pathVisualizer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Dijkstra"/> class.
@@ -25,7 +25,7 @@
         /// </summary>
         /// <param name="start">The point where the path begins.</param>
         /// <param name="end">The point where the path ends.</param>
-        public void FindShortestPath(Node start, Node end)
+        public List<Node> FindShortestPath(Node start, Node end)
         {
             start.Cost = 0;
 
@@ -60,6 +60,8 @@
                     }
                 }
             }
+
+            return ShortestPathBuilder.ShortestPath(end);
         }
     }
 }

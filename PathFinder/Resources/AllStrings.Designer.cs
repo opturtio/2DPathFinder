@@ -61,6 +61,15 @@ namespace PathFinder.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Turn debug on? [y/n].
+        /// </summary>
+        internal static string DebugText {
+            get {
+                return ResourceManager.GetString("DebugText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1. Compare Dijkstra-algorithm and Jump Point Search-algorithm
         ///2. Choose Map
         ///3. Upload Map

@@ -55,8 +55,7 @@
             algorithmComparisonManager.Initialize();
 
             // For debug
-            this.outputManager.PrintNodeInfo(graph);
-            Console.WriteLine(this.currentMap);
+            // this.outputManager.PrintNodeInfo(graph);
         }
 
         /// <summary>
@@ -73,6 +72,18 @@
                 this.ProcessMapMenuInput(mapInput);
             }
         }
+
+        /// <summary>
+        /// Processes debug option. User can decide is debugger turned on.
+        /// </summary>
+        /// <returns>A string to decide is the debug on or off.</returns>
+        public string ProcessDebugOption()
+        {
+            this.outputManager.PrintText("DebugText");
+            var debugInput = Console.ReadLine();
+            return debugInput.ToLower();
+        }
+
 
         /// <summary>
         /// Processes the user's input received from the map menu.

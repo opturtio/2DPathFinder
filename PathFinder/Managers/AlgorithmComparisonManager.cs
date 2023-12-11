@@ -8,10 +8,13 @@
     /// </summary>
     public class AlgorithmComparisonManager
     {
-        private readonly Graph graph;
         private readonly string currentMap;
+        private readonly string debugInput;
+        private readonly Graph graph;
+        private readonly CommandManager commandManager;
         private Dijkstra dijkstra;
         private PathVisualizer pathVisualizer;
+        private List<Node> shortestPath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AlgorithmComparisonManager"/> class.
@@ -22,7 +25,10 @@
         {
             this.graph = comparisonGraph;
             this.currentMap = currentMap;
+            this.debugInput = debugInput;
             this.pathVisualizer = new PathVisualizer(this.graph, this.currentMap);
+            this.shortestPath = new List<Node>();
+            this.commandManager = new CommandManager();
         }
 
         /// <summary>
@@ -30,8 +36,23 @@
         /// </summary>
         public void Initialize()
         {
+            var debugInput = this.commandManager.ProcessDebugOption();
+            if (debugInput == "y")
+            {
+                this.pathVisualizer.ActivateDebugger();
+            }
+            else if (debugInput == "n")
+            {
+                this.pathVisualizer.DeactiveDebugger();
+            }
+            else
+            {
+                return;
+            }
+
             this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
-            this.dijkstra.FindShortestPath(this.graph.Nodes[0][0], this.graph.Nodes[0][7]);
+            this.shortestPath = this.dijkstra.FindShortestPath(this.graph.Nodes[0][3], this.graph.Nodes[0][6]);
+            this.pathVisualizer.VisualizeShortestPath(this.shortestPath);
         }
     }
 }
