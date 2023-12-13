@@ -1,5 +1,8 @@
 ﻿namespace PathFinder.DataStructures
 {
+    /// <summary>
+    /// A static class to reconstruct the shortest path
+    /// </summary>
     static class ShortestPathBuilder
     {
         public static List<Node> ShortestPath(Node end)

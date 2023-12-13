@@ -19,4 +19,6 @@ Date       | Time | Target |
 2023-12-09 | 4h | Updating documentation |
 2023-12-10 | 6h | Created visualization to see how the algorithms work |
 2023-12-11 | 6h | Modified PathVisualizer class. Created ShortestPathBuilder class. Created possibility to start debugging. |
-SUM | 85h | |
+2023-12-12 | 2h | Created possibility to print the current map to console in main menu and modified PathVisualizer to be more efficient and reduce flickering. |
+2023-12-13 | 9h | Created PathCoordinatesValidator and made small modifications |
+SUM | 96h | |

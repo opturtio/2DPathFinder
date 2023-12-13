@@ -66,11 +66,9 @@
             {
                 this.currentNode = nodes[i];
                 this.visitedNodes.Add(this.currentNode);
-                this.Visualize();
+                Console.WriteLine("The shortest path:");
+                this.ShortestPathVisualizer();
             }
-
-            Console.Clear();
-            Console.WriteLine(this.currentMap);
         }
 
         /// <summary>
@@ -123,6 +121,39 @@
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
             Thread.Sleep(100);
+        }
+
+        private void ShortestPathVisualizer()
+        {
+            Console.Clear();
+            string[] rows = this.currentMap.Split('\n');
+
+            for (int y = 0; y < rows.Length; y++)
+            {
+                // Cleans the row from carriage return if one occurs.
+                // Otherwise, an index out of range occurs.
+                rows[y] = rows[y].Trim();
+
+                for (int x = 0; x < rows[y].Length; x++)
+                {
+                    Node node = this.graph.Nodes[y][x];
+
+                    if (node == this.currentNode)
+                    {
+                        Console.Write("X");
+                    }
+                    else if (this.visitedNodes.Contains(node))
+                    {
+                        Console.Write("#");
+                    }
+                    else
+                    {
+                        Console.Write(rows[y][x]);
+                    }
+                }
+
+                Console.WriteLine();
+            }
         }
     }
 }

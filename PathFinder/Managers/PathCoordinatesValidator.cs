@@ -1,45 +1,123 @@
-﻿using PathFinder.DataStructures;
-
-namespace PathFinder.Managers
+﻿namespace PathFinder.Managers
 {
+    using PathFinder.DataStructures;
+
+    /// <summary>
+    /// Validates the start and the end coordinates given by the user.
+    /// </summary>
     public static class PathCoordinatesValidator
     {
-        private static string startPointX = string.Empty;
-        private static string startPointY = string.Empty;
-        private static string endPointX = string.Empty;
-        private static string endPointY = string.Empty;
+        private static int startPointX = 0;
+        private static int startPointY = 0;
+        private static int endPointX = 0;
+        private static int endPointY = 0;
+        private static int mapHeight = 0;
+        private static int mapWidth = 0;
+        private static int[] coordinates;
+        private static string input = string.Empty;
 
-        public static void StartValidation(Graph graph)
+        /// <summary>
+        /// Starts the validation process. The main method of the PathCoordinatesValidator.
+        /// </summary>
+        /// <param name="graph">The current graph.</param>
+        /// <param name="currentMap">The current map.</param>
+        /// <returns>An array of the start and the end points.</returns>
+        public static int[] StartValidation(Graph graph, string currentMap)
         {
-            ProcessStartPoint();
-            ProcessEndPoint();
-            Validate(graph);
+            string[] rows = currentMap.Split('\n');
+
+            // width is the length of rows, and height is the number of rows.
+            mapWidth = rows[0].Trim().Length;
+            mapHeight = rows.Length;
+
+            while (true)
+            {
+                ProcessStartPoint();
+                if (!Validate(graph, startPointX, startPointY))
+                {
+                    Console.WriteLine("Invalid start point. Try again.");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            while (true)
+            {
+                ProcessEndPoint();
+                if (!Validate(graph, endPointX, endPointY))
+                {
+                    Console.WriteLine("Invalid end point. Try again.");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            Console.Clear();
+
+            // The order of coordinates have to be swapped to align with the graph structure
+            coordinates = new int[] { startPointY, startPointX, endPointY, endPointX };
+            return coordinates;
         }
 
         private static void ProcessStartPoint()
         {
-            Console.WriteLine("Start point of the algorithm.");
-            Console.WriteLine("Insert X-coordinate: ");
-            startPointX = Console.ReadLine();
-            Console.WriteLine("Insert Y-coordinate: ");
-            startPointY = Console.ReadLine();
+            Console.WriteLine("Enter the start point of the algorithm.");
+            Console.Write($"Insert X-coordinate (max index {mapWidth - 1}): ");
+            startPointX = ReadCoordinate();
+            Console.Write($"Insert Y-coordinate (max index {mapHeight - 1}): ");
+            startPointY = ReadCoordinate();
         }
 
         private static void ProcessEndPoint()
         {
-            Console.WriteLine("End point of the algorithm.");
-            Console.WriteLine("Insert X-coordinate: ");
-            endPointX = Console.ReadLine();
-            Console.WriteLine("Insert Y-coordinate: ");
-            endPointY = Console.ReadLine();
+            Console.WriteLine("Enter the end point of the algorithm.");
+            Console.Write($"Insert X-coordinate (max index {mapWidth - 1}): ");
+            endPointX = ReadCoordinate();
+            Console.Write($"Insert Y-coordinate (max index {mapHeight - 1}): ");
+            endPointY = ReadCoordinate();
         }
 
-        private static void Validate(Graph graph)
+        private static int ReadCoordinate()
         {
-            for (int i = 0; i < graph.Nodes.Count; i++)
+            while (true)
             {
-
+                input = Console.ReadLine();
+                if (int.TryParse(input, out int coordinate))
+                {
+                    return coordinate;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter an integer.");
+                }
             }
+        }
+
+        private static bool Validate(Graph graph, int x, int y)
+        {
+            if (x >= mapWidth || x < 0)
+            {
+                Console.WriteLine("X-coordinate out of bounds!");
+                return false;
+            }
+
+            if (y >= mapHeight || y < 0)
+            {
+                Console.WriteLine("Y-coordinate out of bounds!");
+                return false;
+            }
+
+            if (graph.Nodes[y][x].IsObstacle)
+            {
+                Console.WriteLine("This coordinate is an obstacle!");
+                return false;
+            }
+
+            return true;
         }
     }
 }

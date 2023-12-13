@@ -50,10 +50,10 @@
                 return;
             }
 
-            PathCoordinatesValidator.StartValidation(this.graph);
+            var coords = PathCoordinatesValidator.StartValidation(this.graph, this.currentMap);
 
             this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
-            this.shortestPath = this.dijkstra.FindShortestPath(this.graph.Nodes[0][0], this.graph.Nodes[255][255]);
+            this.shortestPath = this.dijkstra.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
             this.pathVisualizer.VisualizeShortestPath(this.shortestPath);
         }
     }
