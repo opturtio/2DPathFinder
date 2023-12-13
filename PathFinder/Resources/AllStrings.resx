@@ -123,7 +123,7 @@
   <data name="MainText" xml:space="preserve">
     <value>1. Compare Dijkstra-algorithm and Jump Point Search-algorithm
 2. Choose Map
-3. Upload Map
+3. Show Map
 0. Exit</value>
   </data>
   <data name="MapNotFound" xml:space="preserve">

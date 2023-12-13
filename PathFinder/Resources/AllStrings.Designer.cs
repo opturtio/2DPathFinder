@@ -72,7 +72,7 @@ namespace PathFinder.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 1. Compare Dijkstra-algorithm and Jump Point Search-algorithm
         ///2. Choose Map
-        ///3. Upload Map
+        ///3. Show Map
         ///0. Exit.
         /// </summary>
         internal static string MainText {

@@ -93,14 +93,11 @@
         private void Visualize()
         {
             string[] rows = this.currentMap.Split('\n');
-            var updatedRows = new string[rows.Length];
+            var outputBuffer = new StringBuilder();
 
             for (int y = 0; y < rows.Length; y++)
             {
                 rows[y] = rows[y].Trim();
-
-                // Converts the current row to StringBuilder object for more efficient modification.
-                var currentRow = new StringBuilder(rows[y]);
 
                 for (int x = 0; x < rows[y].Length; x++)
                 {
@@ -108,23 +105,23 @@
 
                     if (node == this.currentNode)
                     {
-                        currentRow[x] = 'X';
+                        outputBuffer.Append('X');
                     }
                     else if (this.visitedNodes.Contains(node))
                     {
-                        currentRow[x] = '#';
+                        outputBuffer.Append('#');
+                    }
+                    else
+                    {
+                        outputBuffer.Append(rows[y][x]);
                     }
                 }
 
-                // Convert the StringBuilder back to a string
-                updatedRows[y] = currentRow.ToString();
+                outputBuffer.AppendLine();
             }
 
-            // Update currentMap with the new state
-            this.currentMap = string.Join("\n", updatedRows);
-
-            Console.Clear();
-            Console.WriteLine(this.currentMap);
+            Console.SetCursorPosition(0, 0);
+            Console.Write(outputBuffer.ToString());
             Thread.Sleep(100);
         }
     }

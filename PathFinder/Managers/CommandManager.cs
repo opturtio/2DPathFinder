@@ -33,6 +33,9 @@
                 case "2":
                     this.ProcessMainMenuOptionTwo();
                     break;
+                case "3":
+                    this.ProcessMainMenuOptionThree();
+                    break;
                 case "0":
                     Environment.Exit(0);
                     break;
@@ -70,6 +73,19 @@
             if (mapInput != null)
             {
                 this.ProcessMapMenuInput(mapInput);
+            }
+        }
+
+        /// <summary>
+        /// Processes main menu option three.
+        /// Prints the current map to console.
+        /// </summary>
+        public void ProcessMainMenuOptionThree()
+        {
+            string[] rows = this.currentMap.Split('\n');
+            foreach (string row in rows)
+            {
+                Console.WriteLine(row);
             }
         }
 
