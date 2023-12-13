@@ -50,6 +50,8 @@
                 return;
             }
 
+            PathCoordinatesValidator.StartValidation(this.graph);
+
             this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
             this.shortestPath = this.dijkstra.FindShortestPath(this.graph.Nodes[0][0], this.graph.Nodes[255][255]);
             this.pathVisualizer.VisualizeShortestPath(this.shortestPath);
