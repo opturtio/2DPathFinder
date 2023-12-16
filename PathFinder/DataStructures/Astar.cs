@@ -1,20 +1,14 @@
-﻿namespace PathFinder.Algorithms
+﻿namespace PathFinder.DataStructures
 {
-    using PathFinder.DataStructures;
-
     /// <summary>
-    /// Dijkstra algorithm.
+    /// A* algorithm.
     /// </summary>
-    public class Dijkstra
+    public class Astar
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Dijkstra"/> class.
-        /// </summary>
-        /// <param name="graph">The graph to be processed by the Dijkstra algorithm</param>
-        public Dijkstra(Graph graph, PathVisualizer visualizer)
+        public Astar(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
             this.pathVisualizer = visualizer;
@@ -29,17 +23,19 @@
         public List<Node> FindShortestPath(Node start, Node end)
         {
             start.Cost = 0;
-
-            // Create a queue that sorts points by how far they are
             var priorityQueue = new PriorityQueue<Node, double>();
             priorityQueue.Enqueue(start, 0);
 
+            var cameFrom = new Dictionary<Node, Node?>();
+            var costSoFar = new Dictionary<Node, double>();
+
+            cameFrom[start] = null;
+            costSoFar[start] = 0;
+
             while (priorityQueue.Count > 0)
             {
-                // Selects the node with the shortest distance from the queue.
                 var currentNode = priorityQueue.Dequeue();
 
-                // Visualizes the path.
                 this.pathVisualizer.VisualizePath(currentNode);
 
                 if (currentNode == end)
@@ -47,22 +43,34 @@
                     break;
                 }
 
-                // Check the nodes connected to the current point.
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
-                    double newCost = currentNode.Cost + cost;
-
-                    // Update neighbor's distance and parent if a shorter path is found, then queue it for further exploration.
-                    if (newCost < neighborNode.Cost)
+                    double newCost;
+                    if (costSoFar.ContainsKey(neighborNode))
                     {
-                        neighborNode.Cost = newCost;
-                        neighborNode.Parent = currentNode;
-                        priorityQueue.Enqueue(neighborNode, newCost);
+                        newCost = costSoFar[neighborNode] + cost;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])
+                    {
+                        costSoFar[neighborNode] = newCost;
+                        double priority = newCost + this.Heuristic(end, neighborNode);
+                        priorityQueue.Enqueue(neighborNode, priority);
+                        cameFrom[neighborNode] = currentNode;
                     }
                 }
             }
 
             return ShortestPathBuilder.ShortestPath(end);
+        }
+
+        private double Heuristic(Node end, Node neighborNode)
+        {
+            return Math.Abs(end.X - neighborNode.X) + Math.Abs(end.Y - neighborNode.Y);
         }
     }
 }

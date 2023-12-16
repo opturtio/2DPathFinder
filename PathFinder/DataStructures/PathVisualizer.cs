@@ -66,7 +66,6 @@
             {
                 this.currentNode = nodes[i];
                 this.visitedNodes.Add(this.currentNode);
-                Console.WriteLine("The shortest path:");
                 this.ShortestPathVisualizer();
             }
         }
@@ -120,12 +119,13 @@
 
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
-            Thread.Sleep(100);
+            Thread.Sleep(40);
         }
 
         private void ShortestPathVisualizer()
         {
             Console.Clear();
+            Console.WriteLine("The shortest path:");
             string[] rows = this.currentMap.Split('\n');
 
             for (int y = 0; y < rows.Length; y++)
