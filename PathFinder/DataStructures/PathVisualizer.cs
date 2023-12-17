@@ -29,6 +29,11 @@
             this.isDebug = false;
         }
 
+        public void ClearVisitedNodes()
+        {
+            this.visitedNodes.Clear();
+        }
+
         /// <summary>
         /// Activates debugger so user can see how the algorithm works.
         /// </summary>
@@ -40,13 +45,13 @@
         /// <summary>
         /// Deactivates debugger.
         /// </summary>
-        public void DeactiveDebugger()
+        public void DeactivateDebugger()
         {
             this.isDebug = false;
         }
 
         /// <summary>
-        /// Initializes the currentMap string
+        /// Initializes the currentMap string.
         /// </summary>
         public void InitializeCurrentMap()
         {
@@ -124,7 +129,7 @@
 
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
-            Thread.Sleep(40);
+            Thread.Sleep(100);
         }
 
         private string ShortestPathVisualizer()

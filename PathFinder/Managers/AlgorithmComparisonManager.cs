@@ -17,6 +17,7 @@
         private PathVisualizer pathVisualizer;
         private List<Node> shortestPathDijkstra;
         private List<Node> shortestPathAstar;
+        private OutputManager outputManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AlgorithmComparisonManager"/> class.
@@ -32,6 +33,7 @@
             this.shortestPathDijkstra = new List<Node>();
             this.shortestPathAstar = new List<Node>();
             this.commandManager = new CommandManager();
+            this.outputManager = new OutputManager();
         }
 
         /// <summary>
@@ -46,7 +48,7 @@
             }
             else if (debugInput == "n")
             {
-                this.pathVisualizer.DeactiveDebugger();
+                this.pathVisualizer.DeactivateDebugger();
             }
             else
             {
@@ -56,8 +58,10 @@
             var coords = PathCoordinatesValidator.StartValidation(this.graph, this.currentMap);
 
             this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
-            this.aStar = new Astar(this.graph, this.pathVisualizer);
             this.shortestPathDijkstra = this.dijkstra.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
+            this.graph.ResetNodes();
+            this.pathVisualizer.ClearVisitedNodes();
+            this.aStar = new Astar(this.graph, this.pathVisualizer);
             this.shortestPathAstar = this.aStar.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
             this.PrintResults();
         }
@@ -69,7 +73,7 @@
         {
             var dijkstraMap = this.pathVisualizer.VisualizeShortestPath(this.shortestPathDijkstra);
             var aStarMap = this.pathVisualizer.VisualizeShortestPath(this.shortestPathAstar);
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("Dijkstra shortest path:");
             Console.WriteLine(dijkstraMap);
             Console.WriteLine("A* shortest path:");

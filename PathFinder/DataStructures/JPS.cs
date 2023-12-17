@@ -40,6 +40,14 @@
                 foreach (var direction in this.GetDirections())
                 {
                     var neighborNode = this.Jump(currentNode, direction, end);
+                    if (neighborNode != null && (!costSoFar.ContainsKey(neighborNode) || currentNode.Cost + this.Heuristic(currentNode, neighborNode) < costSoFar[neighborNode]))
+                    {
+                        double newCost = currentNode.Cost + this.Heuristic(currentNode, neighborNode);
+                        costSoFar[neighborNode] = newCost;
+                        double priority = newCost + this.Heuristic(end, neighborNode);
+                        priorityQueue.Enqueue(neighborNode, priority);
+                        cameFrom[neighborNode] = currentNode;
+                    }
                 }
             }
 
@@ -48,6 +56,7 @@
 
         private Node? Jump(Node current, (int x, int y) direction, Node end)
         {
+
             return current;
         }
 

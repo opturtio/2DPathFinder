@@ -34,7 +34,15 @@
             var cameFrom = new Dictionary<Node, Node?>();
             var costSoFar = new Dictionary<Node, double>();
 
-            cameFrom[start] = null;
+            // Initialize all nodes with max cost
+            foreach (var row in this.graph.Nodes)
+            {
+                foreach (var node in row)
+                {
+                    costSoFar[node] = double.MaxValue;
+                }
+            }
+
             costSoFar[start] = 0;
 
             while (priorityQueue.Count > 0)
@@ -50,23 +58,14 @@
 
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
-                    double newCost;
+                    double newCost = costSoFar[currentNode] + cost;
 
-                    if (costSoFar.ContainsKey(neighborNode))
-                    {
-                        newCost = costSoFar[neighborNode] + cost;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])
+                    if (newCost < costSoFar[neighborNode])
                     {
                         costSoFar[neighborNode] = newCost;
                         double priority = newCost + this.Heuristic(end, neighborNode);
                         priorityQueue.Enqueue(neighborNode, priority);
-                        cameFrom[neighborNode] = currentNode;
+                        neighborNode.Parent = currentNode;
                     }
                 }
             }
@@ -82,9 +81,9 @@
         /// <param name="end">The end point given by the user.</param>
         /// <param name="neighborNode">The node currently processed.</param>
         /// <returns>An estimated distance from the current node to the end point.</returns>
-        private double Heuristic(Node end, Node neighborNode)
+        private double Heuristic(Node end, Node node)
         {
-            return Math.Abs(end.X - neighborNode.X) + Math.Abs(end.Y - neighborNode.Y);
+            return Math.Sqrt(Math.Pow(end.X - node.X, 2) + Math.Pow(end.Y - node.Y, 2));
         }
     }
 }

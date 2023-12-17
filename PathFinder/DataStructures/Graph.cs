@@ -20,6 +20,21 @@
         public List<List<Node>> Nodes { get; private set; }
 
         /// <summary>
+        /// Resets all nodes cost and parent.
+        /// </summary>
+        public void ResetNodes()
+        {
+            foreach (var row in this.Nodes)
+            {
+                foreach (var node in row)
+                {
+                    node.Cost = double.MaxValue;
+                    node.Parent = null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds a new row of nodes to the graph.
         /// </summary>
         /// <param name="row">A list of Node objects representing a row in the graph.</param>
