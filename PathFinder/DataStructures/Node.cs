@@ -18,6 +18,7 @@
             this.IsObstacle = isObstacle;
             this.Cost = double.MaxValue;
             this.Parent = null;
+            this.Visited = false;
         }
 
         /// <summary>
@@ -44,6 +45,11 @@
         /// Gets or sets the parent node in the pathfinding process.
         /// </summary>
         public Node? Parent { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the node has been visited.
+        /// </summary>
+        public bool Visited { get; set; }
 
         /// <summary>
         /// Returns a string that represents the current node.

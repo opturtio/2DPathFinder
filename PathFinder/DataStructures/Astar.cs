@@ -49,6 +49,14 @@
             {
                 var currentNode = priorityQueue.Dequeue();
 
+                if (currentNode.Visited)
+                {
+                    continue;
+                }
+
+                currentNode.Visited = true;
+
+
                 this.pathVisualizer.VisualizePath(currentNode);
 
                 if (currentNode == end)
@@ -58,6 +66,11 @@
 
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
+                    if (neighborNode.Visited)
+                    {
+                        continue;
+                    }
+
                     double newCost = costSoFar[currentNode] + cost;
 
                     if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])

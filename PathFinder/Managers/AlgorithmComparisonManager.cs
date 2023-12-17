@@ -57,12 +57,12 @@
 
             var coords = PathCoordinatesValidator.StartValidation(this.graph, this.currentMap);
 
-            this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
-            this.shortestPathDijkstra = this.dijkstra.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            this.graph.ResetNodes();
-            this.pathVisualizer.ClearVisitedNodes();
             this.aStar = new Astar(this.graph, this.pathVisualizer);
             this.shortestPathAstar = this.aStar.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
+            this.pathVisualizer.ClearVisitedNodes();
+            this.graph.ResetNodes();
+            this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
+            this.shortestPathDijkstra = this.dijkstra.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
             this.PrintResults();
         }
 

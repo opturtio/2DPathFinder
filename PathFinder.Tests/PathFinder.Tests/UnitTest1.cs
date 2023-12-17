@@ -90,7 +90,7 @@ namespace PathFinder.Tests
         {
             Node start = graph.Nodes[0][0];
             Node end = graph.Nodes[30][25];
-            Dijkstra dijkstra = new Dijkstra(graph, new PathVisualizer(this.graph, this.map);
+            Dijkstra dijkstra = new Dijkstra(graph, new PathVisualizer(this.graph, this.map));
             List<Node> path = dijkstra.FindShortestPath(start, end);
 
         }
