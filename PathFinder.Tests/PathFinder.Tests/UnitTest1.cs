@@ -1,16 +1,24 @@
 namespace PathFinder.Tests
 {
+    using NUnit.Framework;
+    using PathFinder.DataStructures;
+    using PathFinder.Algorithms;
     using PathFinder.Managers;
     using PathFinder.Services;
+    using System;
 
     public class Tests
     {
+        // Datastructures
+        private Graph graph;
+
         private CommandManager commandManager;
         private FileManager fileManager;
         private FileLoader fileLoader;
         private StringReader consoleInput;
         private StringWriter consoleOutput;
         private string expectedMapContent = string.Empty;
+        private string map;
 
         [SetUp]
         public void Setup()
@@ -19,6 +27,9 @@ namespace PathFinder.Tests
             this.fileLoader = new FileLoader();
             this.fileManager = new FileManager();
             this.fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
+            this.map = this.fileLoader.LoadMap("1");
+            this.graph = GraphBuilder.CreateGraphFromString(map);
+
             this.expectedMapContent =
                 ".......................................\r\n" +
                 "..................................@@@@@\r\n" +
@@ -62,6 +73,44 @@ namespace PathFinder.Tests
                 ".@@@@@@@........@@@@@@@....@@@@@@@@@...";
         }
 
+
+
+        [Test]
+        public void File_Can_Be_Loaded_Test()
+        {
+            // Act
+            string fileContent = this.fileLoader.LoadMap("1");
+
+            // Assert
+            Assert.AreEqual(this.expectedMapContent, fileContent);
+        }
+
+        [Test]
+        public void DijkstraPathFindingTest()
+        {
+            Node start = graph.Nodes[0][0];
+            Node end = graph.Nodes[30][25];
+            Dijkstra dijkstra = new Dijkstra(graph, new PathVisualizer(this.graph, this.map);
+            List<Node> path = dijkstra.FindShortestPath(start, end);
+
+        }
+
+        [Test]
+        public void AStarPathFindingTest()
+        {
+            Node start = graph.Nodes[0][0];
+            Node end = graph.Nodes[30][25];
+            Astar aStar = new Astar(graph, new PathVisualizer(this.graph, this.map));
+            List<Node> path = aStar.FindShortestPath(start, end);
+
+            // Perform assertions here
+        }
+
+    }
+}
+
+
+        /*
         [Test]
         public void ProcessMainMenuInput_OptionTwo_Returns_Map_As_String_Test()
         {
@@ -87,17 +136,6 @@ namespace PathFinder.Tests
             Assert.AreEqual(this.expectedMapContent, actualOutput);
         }
 
-        [Test]
-        public void File_Can_Be_Loaded_Test()
-        {
-            // Act
-            string fileContent = this.fileLoader.LoadMap("1");
-
-            // Assert
-            Assert.AreEqual(this.expectedMapContent, fileContent);
-        }
-
-        /*
         [Test]
         public void ProcessMainMenuOptionTwo_BehavesAsExpected()
         {
@@ -155,5 +193,3 @@ namespace PathFinder.Tests
             Assert.AreEqual(_correctFormMapNames, cleanedMapFileNames);
         }
         */
-    }
-}

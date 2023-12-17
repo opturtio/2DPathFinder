@@ -60,7 +60,7 @@
                 {
                     double newCost = costSoFar[currentNode] + cost;
 
-                    if (newCost < costSoFar[neighborNode])
+                    if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])
                     {
                         costSoFar[neighborNode] = newCost;
                         double priority = newCost + this.Heuristic(end, neighborNode);
@@ -74,7 +74,7 @@
         }
 
         /// <summary>
-        /// This method estimates how close a node is to the end point. It uses the Manhattan distance,
+        /// This method estimates how close a node is to the end point. It uses the Euclidean distance,
         /// which is just adding up the horizontal and vertical distances. This helps the algorithm
         /// decide which paths are worth looking at first to find the shortest route faster.
         /// </summary>
