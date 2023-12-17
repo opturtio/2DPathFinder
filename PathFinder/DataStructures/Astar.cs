@@ -8,6 +8,11 @@
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Astar"/> class.
+        /// </summary>
+        /// <param name="graph">The graph to be processed by the A* algorithm.</param>
+        /// <param name="visualizer">The path visualizer to visualize the A* algorithm in the console.</param>
         public Astar(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
@@ -46,6 +51,7 @@
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
                     double newCost;
+
                     if (costSoFar.ContainsKey(neighborNode))
                     {
                         newCost = costSoFar[neighborNode] + cost;
@@ -68,6 +74,14 @@
             return ShortestPathBuilder.ShortestPath(end);
         }
 
+        /// <summary>
+        /// This method estimates how close a node is to the end point. It uses the Manhattan distance,
+        /// which is just adding up the horizontal and vertical distances. This helps the algorithm
+        /// decide which paths are worth looking at first to find the shortest route faster.
+        /// </summary>
+        /// <param name="end">The end point given by the user.</param>
+        /// <param name="neighborNode">The node currently processed.</param>
+        /// <returns>An estimated distance from the current node to the end point.</returns>
         private double Heuristic(Node end, Node neighborNode)
         {
             return Math.Abs(end.X - neighborNode.X) + Math.Abs(end.Y - neighborNode.Y);

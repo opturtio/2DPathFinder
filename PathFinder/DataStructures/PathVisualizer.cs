@@ -57,17 +57,22 @@
         /// Visualizes the shortest path of the used algorithm.
         /// </summary>
         /// <param name="nodes">A list of nodes representing the shortest path from the start node to the end node.</param>
-        public void VisualizeShortestPath(List<Node> nodes)
+        public string VisualizeShortestPath(List<Node> nodes)
         {
             this.InitializeCurrentMap();
             this.visitedNodes.Clear();
 
-            for (int i = 0;  i < nodes.Count; i++)
+            foreach (Node node in nodes)
             {
-                this.currentNode = nodes[i];
-                this.visitedNodes.Add(this.currentNode);
-                this.ShortestPathVisualizer();
+                // Add each node in the path to the visitedNodes list
+                this.visitedNodes.Add(node);
             }
+
+            // The last node in the list is the current node (end node of the path)
+            this.currentNode = nodes.Last();
+
+            // Generate the visualized map as a string
+            return this.ShortestPathVisualizer();
         }
 
         /// <summary>
@@ -122,10 +127,9 @@
             Thread.Sleep(40);
         }
 
-        private void ShortestPathVisualizer()
+        private string ShortestPathVisualizer()
         {
-            Console.Clear();
-            Console.WriteLine("The shortest path:");
+            StringBuilder visualizedMap = new StringBuilder();
             string[] rows = this.currentMap.Split('\n');
 
             for (int y = 0; y < rows.Length; y++)
@@ -140,20 +144,22 @@
 
                     if (node == this.currentNode)
                     {
-                        Console.Write("X");
+                        visualizedMap.Append("X");
                     }
                     else if (this.visitedNodes.Contains(node))
                     {
-                        Console.Write("#");
+                        visualizedMap.Append("#");
                     }
                     else
                     {
-                        Console.Write(rows[y][x]);
+                        visualizedMap.Append(rows[y][x]);
                     }
                 }
 
-                Console.WriteLine();
+                visualizedMap.AppendLine();
             }
+
+            return visualizedMap.ToString();
         }
     }
 }

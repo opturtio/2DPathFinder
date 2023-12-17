@@ -62,12 +62,18 @@
             this.PrintResults();
         }
 
+        /// <summary>
+        /// Prints to console the results of the Algorithm comparison.
+        /// </summary>
         public void PrintResults()
         {
+            var dijkstraMap = this.pathVisualizer.VisualizeShortestPath(this.shortestPathDijkstra);
+            var aStarMap = this.pathVisualizer.VisualizeShortestPath(this.shortestPathAstar);
+            Console.Clear();
             Console.WriteLine("Dijkstra shortest path:");
-            this.pathVisualizer.VisualizeShortestPath(this.shortestPathDijkstra);
+            Console.WriteLine(dijkstraMap);
             Console.WriteLine("A* shortest path:");
-            this.pathVisualizer.VisualizeShortestPath(this.shortestPathAstar);
+            Console.WriteLine(aStarMap);
         }
     }
 }

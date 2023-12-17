@@ -13,7 +13,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="Dijkstra"/> class.
         /// </summary>
-        /// <param name="graph">The graph to be processed by the Dijkstra algorithm</param>
+        /// <param name="graph">The graph to be processed by the Dijkstra algorithm.</param>
+        /// <param name="visualizer">The path visualizer to visualize the A* algorithm in the console.</param>
         public Dijkstra(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
