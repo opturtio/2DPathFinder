@@ -16,3 +16,12 @@ I added possibility to show the current map in the main menu as option 3. I crea
 Long day! I created PathCoordinatesValidator, which validates the inputs of the user. It checks that the given coordinates are inside the matrix and if the given coordinate is an obstacle. It took the whole day to get it to work. I had many problems getting the given coordinates to work and the path to travel in the right direction. Trying to realize which way the x and y should be created a significant challenge. In the evening, I solved it in the end after I took a walk to think of something else. 
 
 So, now the user can decide which start and end coordinates should be explored, and the shortest path is printed to the console. It is also easy to add hardcoded values for the start and the end coordinates to ease the debugging. I decided to prepare all this before implementing JPS because I will need all the debugging possibilities when implementing it.
+
+### Saturday 16.12.2023
+Created A* algorithm so implementing JPS will be easier. It took a lot of time to do it.
+
+### Sunday 17.12.2023
+I started to fix path visualizer because I started to have feeling it is showing A* wrong. In the end I realized I am having huge bug. I am using same graph for both algorithms so all the nodes are already visited when the second algoritm uses it. First, I started to fix the problem too diffucult way by creating both algorithms their own graph and got some problems with depencies but then fix the problem just by one look reseting all the nodes in the graph except their location. Easy fix in the end. The I realized A* does not work right so it took long to optimize it. I needed to create new property visited for node so that the A* does not check again the same nodes. I also set up better testing environment.
+
+### Monday 18.12.2023
+I fixed graph the way that jumping over corners is not possible anymore. Also, added timing and result screen for algorithm comparison.

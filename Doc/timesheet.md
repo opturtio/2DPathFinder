@@ -21,4 +21,7 @@ Date       | Time | Target |
 2023-12-11 | 6h | Modified PathVisualizer class. Created ShortestPathBuilder class. Created possibility to start debugging. |
 2023-12-12 | 2h | Created possibility to print the current map to console in main menu and modified PathVisualizer to be more efficient and reduce flickering. |
 2023-12-13 | 9h | Created PathCoordinatesValidator and made small modifications |
-SUM | 96h | |
+2023-12-16 | 6h | Created A* algorithm |
+2023-12-17 | 8h | Fixed path visualizer and the way paths are presented in console. Fixed A* algorithm and a major bug where graph nodes costs were not initialized. |
+2023-12-18 | 4h | Created result screen for algorithm comparison and fixed the graph so that jumping over corners is not possible. |
+SUM | 114h | |
