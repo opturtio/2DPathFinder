@@ -9,6 +9,7 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
+        private int visitedNodes = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Dijkstra"/> class.
@@ -40,6 +41,15 @@
                 // Selects the node with the shortest distance from the queue.
                 var currentNode = priorityQueue.Dequeue();
 
+                if (currentNode.Visited)
+                {
+                    continue;
+                }
+
+                currentNode.Visited = true;
+
+                this.visitedNodes++;
+
                 // Visualizes the path.
                 this.pathVisualizer.VisualizePath(currentNode);
 
@@ -51,6 +61,11 @@
                 // Check the nodes connected to the current point.
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
+                    if (neighborNode.Visited)
+                    {
+                        continue;
+                    }
+
                     double newCost = currentNode.Cost + cost;
 
                     // Update neighbor's distance and parent if a shorter path is found, then queue it for further exploration.
@@ -64,6 +79,15 @@
             }
 
             return ShortestPathBuilder.ShortestPath(end);
+        }
+
+        /// <summary>
+        /// Retrieves the total number of nodes that have been visited during the pathfinding.
+        /// </summary>
+        /// <returns>An integer representing the count of visited nodes.</returns>
+        public int GetVisitedNodes()
+        {
+            return this.visitedNodes;
         }
     }
 }

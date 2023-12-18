@@ -20,7 +20,7 @@
         public List<List<Node>> Nodes { get; private set; }
 
         /// <summary>
-        /// Resets all nodes cost and parent.
+        /// Resets all node's cost, parent and the information is the node visited.
         /// </summary>
         public void ResetNodes()
         {
@@ -30,6 +30,7 @@
                 {
                     node.Cost = double.MaxValue;
                     node.Parent = null;
+                    node.Visited = false;
                 }
             }
         }
@@ -52,36 +53,52 @@
         public IEnumerable<(Node, double)> GetNeighborsWithCosts(Node node)
         {
             // Defines all eight directions and their costs
-            var directions = new (int deltaX, int deltaY, double cost)[]
-            {
-            // Horizontal and vertical movements (movement cost: 1)
-            (1, 0, 1), // Move RIGHT by 1 unit (X + 1), no change in Y.
-            (-1, 0, 1), // Move LEFT by 1 unit (X - 1), no change in Y.
-            (0, 1, 1), // Move UP by 1 unit (Y + 1), no change in X.
-            (0, -1, 1), // Move DOWN by 1 unit (Y - 1), no change in X.
-
-            // Diagonal movements (movement cost: sqrt(2)
-            (1, 1, Math.Sqrt(2)),  // Move diagonally to the UPPER RIGHT by 1 unit both in X (X + 1) and Y (Y + 1).
-            (-1, 1, Math.Sqrt(2)), // Move diagonally to the UPPER LEFT by 1 unit in X (X - 1) and 1 unit in Y (Y + 1).
-            (1, -1, Math.Sqrt(2)), // Move diagonally to the LOWER RIGHT by 1 unit in X (X + 1) and -1 unit in Y (Y - 1).
-            (-1, -1, Math.Sqrt(2)), // Move diagonally to the LOWER LEFT by 1 unit in X (X - 1) and -1 unit in Y (Y - 1).
-            };
+            var directions = new (int deltaX, int deltaY, double cost)[] { (1, 0, 1), (-1, 0, 1), (0, 1, 1), (0, -1, 1), (1, 1, Math.Sqrt(2)), (-1, 1, Math.Sqrt(2)), (1, -1, Math.Sqrt(2)), (-1, -1, Math.Sqrt(2)) };
 
             // Iterates over each defined direction to find the neighboring nodes.
             foreach (var (deltaX, deltaY, cost) in directions)
             {
-                // Calculates the X-coordinate of the neighboring node
                 int neighborX = node.X + deltaX;
-
-                // Calculates the Y-coordinate of the neighboring node
                 int neighborY = node.Y + deltaY;
 
-                // Checks if the neighboring node is within the bounds of the graph and is not an obstacle
-                if (neighborY >= 0 && neighborY < this.Nodes.Count && neighborX >= 0 && neighborX < this.Nodes[neighborY].Count && !this.Nodes[neighborY][neighborX].IsObstacle)
+                if (this.CanMove(neighborX, neighborY))
                 {
-                    // Yield each valid neighboring node along with its movement cost
-                    yield return (this.Nodes[neighborY][neighborX], cost);
+                    continue;
                 }
+
+                // Check is the movement diagonal.
+                if (Math.Abs(deltaX) == 1 && Math.Abs(deltaY) == 1)
+                {
+                    // Check if adjacent nodes are obstacles or out of bound in diagonal movement.
+                    if (this.CanMove(node.X + deltaX, node.Y) || this.CanMove(node.X, node.Y + deltaY))
+                    {
+                        continue;
+                    }
+                }
+
+                yield return (this.Nodes[neighborY][neighborX], cost);
+            }
+        }
+
+        /// <summary>
+        /// Checks if diagonal movement is possible.
+        /// </summary>
+        /// <param name="x">The X-coordinate of the neighbring node.</param>
+        /// <param name="y">The Y-coordinate of the neighbring node.</param>
+        /// <returns>Returns true if the movement is not possible (either out of bounds or an obstacle) otherwise, false.</returns>
+        private bool CanMove(int x, int y)
+        {
+            if (y < 0 || y >= this.Nodes.Count)
+            {
+                return true;
+            }
+            else if (x < 0 || x >= this.Nodes[y].Count)
+            {
+                return true;
+            }
+            else
+            {
+                return this.Nodes[y][x].IsObstacle;
             }
         }
     }

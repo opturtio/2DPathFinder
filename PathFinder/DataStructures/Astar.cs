@@ -7,6 +7,7 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
+        private int visitedNodes = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Astar"/> class.
@@ -28,11 +29,9 @@
         public List<Node> FindShortestPath(Node start, Node end)
         {
             start.Cost = 0;
+            var costSoFar = new Dictionary<Node, double>();
             var priorityQueue = new PriorityQueue<Node, double>();
             priorityQueue.Enqueue(start, 0);
-
-            var cameFrom = new Dictionary<Node, Node?>();
-            var costSoFar = new Dictionary<Node, double>();
 
             // Initialize all nodes with max cost
             foreach (var row in this.graph.Nodes)
@@ -56,6 +55,7 @@
 
                 currentNode.Visited = true;
 
+                this.visitedNodes++;
 
                 this.pathVisualizer.VisualizePath(currentNode);
 
@@ -87,12 +87,21 @@
         }
 
         /// <summary>
+        /// Retrieves the total number of nodes that have been visited during the pathfinding.
+        /// </summary>
+        /// <returns>An integer representing the count of visited nodes.</returns>
+        public int GetVisitedNodes()
+        {
+            return this.visitedNodes;
+        }
+
+        /// <summary>
         /// This method estimates how close a node is to the end point. It uses the Euclidean distance,
         /// which is just adding up the horizontal and vertical distances. This helps the algorithm
         /// decide which paths are worth looking at first to find the shortest route faster.
         /// </summary>
         /// <param name="end">The end point given by the user.</param>
-        /// <param name="neighborNode">The node currently processed.</param>
+        /// <param name="node">The node currently processed.</param>
         /// <returns>An estimated distance from the current node to the end point.</returns>
         private double Heuristic(Node end, Node node)
         {
