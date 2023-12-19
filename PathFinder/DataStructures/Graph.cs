@@ -45,6 +45,7 @@
         }
 
         /// <summary>
+        /// Used by Dijkstra and A* algorithms. 
         /// Retrieves the neighboring nodes of a given node and the costs associated with moving to each neighbor.
         /// This method considers all eight possible directions (horizontal, vertical, and diagonal) and calculates the cost for each movement.
         /// </summary>
@@ -61,7 +62,7 @@
                 int neighborX = node.X + deltaX;
                 int neighborY = node.Y + deltaY;
 
-                if (this.CanMove(neighborX, neighborY))
+                if (!this.CanMove(neighborX, neighborY))
                 {
                     continue;
                 }
@@ -70,7 +71,7 @@
                 if (Math.Abs(deltaX) == 1 && Math.Abs(deltaY) == 1)
                 {
                     // Check if adjacent nodes are obstacles or out of bound in diagonal movement.
-                    if (this.CanMove(node.X + deltaX, node.Y) || this.CanMove(node.X, node.Y + deltaY))
+                    if (!this.CanMove(node.X + deltaX, node.Y) || !this.CanMove(node.X, node.Y + deltaY))
                     {
                         continue;
                     }
@@ -81,25 +82,56 @@
         }
 
         /// <summary>
-        /// Checks if diagonal movement is possible.
+        /// Checks if movement to a specified grid position is possible.
         /// </summary>
         /// <param name="x">The X-coordinate of the neighbring node.</param>
         /// <param name="y">The Y-coordinate of the neighbring node.</param>
-        /// <returns>Returns true if the movement is not possible (either out of bounds or an obstacle) otherwise, false.</returns>
-        private bool CanMove(int x, int y)
+        /// <returns>Returns true if the target position is within grid bounds and is not an obstacle, otherwise returns false.</returns>
+        public bool CanMove(int x, int y)
         {
-            if (y < 0 || y >= this.Nodes.Count)
+            return y >= 0 && y < this.Nodes.Count &&
+                   x >= 0 && x < this.Nodes[y].Count &&
+                   !this.Nodes[y][x].IsObstacle;
+        }
+
+        /// <summary>
+        /// Used by JPS algorithm.
+        /// Determines if a node has forced neighbors based on the Jump Point Search algorithm.
+        /// Forced neighbors are nodes that must be considered for further search due to potential alternative paths.
+        /// </summary>
+        /// <param name="current">The current node being evaluated.</param>
+        /// <param name="direction">A tuple containing the deltaX and deltaY representing the direction of movement from the current node.</param>
+        /// <returns>Returns true if forced neighbors are detected in the specified direction, otherwise returns false.</returns>
+        public bool HasForcedNeighbors(Node current, (int deltaX, int deltaY) direction)
+        {
+            // Horizontal movement: Check for forced neighbors along Y-axis
+            if (direction.deltaX != 0)
             {
-                return true;
+                if ((!this.CanMove(current.X, current.Y + 1) && this.CanMove(current.X + direction.deltaX, current.Y + 1)) ||
+                    (!this.CanMove(current.X, current.Y - 1) && this.CanMove(current.X + direction.deltaX, current.Y - 1)))
+                {
+                    return true;
+                }
             }
-            else if (x < 0 || x >= this.Nodes[y].Count)
+
+            // Vertical movement: Check for forced neighbors along X-axis
+            if (direction.deltaY != 0)
             {
-                return true;
+                if ((!this.CanMove(current.X + 1, current.Y) && this.CanMove(current.X + 1, current.Y + direction.deltaY)) ||
+                    (!this.CanMove(current.X - 1, current.Y) && this.CanMove(current.X - 1, current.Y + direction.deltaY)))
+                {
+                    return true;
+                }
             }
-            else
+
+            // Diagonal movement: Check for horizontal and vertical forced neighbors
+            if (direction.deltaX != 0 && direction.deltaY != 0)
             {
-                return this.Nodes[y][x].IsObstacle;
+                // Check forced neighbors in horizontal and vertical direction separately
+                return this.HasForcedNeighbors(current, (direction.deltaX, 0)) || this.HasForcedNeighbors(current, (0, direction.deltaY));
             }
+
+            return false;
         }
     }
 }

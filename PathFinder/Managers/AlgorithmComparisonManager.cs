@@ -108,6 +108,7 @@
             Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "Algorithm", "Visited nodes", "Time(milliseconds)"));
             Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "Dijkstra", this.dijkstra.GetVisitedNodes(), this.dijkstraStopwatch.ElapsedMilliseconds));
             Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "A*", this.aStar.GetVisitedNodes(), this.aStarStopwatch.ElapsedMilliseconds));
+            Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "JPS", this.jps.GetVisitedNodes(), this.jpsStopwatch.ElapsedMilliseconds));
             Console.WriteLine("------------------------------------------------------");
             Console.WriteLine();
         }
