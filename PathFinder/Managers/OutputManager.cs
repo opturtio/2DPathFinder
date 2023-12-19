@@ -33,10 +33,14 @@
         /// <param name="mapNames">A list of tuples, each containing two strings representing the name and size of a map file.</param>
         public void PrintMapNames(List<Tuple<string, string>> mapNames)
         {
+            Console.WriteLine("________________________________________");
+            Console.WriteLine(String.Format("| {0,-2} | {1,-18} | {2,-10} |", "Id", "Name", "Size"));
             for (int i = 0; i < mapNames.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {mapNames[i].Item1} - {mapNames[i].Item2}");
+                Console.WriteLine(String.Format("| {0,-2} | {1,-18} | {2,-10} |", $"{i + 1}.", $"{mapNames[i].Item1}", $"{mapNames[i].Item2}"));
             }
+
+            Console.WriteLine("----------------------------------------");
         }
 
         /// <summary>

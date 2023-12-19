@@ -1,8 +1,8 @@
 ﻿namespace PathFinder.Managers
 {
+    using System.Diagnostics;
     using PathFinder.Algorithms;
     using PathFinder.DataStructures;
-    using System.Diagnostics;
 
     /// <summary>
     /// Manages algorithm comparison.
@@ -15,12 +15,15 @@
         private readonly CommandManager commandManager;
         private Dijkstra dijkstra;
         private Astar aStar;
+        private JPS jps;
         private PathVisualizer pathVisualizer;
         private List<Node> shortestPathDijkstra;
         private List<Node> shortestPathAstar;
+        private List<Node> shortestPathJps;
         private OutputManager outputManager;
         private Stopwatch dijkstraStopwatch;
         private Stopwatch aStarStopwatch;
+        private Stopwatch jpsStopwatch;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AlgorithmComparisonManager"/> class.
@@ -35,10 +38,12 @@
             this.pathVisualizer = new PathVisualizer(this.graph, this.currentMap);
             this.shortestPathDijkstra = new List<Node>();
             this.shortestPathAstar = new List<Node>();
+            this.shortestPathJps = new List<Node>();
             this.commandManager = new CommandManager();
             this.outputManager = new OutputManager();
             this.dijkstraStopwatch = new Stopwatch();
             this.aStarStopwatch = new Stopwatch();
+            this.jpsStopwatch = new Stopwatch();
         }
 
         /// <summary>
@@ -61,6 +66,14 @@
             }
 
             var coords = PathCoordinatesValidator.StartValidation(this.graph, this.currentMap);
+
+            this.jps = new JPS(this.graph, this.pathVisualizer);
+            this.jpsStopwatch.Start();
+            this.shortestPathJps = this.jps.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
+            this.jpsStopwatch.Stop();
+
+            this.pathVisualizer.ClearVisitedNodes();
+            this.graph.ResetNodes();
 
             this.aStar = new Astar(this.graph, this.pathVisualizer);
             this.aStarStopwatch.Start();
