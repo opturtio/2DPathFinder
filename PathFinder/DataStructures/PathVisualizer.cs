@@ -129,7 +129,7 @@
 
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
-            Thread.Sleep(1000);
+            Thread.Sleep(300);
         }
 
         private string ShortestPathVisualizer()
