@@ -93,45 +93,5 @@
                    x >= 0 && x < this.Nodes[y].Count &&
                    !this.Nodes[y][x].IsObstacle;
         }
-
-        /// <summary>
-        /// Used by JPS algorithm.
-        /// Determines if a node has forced neighbors based on the Jump Point Search algorithm.
-        /// Forced neighbors are nodes that must be considered for further search due to potential alternative paths.
-        /// </summary>
-        /// <param name="current">The current node being evaluated.</param>
-        /// <param name="direction">A tuple containing the deltaX and deltaY representing the direction of movement from the current node.</param>
-        /// <returns>Returns true if forced neighbors are detected in the specified direction, otherwise returns false.</returns>
-        public bool HasForcedNeighbors(Node current, (int deltaX, int deltaY) direction)
-        {
-            // Horizontal movement: Check for forced neighbors along Y-axis
-            if (direction.deltaX != 0)
-            {
-                if ((!this.CanMove(current.X, current.Y + 1) && this.CanMove(current.X + direction.deltaX, current.Y + 1)) ||
-                    (!this.CanMove(current.X, current.Y - 1) && this.CanMove(current.X + direction.deltaX, current.Y - 1)))
-                {
-                    return true;
-                }
-            }
-
-            // Vertical movement: Check for forced neighbors along X-axis
-            if (direction.deltaY != 0)
-            {
-                if ((!this.CanMove(current.X + 1, current.Y) && this.CanMove(current.X + 1, current.Y + direction.deltaY)) ||
-                    (!this.CanMove(current.X - 1, current.Y) && this.CanMove(current.X - 1, current.Y + direction.deltaY)))
-                {
-                    return true;
-                }
-            }
-
-            // Diagonal movement: Check for horizontal and vertical forced neighbors
-            if (direction.deltaX != 0 && direction.deltaY != 0)
-            {
-                // Check forced neighbors in horizontal and vertical direction separately
-                return this.HasForcedNeighbors(current, (direction.deltaX, 0)) || this.HasForcedNeighbors(current, (0, direction.deltaY));
-            }
-
-            return false;
-        }
     }
 }

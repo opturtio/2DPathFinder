@@ -98,11 +98,16 @@
         {
             var dijkstraMap = this.pathVisualizer.VisualizeShortestPath(this.shortestPathDijkstra);
             var aStarMap = this.pathVisualizer.VisualizeShortestPath(this.shortestPathAstar);
+            var jpsMap = this.pathVisualizer.VisualizeShortestPath(this.shortestPathJps);
+
             Console.Clear();
             Console.WriteLine("Dijkstra shortest path:");
             Console.WriteLine(dijkstraMap);
             Console.WriteLine("A* shortest path:");
             Console.WriteLine(aStarMap);
+            Console.WriteLine("JPS shortest path:");
+            Console.WriteLine(jpsMap);
+
             Console.WriteLine("Results:");
             Console.WriteLine("------------------------------------------------------");
             Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "Algorithm", "Visited nodes", "Time(milliseconds)"));

@@ -40,11 +40,6 @@
             {
                 var currentNode = priorityQueue.Dequeue();
 
-                if (currentNode.Visited)
-                {
-                    continue;
-                }
-
                 currentNode.Visited = true;
                 this.visitedNodes++;
                 this.pathVisualizer.VisualizePath(currentNode);
@@ -56,11 +51,6 @@
 
                 foreach (var neighborNode in this.GetJumpPointSuccessors(currentNode, end))
                 {
-                    if (neighborNode.Visited)
-                    {
-                        continue;
-                    }
-
                     double newCost = costSoFar[currentNode] + this.Heuristic(currentNode, neighborNode);
 
                     if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])
@@ -79,17 +69,18 @@
         /// <summary>
         /// Generates jump point successors for a given node.
         /// </summary>
-        /// <param name="current">The node to generate successors for.</param>
+        /// <param name="currentNode">The node to generate successors for.</param>
         /// <param name="end">The end node of the pathfinding process.</param>
         /// <returns>Enumerable of jump point successors.</returns>
 
-        private IEnumerable<Node> GetJumpPointSuccessors(Node current, Node end)
+        private IEnumerable<Node> GetJumpPointSuccessors(Node currentNode, Node end)
         {
             var successors = new List<Node>();
 
-            foreach (var direction in this.GetDirections(current, end))
+            foreach (var direction in this.GetDirections())
             {
-                var jumpPoint = this.Jump(current, direction, end);
+                var jumpPoint = this.Jump(currentNode, direction, end);
+
                 if (jumpPoint != null)
                 {
                     successors.Add(jumpPoint);
@@ -101,77 +92,28 @@
 
         /// <summary>
         /// Generates potential directions for movement based on the current and end nodes.
-        /// Prioritizes horizontal and vertical directions towards the end node.
-        /// Diagonal directions are added only if the current node is not aligned with the end node horizontally or vertically.
-        /// (NEEDS TO BE OPTIMISED!!!).
         /// </summary>
-        /// <param name="current">The current node from which to calculate directions.</param>
-        /// <param name="end">The end node towards which the directions are aimed.</param>
         /// <returns>A list of tuples representing the possible directions for movement.</returns>
-        private IEnumerable<(int x, int y)> GetDirections(Node current, Node end)
+        private IEnumerable<(int x, int y)> GetDirections()
         {
-            var directions = new List<(int x, int y)>();
-
-            // Prioritize horizontal and vertical directions towards the end node
-            if (end.X != current.X)
+            return new List<(int x, int y)>
             {
-                if (end.X > current.X)
-                {
-                    directions.Add((1, 0));
-                }
-                else
-                {
-                    directions.Add((-1, 0));
-                }
-            }
-
-            if (end.Y != current.Y)
-            {
-                if (end.Y > current.Y)
-                {
-                    directions.Add((0, 1));
-                }
-                else
-                {
-                    directions.Add((0, -1));
-                }
-            }
-
-            // Add diagonal directions only if not aligned horizontally or vertically
-            if (end.X != current.X && end.Y != current.Y)
-            {
-                if (end.X > current.X && end.Y > current.Y)
-                {
-                    directions.Add((1, 1));
-                }
-                else if (end.X > current.X && end.Y < current.Y)
-                {
-                    directions.Add((1, -1));
-                }
-                else if (end.X < current.X && end.Y > current.Y)
-                {
-                    directions.Add((-1, 1));
-                }
-                else
-                {
-                    directions.Add((-1, -1));
-                }
-            }
-
-            return directions;
+                (1, 0), (-1, 0), (0, 1), (0, -1),
+                (1, 1), (-1, -1), (1, -1), (-1, 1),
+            };
         }
 
         /// <summary>
         /// Recursive function to find a jump point in a specific direction.
         /// </summary>
-        /// <param name="current">The current node to jump from.</param>
+        /// <param name="currentNode">The current node to jump from.</param>
         /// <param name="direction">The direction to jump in.</param>
         /// <param name="end">The end node of the pathfinding process.</param>
         /// <returns>The jump point node if one is found, otherwise null.</returns>
-        private Node? Jump(Node current, (int x, int y) direction, Node end)
+        private Node? Jump(Node currentNode, (int x, int y) direction, Node end)
         {
-            int nextX = current.X + direction.x;
-            int nextY = current.Y + direction.y;
+            int nextX = currentNode.X + direction.x;
+            int nextY = currentNode.Y + direction.y;
 
             if (!this.graph.CanMove(nextX, nextY))
             {
@@ -179,30 +121,76 @@
             }
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
+
             if (nextNode == end)
             {
                 return nextNode;
             }
 
-            if (this.graph.HasForcedNeighbors(current, direction))
+            if (this.HasForcedNeighbors(nextNode, direction))
             {
                 return nextNode;
             }
 
-            // Continue in the same direction for horizontal/vertical moves
-            if (direction.x == 0 || direction.y == 0)
+            if (direction.x != 0 && direction.y == 0)
             {
                 return this.Jump(nextNode, direction, end);
             }
-
-            // For diagonal moves, check horizontal and vertical directions separately
-            if (this.Jump(nextNode, (direction.x, 0), end) != null || this.Jump(nextNode, (0, direction.y), end) != null)
+            else if (direction.x == 0 && direction.y != 0)
             {
-                return nextNode;
+                return this.Jump(nextNode, direction, end);
+            }
+            else
+            {
+                Node? horizontalJump = this.Jump(nextNode, (direction.x, 0), end);
+                Node? verticalJump = this.Jump(nextNode, (0, direction.y), end);
+
+                if (horizontalJump != null || verticalJump != null)
+                {
+                    return nextNode;
+                }
             }
 
-            // Continue jumping in the current direction for diagonal moves
             return this.Jump(nextNode, direction, end);
+        }
+
+        /// <summary>
+        /// Used by JPS algorithm.
+        /// Determines if a node has forced neighbors based on the Jump Point Search algorithm.
+        /// Forced neighbors are adjacent nodes that could lead to a shortest path but are not along the current path's direct line or diagonal.
+        /// </summary>
+        /// <param name="current">The current node being evaluated.</param>
+        /// <param name="direction">A tuple containing the deltaX and deltaY representing the direction of movement from the current node.</param>
+        /// <returns>Returns true if forced neighbors are detected in the specified direction, otherwise returns false.</returns>
+        private bool HasForcedNeighbors(Node current, (int x, int y) direction)
+        {
+            if (direction.x != 0)
+            {
+                if ((!this.graph.CanMove(current.X, current.Y + 1) && this.graph.CanMove(current.X + direction.x, current.Y + 1)) ||
+                    (!this.graph.CanMove(current.X, current.Y - 1) && this.graph.CanMove(current.X + direction.x, current.Y - 1)))
+                {
+                    return true;
+                }
+            }
+
+            if (direction.y != 0)
+            {
+                if ((!this.graph.CanMove(current.X + 1, current.Y) && this.graph.CanMove(current.X + 1, current.Y + direction.y)) ||
+                    (!this.graph.CanMove(current.X - 1, current.Y) && this.graph.CanMove(current.X - 1, current.Y + direction.y)))
+                {
+                    return true;
+                }
+            }
+
+            if (direction.x != 0 && direction.y != 0)
+            {
+                if (this.HasForcedNeighbors(current, (direction.x, 0)) || this.HasForcedNeighbors(current, (0, direction.y)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
