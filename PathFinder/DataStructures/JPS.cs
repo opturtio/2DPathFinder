@@ -31,10 +31,7 @@
         {
             start.Cost = 0;
             var priorityQueue = new PriorityQueue<Node, double>();
-            priorityQueue.Enqueue(start, 0);
-
-            var costSoFar = new Dictionary<Node, double>();
-            costSoFar[start] = 0;
+            priorityQueue.Enqueue(start, start.Cost);
 
             while (priorityQueue.Count > 0)
             {
@@ -56,11 +53,11 @@
 
                 foreach (var nextNode in this.GetJumpPointSuccessors(currentNode, end))
                 {
-                    double newCost = costSoFar[currentNode] + this.Heuristic(currentNode, nextNode);
+                    double newCost = currentNode.Cost + this.Heuristic(currentNode, nextNode);
 
-                    if (!costSoFar.ContainsKey(nextNode) || newCost < costSoFar[nextNode])
+                    if (!nextNode.Visited || newCost < nextNode.Cost)
                     {
-                        costSoFar[nextNode] = newCost;
+                        nextNode.Cost = newCost;
                         double priority = newCost + this.Heuristic(end, nextNode);
                         priorityQueue.Enqueue(nextNode, priority);
                         nextNode.Parent = currentNode;
@@ -89,6 +86,8 @@
                 if (jumpPoint != null)
                 {
                     successors.Add(jumpPoint);
+
+                    Console.WriteLine("jump point added");
                 }
             }
 
@@ -120,6 +119,7 @@
             int nextX = currentNode.X + direction.x;
             int nextY = currentNode.Y + direction.y;
 
+            // Check if next position is within bounds and not an obstacle
             if (!this.graph.CanMove(nextX, nextY))
             {
                 return null;
@@ -127,25 +127,28 @@
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
 
+            Console.WriteLine(nextNode.GetNodeInfo());
+            Thread.Sleep(100);
+
+            // If we've reached the end, return this node
             if (nextNode == end)
             {
                 return nextNode;
             }
 
+            // Check for forced neighbors to determine if this is a jump point
             if (this.HasForcedNeighbors(nextNode, direction))
             {
                 return nextNode;
             }
 
-            if (direction.x != 0 && direction.y == 0)
-            {
-                return this.Jump(nextNode, direction, end);
-            }
-            else if (direction.x == 0 && direction.y != 0)
+            // Continue jumping in the same direction for straight moves
+            if (direction.x != 0 && direction.y == 0 || direction.x == 0 && direction.y != 0)
             {
                 return this.Jump(nextNode, direction, end);
             }
 
+            // For diagonal movement, check for forced neighbors along both axes
             if (direction.x != 0 && direction.y != 0)
             {
                 if (this.Jump(nextNode, (direction.x, 0), end) != null || this.Jump(nextNode, (0, direction.y), end) != null)
@@ -154,6 +157,7 @@
                 }
             }
 
+            // If no jump point found, stop and return null
             return null;
         }
 
@@ -172,6 +176,7 @@
                 if ((!this.graph.CanMove(current.X, current.Y + 1) && this.graph.CanMove(current.X + direction.x, current.Y + 1)) ||
                     (!this.graph.CanMove(current.X, current.Y - 1) && this.graph.CanMove(current.X + direction.x, current.Y - 1)))
                 {
+                    Console.WriteLine("HAS HORIZONTAL NEIGHBOR");
                     return true;
                 }
             }
@@ -181,14 +186,18 @@
                 if ((!this.graph.CanMove(current.X + 1, current.Y) && this.graph.CanMove(current.X + 1, current.Y + direction.y)) ||
                     (!this.graph.CanMove(current.X - 1, current.Y) && this.graph.CanMove(current.X - 1, current.Y + direction.y)))
                 {
+                    Console.WriteLine("HAS VERTICAL NEIGHBOR");
                     return true;
                 }
             }
 
+            // Revised check for diagonal forced neighbors
             if (direction.x != 0 && direction.y != 0)
             {
-                if (this.HasForcedNeighbors(current, (direction.x, 0)) || this.HasForcedNeighbors(current, (0, direction.y)))
+                if ((!this.graph.CanMove(current.X + direction.x, current.Y) && this.graph.CanMove(current.X + direction.x, current.Y + direction.y)) ||
+                    (!this.graph.CanMove(current.X, current.Y + direction.y) && this.graph.CanMove(current.X + direction.x, current.Y + direction.y)))
                 {
+                    Console.WriteLine("HAS DIAGONAL NEIGHBOR");
                     return true;
                 }
             }
