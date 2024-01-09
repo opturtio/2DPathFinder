@@ -40,6 +40,11 @@
             {
                 var currentNode = priorityQueue.Dequeue();
 
+                if (currentNode.Visited)
+                {
+                    continue;
+                }
+
                 currentNode.Visited = true;
                 this.visitedNodes++;
                 this.pathVisualizer.VisualizePath(currentNode);
@@ -49,16 +54,16 @@
                     break;
                 }
 
-                foreach (var neighborNode in this.GetJumpPointSuccessors(currentNode, end))
+                foreach (var nextNode in this.GetJumpPointSuccessors(currentNode, end))
                 {
-                    double newCost = costSoFar[currentNode] + this.Heuristic(currentNode, neighborNode);
+                    double newCost = costSoFar[currentNode] + this.Heuristic(currentNode, nextNode);
 
-                    if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])
+                    if (!costSoFar.ContainsKey(nextNode) || newCost < costSoFar[nextNode])
                     {
-                        costSoFar[neighborNode] = newCost;
-                        double priority = newCost + this.Heuristic(end, neighborNode);
-                        priorityQueue.Enqueue(neighborNode, priority);
-                        neighborNode.Parent = currentNode;
+                        costSoFar[nextNode] = newCost;
+                        double priority = newCost + this.Heuristic(end, nextNode);
+                        priorityQueue.Enqueue(nextNode, priority);
+                        nextNode.Parent = currentNode;
                     }
                 }
             }
@@ -140,18 +145,16 @@
             {
                 return this.Jump(nextNode, direction, end);
             }
-            else
-            {
-                Node? horizontalJump = this.Jump(nextNode, (direction.x, 0), end);
-                Node? verticalJump = this.Jump(nextNode, (0, direction.y), end);
 
-                if (horizontalJump != null || verticalJump != null)
+            if (direction.x != 0 && direction.y != 0)
+            {
+                if (this.Jump(nextNode, (direction.x, 0), end) != null || this.Jump(nextNode, (0, direction.y), end) != null)
                 {
                     return nextNode;
                 }
             }
 
-            return this.Jump(nextNode, direction, end);
+            return null;
         }
 
         /// <summary>
