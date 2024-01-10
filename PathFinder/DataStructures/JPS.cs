@@ -68,6 +68,8 @@
                         double priority = newCost + this.Heuristic(end, jumpPoint);
                         priorityQueue.Enqueue(jumpPoint, priority);
                         jumpPoint.Parent = currentNode;
+                        jumpPoint.GetNodeInfo();
+                        Thread.Sleep(30);
                     }
                 }
             }
@@ -123,12 +125,6 @@
                 return nextNode;
             }
 
-            // Continue jumping in the same direction for straight moves
-            if (direction.x != 0 && direction.y == 0 || direction.x == 0 && direction.y != 0)
-            {
-                return this.Jump(nextNode, direction, end);
-            }
-
             // For diagonal movement, check for forced neighbors along both axes
             if (direction.x != 0 && direction.y != 0)
             {
@@ -136,6 +132,12 @@
                 {
                     return nextNode;
                 }
+            }
+
+            // Continue jumping in the same direction for straight moves
+            if (direction.x != 0 && direction.y == 0 || direction.x == 0 && direction.y != 0)
+            {
+                return this.Jump(nextNode, direction, end);
             }
 
             // If no jump point found, stop and return null
