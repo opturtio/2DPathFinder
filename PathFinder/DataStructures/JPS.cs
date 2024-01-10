@@ -51,47 +51,28 @@
                     break;
                 }
 
-                foreach (var nextNode in this.GetJumpPointSuccessors(currentNode, end))
+                foreach (var direction in this.GetDirections())
                 {
-                    double newCost = currentNode.Cost + this.Heuristic(currentNode, nextNode);
+                    var jumpPoint = this.Jump(currentNode, direction, end);
 
-                    if (!nextNode.Visited || newCost < nextNode.Cost)
+                    if (jumpPoint == null)
                     {
-                        nextNode.Cost = newCost;
-                        double priority = newCost + this.Heuristic(end, nextNode);
-                        priorityQueue.Enqueue(nextNode, priority);
-                        nextNode.Parent = currentNode;
+                        continue;
+                    }
+
+                    double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
+
+                    if (!jumpPoint.Visited || newCost < jumpPoint.Cost)
+                    {
+                        jumpPoint.Cost = newCost;
+                        double priority = newCost + this.Heuristic(end, jumpPoint);
+                        priorityQueue.Enqueue(jumpPoint, priority);
+                        jumpPoint.Parent = currentNode;
                     }
                 }
             }
 
             return ShortestPathBuilder.ShortestPath(end);
-        }
-
-        /// <summary>
-        /// Generates jump point successors for a given node.
-        /// </summary>
-        /// <param name="currentNode">The node to generate successors for.</param>
-        /// <param name="end">The end node of the pathfinding process.</param>
-        /// <returns>Enumerable of jump point successors.</returns>
-
-        private IEnumerable<Node> GetJumpPointSuccessors(Node currentNode, Node end)
-        {
-            var successors = new List<Node>();
-
-            foreach (var direction in this.GetDirections())
-            {
-                var jumpPoint = this.Jump(currentNode, direction, end);
-
-                if (jumpPoint != null)
-                {
-                    successors.Add(jumpPoint);
-
-                    Console.WriteLine("jump point added");
-                }
-            }
-
-            return successors;
         }
 
         /// <summary>
@@ -126,9 +107,9 @@
             }
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
-
+            this.pathVisualizer.VisualizePath(nextNode);
             Console.WriteLine(nextNode.GetNodeInfo());
-            Thread.Sleep(100);
+            Thread.Sleep(30);
 
             // If we've reached the end, return this node
             if (nextNode == end)
