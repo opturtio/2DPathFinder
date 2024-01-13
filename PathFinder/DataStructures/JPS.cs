@@ -53,6 +53,9 @@
 
                 foreach (var direction in this.GetDirections())
                 {
+                    Console.WriteLine(direction);
+                    Thread.Sleep(100);
+
                     var jumpPoint = this.Jump(currentNode, direction, end);
 
                     if (jumpPoint == null)
@@ -60,16 +63,17 @@
                         continue;
                     }
 
+                    jumpPoint.GetNodeInfo();
+                    Thread.Sleep(30);
+
                     double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
 
-                    if (!jumpPoint.Visited || newCost < jumpPoint.Cost)
+                    if (newCost < jumpPoint.Cost)
                     {
                         jumpPoint.Cost = newCost;
-                        double priority = newCost + this.Heuristic(end, jumpPoint);
-                        priorityQueue.Enqueue(jumpPoint, priority);
                         jumpPoint.Parent = currentNode;
-                        jumpPoint.GetNodeInfo();
-                        Thread.Sleep(30);
+                        priorityQueue.Enqueue(jumpPoint, newCost);
+                        break;
                     }
                 }
             }
@@ -109,8 +113,9 @@
             }
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
+
             this.pathVisualizer.VisualizePath(nextNode);
-            Console.WriteLine(nextNode.GetNodeInfo());
+            //Console.WriteLine(nextNode.GetNodeInfo());
             Thread.Sleep(30);
 
             // If we've reached the end, return this node
