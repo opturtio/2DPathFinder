@@ -45,22 +45,29 @@
                     break;
                 }
 
-                foreach (var successorNode in this.GetJumpPointSuccessors(currentNode, end))
+                foreach (var direction in this.GetDirections())
                 {
-
                     //Console.WriteLine(direction);
                     //Thread.Sleep(100);
 
-                    successorNode.GetNodeInfo();
-                    Thread.Sleep(30);
+                    var jumpPoint = this.Jump(currentNode, direction, end);
 
-                    double newCost = currentNode.Cost + this.Heuristic(currentNode, successorNode);
 
-                    if (newCost < successorNode.Cost)
+                    if (jumpPoint == null)
                     {
-                        successorNode.Cost = newCost;
-                        successorNode.Parent = currentNode;
-                        priorityQueue.Enqueue(successorNode, newCost);
+                        continue;
+                    }
+                    
+                    double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
+
+
+                    if (newCost < jumpPoint.Cost)
+                    {
+                        jumpPoint.Cost = newCost;
+                        jumpPoint.Parent = currentNode;
+                        Console.WriteLine(jumpPoint.GetNodeInfo());
+                        Thread.Sleep(5000);
+                        priorityQueue.Enqueue(jumpPoint, newCost);
                     }
                 }
             }
@@ -79,23 +86,6 @@
                 (1, 0), (-1, 0), (0, 1), (0, -1),
                 (1, 1), (-1, -1), (1, -1), (-1, 1),
             };
-        }
-
-
-        private IEnumerable<Node> GetJumpPointSuccessors(Node current, Node end)
-        {
-            var successors = new List<Node>();
-
-            foreach (var direction in this.GetDirections())
-            {
-                var jumpPoint = this.Jump(current, direction, end);
-                if (jumpPoint != null)
-                {
-                    successors.Add(jumpPoint);
-                }
-            }
-
-            return successors;
         }
 
         /// <summary>
@@ -175,7 +165,7 @@
                 if ((!this.graph.CanMove(current.X, current.Y + 1) && this.graph.CanMove(current.X + direction.x, current.Y + 1)) ||
                     (!this.graph.CanMove(current.X, current.Y - 1) && this.graph.CanMove(current.X + direction.x, current.Y - 1)))
                 {
-                    Console.WriteLine("HAS HORIZONTAL NEIGHBOR");
+                    //Console.WriteLine("HAS HORIZONTAL NEIGHBOR");
                     return true;
                 }
             }
@@ -185,7 +175,7 @@
                 if ((!this.graph.CanMove(current.X + 1, current.Y) && this.graph.CanMove(current.X + 1, current.Y + direction.y)) ||
                     (!this.graph.CanMove(current.X - 1, current.Y) && this.graph.CanMove(current.X - 1, current.Y + direction.y)))
                 {
-                    Console.WriteLine("HAS VERTICAL NEIGHBOR");
+                    //Console.WriteLine("HAS VERTICAL NEIGHBOR");
                     return true;
                 }
             }
@@ -196,7 +186,7 @@
                 if ((!this.graph.CanMove(current.X + direction.x, current.Y) && this.graph.CanMove(current.X + direction.x, current.Y + direction.y)) ||
                     (!this.graph.CanMove(current.X, current.Y + direction.y) && this.graph.CanMove(current.X + direction.x, current.Y + direction.y)))
                 {
-                    Console.WriteLine("HAS DIAGONAL NEIGHBOR");
+                    //Console.WriteLine("HAS DIAGONAL NEIGHBOR");
                     return true;
                 }
             }
@@ -214,7 +204,12 @@
         /// <returns>An estimated distance from the current node to the end point.</returns>
         private double Heuristic(Node end, Node neighborNode)
         {
-            return Math.Sqrt(Math.Pow(end.X - neighborNode.X, 2) + Math.Pow(end.Y - neighborNode.Y, 2));
+            Console.WriteLine(end.X);
+            Console.WriteLine(end.Y);
+            Console.WriteLine(neighborNode.X);
+            Console.WriteLine(neighborNode.Y);
+            Thread.Sleep(5000);
+            return Math.Sqrt(Math.Pow(end.X - neighborNode.X, 2) + Math.Pow(end.Y - neighborNode.Y, 2)); // HERE PROBLEM: X and Y might me some cases wrong way
         }
 
         /// <summary>
