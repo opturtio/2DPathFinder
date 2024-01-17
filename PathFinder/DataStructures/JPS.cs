@@ -37,12 +37,6 @@
             {
                 var currentNode = priorityQueue.Dequeue();
 
-                if (currentNode.Visited)
-                {
-                    continue;
-                }
-
-                currentNode.Visited = true;
                 this.visitedNodes++;
                 this.pathVisualizer.VisualizePath(currentNode);
 
@@ -51,29 +45,22 @@
                     break;
                 }
 
-                foreach (var direction in this.GetDirections())
+                foreach (var successorNode in this.GetJumpPointSuccessors(currentNode, end))
                 {
+
                     //Console.WriteLine(direction);
                     //Thread.Sleep(100);
 
-                    var jumpPoint = this.Jump(currentNode, direction, end);
-
-                    if (jumpPoint == null)
-                    {
-                        continue;
-                    }
-
-                    jumpPoint.GetNodeInfo();
+                    successorNode.GetNodeInfo();
                     Thread.Sleep(30);
 
-                    double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
+                    double newCost = currentNode.Cost + this.Heuristic(currentNode, successorNode);
 
-                    if (newCost < jumpPoint.Cost)
+                    if (newCost < successorNode.Cost)
                     {
-                        jumpPoint.Cost = newCost;
-                        jumpPoint.Parent = currentNode;
-                        priorityQueue.Enqueue(jumpPoint, newCost);
-                        break;
+                        successorNode.Cost = newCost;
+                        successorNode.Parent = currentNode;
+                        priorityQueue.Enqueue(successorNode, newCost);
                     }
                 }
             }
@@ -92,6 +79,23 @@
                 (1, 0), (-1, 0), (0, 1), (0, -1),
                 (1, 1), (-1, -1), (1, -1), (-1, 1),
             };
+        }
+
+
+        private IEnumerable<Node> GetJumpPointSuccessors(Node current, Node end)
+        {
+            var successors = new List<Node>();
+
+            foreach (var direction in this.GetDirections())
+            {
+                var jumpPoint = this.Jump(current, direction, end);
+                if (jumpPoint != null)
+                {
+                    successors.Add(jumpPoint);
+                }
+            }
+
+            return successors;
         }
 
         /// <summary>
@@ -113,6 +117,13 @@
             }
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
+
+            if (nextNode.Visited)
+            {
+                return null;
+            }
+
+            nextNode.Visited = true;
 
             this.pathVisualizer.VisualizePath(nextNode);
             //Console.WriteLine(nextNode.GetNodeInfo());
