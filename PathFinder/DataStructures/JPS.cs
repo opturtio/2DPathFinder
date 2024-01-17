@@ -53,8 +53,8 @@
 
                 foreach (var direction in this.GetDirections())
                 {
-                    Console.WriteLine(direction);
-                    Thread.Sleep(100);
+                    //Console.WriteLine(direction);
+                    //Thread.Sleep(100);
 
                     var jumpPoint = this.Jump(currentNode, direction, end);
 
@@ -146,7 +146,7 @@
             }
 
             // If no jump point found, stop and return null
-            return null;
+            return this.Jump(nextNode, direction, end);
         }
 
         /// <summary>
