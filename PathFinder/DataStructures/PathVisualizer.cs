@@ -13,6 +13,7 @@
         private string currentMap;
         private HashSet<Node> visitedNodes;
         private Node currentNode;
+        private Node startNode;
         private Node endNode;
         private bool isDebug;
 
@@ -85,11 +86,12 @@
         /// Visualizes the current state of the path on the map in the console if the debugger is turned on.
         /// </summary>
         /// <param name="currentNode">The node currently being visited or processed by the algorithm.</param>
-        public void VisualizePath(Node currentNode, Node end)
+        public void VisualizePath(Node currentNode, Node start, Node end)
         {
             if (this.isDebug)
             {
                 this.currentNode = currentNode;
+                this.startNode = start;
                 this.endNode = end;
                 this.visitedNodes.Add(this.currentNode);
                 this.Visualize();
@@ -116,6 +118,10 @@
                     {
                         outputBuffer.Append('X');
                     }
+                    else if (node == this.startNode)
+                    {
+                        outputBuffer.Append('S');
+                    }
                     else if (node == this.endNode)
                     {
                         outputBuffer.Append('G');
@@ -135,7 +141,7 @@
 
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
-            Thread.Sleep(50);
+            Thread.Sleep(20);
         }
 
         private string ShortestPathVisualizer()

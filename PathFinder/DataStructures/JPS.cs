@@ -38,7 +38,7 @@
                 var currentNode = priorityQueue.Dequeue();
 
                 this.visitedNodes++;
-                //this.pathVisualizer.VisualizePath(currentNode, end);
+                //this.pathVisualizer.VisualizePath(currentNode, start, end);
 
                 if (currentNode == end)
                 {
@@ -47,7 +47,7 @@
 
                 foreach (var direction in this.GetDirections())
                 {
-                    var jumpPoint = this.Jump(currentNode, direction, end);
+                    var jumpPoint = this.Jump(currentNode, direction, start, end);
 
                     if (jumpPoint == null)
                     {
@@ -55,13 +55,14 @@
                     }
 
                     double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
-
+                    this.pathVisualizer.VisualizePath(jumpPoint, start, end);
+                    Console.WriteLine(jumpPoint.GetNodeInfo());
+                    priorityQueue.Enqueue(jumpPoint, newCost);
                     if (newCost < jumpPoint.Cost)
                     {
                         jumpPoint.Cost = newCost;
                         jumpPoint.Parent = currentNode;
-                        Console.WriteLine(jumpPoint.GetNodeInfo());
-                        priorityQueue.Enqueue(jumpPoint, newCost);
+
                     }
                 }
             }
@@ -77,8 +78,8 @@
         {
             return new List<(int x, int y)>
             {
-                (1, 0), (-1, 0), (0, 1), (0, -1),
-                (1, 1), (-1, -1), (1, -1), (-1, 1),
+                (0, -1), (1, 0), (0, 1), (-1, 0),
+                (1, -1), (1, 1), (-1, 1), (-1, -1),
             };
         }
 
@@ -89,13 +90,10 @@
         /// <param name="direction">The direction to jump in.</param>
         /// <param name="end">The end node of the pathfinding process.</param>
         /// <returns>The jump point node if one is found, otherwise null.</returns>
-        private Node? Jump(Node currentNode, (int x, int y) direction, Node end)
+        private Node? Jump(Node currentNode, (int x, int y) direction, Node start, Node end)
         {
             int nextX = currentNode.X + direction.x;
             int nextY = currentNode.Y + direction.y;
-            Console.WriteLine($"nextX: {nextX}, nextY: {nextY}");
-            
-             Console.Clear();
 
             // Check if next position is within bounds and not an obstacle
             if (!this.graph.CanMove(nextX, nextY))
@@ -112,9 +110,8 @@
 
             nextNode.Visited = true;
 
-            this.pathVisualizer.VisualizePath(nextNode, end);
+            this.pathVisualizer.VisualizePath(nextNode, start, end);
             //Console.WriteLine(nextNode.GetNodeInfo());
-            Thread.Sleep(30);
 
             // If we've reached the end, return this node
             if (nextNode == end)
@@ -128,10 +125,12 @@
                 return nextNode;
             }
 
+            // FIX ME!!!! --->
+
             // For diagonal movement, check for forced neighbors along both axes
             if (direction.x != 0 && direction.y != 0)
             {
-                if (this.Jump(nextNode, (direction.x, 0), end) != null || this.Jump(nextNode, (0, direction.y), end) != null)
+                if (this.Jump(nextNode, (direction.x, 0), start, end) != null || this.Jump(nextNode, (0, direction.y), start, end) != null)
                 {
                     return nextNode;
                 }
@@ -140,11 +139,13 @@
             // Continue jumping in the same direction for straight moves
             if (direction.x != 0 && direction.y == 0 || direction.x == 0 && direction.y != 0)
             {
-                return this.Jump(nextNode, direction, end);
+                return this.Jump(nextNode, direction, start, end);
             }
 
+            // <--- FIX ME!!!
+
             // If no jump point found, stop and return null
-            return this.Jump(nextNode, direction, end);
+            return this.Jump(nextNode, direction, start, end);
         }
 
         /// <summary>
@@ -201,10 +202,12 @@
         /// <returns>An estimated distance from the current node to the end point.</returns>
         private double Heuristic(Node jumpPoint, Node end)
         {
+            /*
             Console.WriteLine($"end.X: {end.X}");
             Console.WriteLine($"end.Y: {end.Y}");
             Console.WriteLine($"jumpPoint.X: {jumpPoint.X}");
             Console.WriteLine($"jumpPoint.Y: {jumpPoint.Y}");
+            */
             return Math.Sqrt(Math.Pow(end.X - jumpPoint.X, 2) + Math.Pow(end.Y - jumpPoint.Y, 2));
         }
 

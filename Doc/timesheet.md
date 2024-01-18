@@ -24,4 +24,6 @@ Date       | Time | Target |
 2023-12-16 | 6h | Created A* algorithm |
 2023-12-17 | 8h | Fixed path visualizer and the way paths are presented in console. Fixed A* algorithm and a major bug where graph nodes costs were not initialized. |
 2023-12-18 | 4h | Created result screen for algorithm comparison and fixed the graph so that jumping over corners is not possible. |
-SUM | 114h | |
+2024-01-17 | 4h | Trying to fix JPS |
+2024-01-18 | 5h | Continued fixing JPS |
+SUM | 123h | |
