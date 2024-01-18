@@ -13,6 +13,7 @@
         private string currentMap;
         private HashSet<Node> visitedNodes;
         private Node currentNode;
+        private Node endNode;
         private bool isDebug;
 
         /// <summary>
@@ -84,11 +85,12 @@
         /// Visualizes the current state of the path on the map in the console if the debugger is turned on.
         /// </summary>
         /// <param name="currentNode">The node currently being visited or processed by the algorithm.</param>
-        public void VisualizePath(Node currentNode)
+        public void VisualizePath(Node currentNode, Node end)
         {
             if (this.isDebug)
             {
                 this.currentNode = currentNode;
+                this.endNode = end;
                 this.visitedNodes.Add(this.currentNode);
                 this.Visualize();
             }
@@ -113,6 +115,10 @@
                     if (node == this.currentNode)
                     {
                         outputBuffer.Append('X');
+                    }
+                    else if (node == this.endNode)
+                    {
+                        outputBuffer.Append('G');
                     }
                     else if (this.visitedNodes.Contains(node))
                     {

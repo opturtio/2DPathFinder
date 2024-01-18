@@ -57,7 +57,7 @@
 
                 this.visitedNodes++;
 
-                this.pathVisualizer.VisualizePath(currentNode);
+                this.pathVisualizer.VisualizePath(currentNode, end);
 
                 if (currentNode == end)
                 {

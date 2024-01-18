@@ -38,7 +38,7 @@
                 var currentNode = priorityQueue.Dequeue();
 
                 this.visitedNodes++;
-                this.pathVisualizer.VisualizePath(currentNode);
+                //this.pathVisualizer.VisualizePath(currentNode, end);
 
                 if (currentNode == end)
                 {
@@ -115,7 +115,7 @@
 
             nextNode.Visited = true;
 
-            this.pathVisualizer.VisualizePath(nextNode);
+            this.pathVisualizer.VisualizePath(nextNode, end);
             //Console.WriteLine(nextNode.GetNodeInfo());
             Thread.Sleep(30);
 
@@ -131,19 +131,15 @@
                 return nextNode;
             }
 
-            // For diagonal movement, check for forced neighbors along both axes
+            // Additional check for diagonal movement
             if (direction.x != 0 && direction.y != 0)
             {
-                if (this.Jump(nextNode, (direction.x, 0), end) != null || this.Jump(nextNode, (0, direction.y), end) != null)
+                // Check horizontally and vertically
+                if (this.Jump(nextNode, (direction.x, 0), end) != null ||
+                    this.Jump(nextNode, (0, direction.y), end) != null)
                 {
                     return nextNode;
                 }
-            }
-
-            // Continue jumping in the same direction for straight moves
-            if (direction.x != 0 && direction.y == 0 || direction.x == 0 && direction.y != 0)
-            {
-                return this.Jump(nextNode, direction, end);
             }
 
             // If no jump point found, stop and return null
@@ -204,11 +200,10 @@
         /// <returns>An estimated distance from the current node to the end point.</returns>
         private double Heuristic(Node end, Node neighborNode)
         {
-            Console.WriteLine(end.X);
-            Console.WriteLine(end.Y);
-            Console.WriteLine(neighborNode.X);
-            Console.WriteLine(neighborNode.Y);
-            Thread.Sleep(5000);
+            Console.WriteLine($"end.X: {end.X}");
+            Console.WriteLine($"end.Y: {end.Y}");
+            Console.WriteLine($"neighborNode.X: {neighborNode.X}");
+            Console.WriteLine($"neighborNode.Y: {neighborNode.Y}");
             return Math.Sqrt(Math.Pow(end.X - neighborNode.X, 2) + Math.Pow(end.Y - neighborNode.Y, 2)); // HERE PROBLEM: X and Y might me some cases wrong way
         }
 
