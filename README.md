@@ -17,7 +17,7 @@ Language of implementation is C#. This project is for the Algorithms and AI Lab,
 
 ## Weekly reports
 [Week 1](./Doc/weekly_reports/weekly_report_1.md)
-
+'''
 [Week 2](./Doc/weekly_reports/weekly_report_2.md)
 
 [Week 3](./Doc/weekly_reports/weekly_report_3.md)
@@ -27,3 +27,4 @@ Language of implementation is C#. This project is for the Algorithms and AI Lab,
 [Week 5](./Doc/weekly_reports/weekly_report_5.md)
 
 [Week 6](./Doc/weekly_reports/weekly_report_6.md)
+'''

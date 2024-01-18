@@ -47,26 +47,20 @@
 
                 foreach (var direction in this.GetDirections())
                 {
-                    //Console.WriteLine(direction);
-                    //Thread.Sleep(100);
-
                     var jumpPoint = this.Jump(currentNode, direction, end);
-
 
                     if (jumpPoint == null)
                     {
                         continue;
                     }
-                    
-                    double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
 
+                    double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
 
                     if (newCost < jumpPoint.Cost)
                     {
                         jumpPoint.Cost = newCost;
                         jumpPoint.Parent = currentNode;
                         Console.WriteLine(jumpPoint.GetNodeInfo());
-                        Thread.Sleep(5000);
                         priorityQueue.Enqueue(jumpPoint, newCost);
                     }
                 }
@@ -99,6 +93,9 @@
         {
             int nextX = currentNode.X + direction.x;
             int nextY = currentNode.Y + direction.y;
+            Console.WriteLine($"nextX: {nextX}, nextY: {nextY}");
+            
+             Console.Clear();
 
             // Check if next position is within bounds and not an obstacle
             if (!this.graph.CanMove(nextX, nextY))
@@ -131,15 +128,19 @@
                 return nextNode;
             }
 
-            // Additional check for diagonal movement
+            // For diagonal movement, check for forced neighbors along both axes
             if (direction.x != 0 && direction.y != 0)
             {
-                // Check horizontally and vertically
-                if (this.Jump(nextNode, (direction.x, 0), end) != null ||
-                    this.Jump(nextNode, (0, direction.y), end) != null)
+                if (this.Jump(nextNode, (direction.x, 0), end) != null || this.Jump(nextNode, (0, direction.y), end) != null)
                 {
                     return nextNode;
                 }
+            }
+
+            // Continue jumping in the same direction for straight moves
+            if (direction.x != 0 && direction.y == 0 || direction.x == 0 && direction.y != 0)
+            {
+                return this.Jump(nextNode, direction, end);
             }
 
             // If no jump point found, stop and return null
@@ -198,13 +199,13 @@
         /// <param name="end">The end point given by the user.</param>
         /// <param name="neighborNode">The node currently processed.</param>
         /// <returns>An estimated distance from the current node to the end point.</returns>
-        private double Heuristic(Node end, Node neighborNode)
+        private double Heuristic(Node jumpPoint, Node end)
         {
             Console.WriteLine($"end.X: {end.X}");
             Console.WriteLine($"end.Y: {end.Y}");
-            Console.WriteLine($"neighborNode.X: {neighborNode.X}");
-            Console.WriteLine($"neighborNode.Y: {neighborNode.Y}");
-            return Math.Sqrt(Math.Pow(end.X - neighborNode.X, 2) + Math.Pow(end.Y - neighborNode.Y, 2)); // HERE PROBLEM: X and Y might me some cases wrong way
+            Console.WriteLine($"jumpPoint.X: {jumpPoint.X}");
+            Console.WriteLine($"jumpPoint.Y: {jumpPoint.Y}");
+            return Math.Sqrt(Math.Pow(end.X - jumpPoint.X, 2) + Math.Pow(end.Y - jumpPoint.Y, 2));
         }
 
         /// <summary>
