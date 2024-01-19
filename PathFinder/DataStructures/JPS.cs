@@ -53,15 +53,17 @@
                     {
                         continue;
                     }
-
-                    double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
-                    this.pathVisualizer.VisualizePath(jumpPoint, start, end);
                     Console.WriteLine(jumpPoint.GetNodeInfo());
-                    priorityQueue.Enqueue(jumpPoint, newCost);
+                    double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
+
                     if (newCost < jumpPoint.Cost)
                     {
                         jumpPoint.Cost = newCost;
                         jumpPoint.Parent = currentNode;
+
+                        this.pathVisualizer.VisualizePath(jumpPoint, start, end);
+                        Console.WriteLine(jumpPoint.GetNodeInfo());
+                        priorityQueue.Enqueue(jumpPoint, newCost);
 
                     }
                 }
@@ -102,25 +104,18 @@
             }
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
-
+            
             if (nextNode.Visited)
             {
                 return null;
             }
 
             nextNode.Visited = true;
-
+            
             this.pathVisualizer.VisualizePath(nextNode, start, end);
-            //Console.WriteLine(nextNode.GetNodeInfo());
 
             // If we've reached the end, return this node
             if (nextNode == end)
-            {
-                return nextNode;
-            }
-
-            // Check for forced neighbors to determine if this is a jump point
-            if (this.HasForcedNeighbors(nextNode, direction))
             {
                 return nextNode;
             }
@@ -130,16 +125,46 @@
             // For diagonal movement, check for forced neighbors along both axes
             if (direction.x != 0 && direction.y != 0)
             {
-                if (this.Jump(nextNode, (direction.x, 0), start, end) != null || this.Jump(nextNode, (0, direction.y), start, end) != null)
+                if ((!this.graph.CanMove(nextNode.X + direction.x, nextNode.Y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)) ||
+                    (!this.graph.CanMove(nextNode.X, nextNode.Y + direction.y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)))
                 {
+                    Console.WriteLine(nextNode.GetNodeInfo());
+                    Console.WriteLine("HAS DIAGONAL NEIGHBOR");
                     return nextNode;
                 }
-            }
 
-            // Continue jumping in the same direction for straight moves
-            if (direction.x != 0 && direction.y == 0 || direction.x == 0 && direction.y != 0)
-            {
-                return this.Jump(nextNode, direction, start, end);
+                Node? newNodeX = this.Jump(nextNode, (direction.x, 0), start, end);
+                Node? newNodeY = this.Jump(nextNode, (0, direction.y), start, end);
+
+                if (newNodeX != null)
+                {
+                    return newNodeX;
+                }
+
+                if (newNodeY != null)
+                {
+                    return newNodeY;
+                }
+            } else {
+
+                if (direction.x != 0)
+                {
+                    if ((!this.graph.CanMove(nextNode.X, nextNode.Y + 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + 1)) ||
+                        (!this.graph.CanMove(nextNode.X, nextNode.Y - 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y - 1)))
+                    {
+                        Console.WriteLine(nextNode.GetNodeInfo());
+                        Console.WriteLine("HAS HORIZONTAL NEIGHBOR");
+                        return nextNode;
+                    }
+                } else {
+                    if ((!this.graph.CanMove(nextNode.X + 1, nextNode.Y) && this.graph.CanMove(nextNode.X + 1, nextNode.Y + direction.y)) ||
+                        (!this.graph.CanMove(nextNode.X - 1, nextNode.Y) && this.graph.CanMove(nextNode.X - 1, nextNode.Y + direction.y)))
+                    {
+                        Console.WriteLine(nextNode.GetNodeInfo());
+                        Console.WriteLine("HAS VERTICAL NEIGHBOR");
+                        return nextNode;
+                    }
+                }
             }
 
             // <--- FIX ME!!!

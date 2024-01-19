@@ -66,7 +66,7 @@
         /// <returns>A string representation of the node's information.</returns>
         public string GetNodeInfo()
         {
-            return $"Node position: ({this.X}, {this.Y}). Obstacle: {this.IsObstacle}. Cost: {this.Cost}. Parent: {this.Parent}";
+            return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: {this.Parent}.";
         }
     }
 }
