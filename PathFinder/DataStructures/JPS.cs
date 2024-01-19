@@ -11,7 +11,7 @@
         private int visitedNodes = 0;
 
         /// <summary>
-        /// Initializes a new instance of the JPS class.
+        /// Initializes a new instance of the <see cref="JPS"/> class.
         /// </summary>
         /// <param name="graph">Graph on which pathfinding is performed.</param>
         /// <param name="visualizer">Visualizer for path visualization.</param>
@@ -30,15 +30,15 @@
         public List<Node> FindShortestPath(Node start, Node end)
         {
             start.Cost = 0;
-            var priorityQueue = new PriorityQueue<Node, double>();
-            priorityQueue.Enqueue(start, start.Cost);
+            var successors = new PriorityQueue<Node, double>();
+            successors.Enqueue(start, start.Cost);
 
-            while (priorityQueue.Count > 0)
+            while (successors.Count > 0)
             {
-                var currentNode = priorityQueue.Dequeue();
+                var currentNode = successors.Dequeue();
 
                 this.visitedNodes++;
-                //this.pathVisualizer.VisualizePath(currentNode, start, end);
+                this.pathVisualizer.VisualizePath(currentNode, start, end);
 
                 if (currentNode == end)
                 {
@@ -53,7 +53,7 @@
                     {
                         continue;
                     }
-                    Console.WriteLine(jumpPoint.GetNodeInfo());
+
                     double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
 
                     if (newCost < jumpPoint.Cost)
@@ -62,9 +62,8 @@
                         jumpPoint.Parent = currentNode;
 
                         this.pathVisualizer.VisualizePath(jumpPoint, start, end);
-                        Console.WriteLine(jumpPoint.GetNodeInfo());
-                        priorityQueue.Enqueue(jumpPoint, newCost);
 
+                        successors.Enqueue(jumpPoint, newCost);
                     }
                 }
             }
@@ -73,7 +72,7 @@
         }
 
         /// <summary>
-        /// Generates potential directions for movement based on the current and end nodes.
+        /// Generates potential directions for movement..
         /// </summary>
         /// <returns>A list of tuples representing the possible directions for movement.</returns>
         private IEnumerable<(int x, int y)> GetDirections()
@@ -104,14 +103,14 @@
             }
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
-            
+
             if (nextNode.Visited)
             {
                 return null;
             }
 
             nextNode.Visited = true;
-            
+
             this.pathVisualizer.VisualizePath(nextNode, start, end);
 
             // If we've reached the end, return this node
@@ -120,16 +119,12 @@
                 return nextNode;
             }
 
-            // FIX ME!!!! --->
-
             // For diagonal movement, check for forced neighbors along both axes
             if (direction.x != 0 && direction.y != 0)
             {
                 if ((!this.graph.CanMove(nextNode.X + direction.x, nextNode.Y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)) ||
                     (!this.graph.CanMove(nextNode.X, nextNode.Y + direction.y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)))
                 {
-                    Console.WriteLine(nextNode.GetNodeInfo());
-                    Console.WriteLine("HAS DIAGONAL NEIGHBOR");
                     return nextNode;
                 }
 
@@ -146,75 +141,24 @@
                     return newNodeY;
                 }
             } else {
-
                 if (direction.x != 0)
                 {
                     if ((!this.graph.CanMove(nextNode.X, nextNode.Y + 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + 1)) ||
                         (!this.graph.CanMove(nextNode.X, nextNode.Y - 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y - 1)))
                     {
-                        Console.WriteLine(nextNode.GetNodeInfo());
-                        Console.WriteLine("HAS HORIZONTAL NEIGHBOR");
                         return nextNode;
                     }
                 } else {
                     if ((!this.graph.CanMove(nextNode.X + 1, nextNode.Y) && this.graph.CanMove(nextNode.X + 1, nextNode.Y + direction.y)) ||
                         (!this.graph.CanMove(nextNode.X - 1, nextNode.Y) && this.graph.CanMove(nextNode.X - 1, nextNode.Y + direction.y)))
                     {
-                        Console.WriteLine(nextNode.GetNodeInfo());
-                        Console.WriteLine("HAS VERTICAL NEIGHBOR");
                         return nextNode;
                     }
                 }
             }
 
-            // <--- FIX ME!!!
-
             // If no jump point found, stop and return null
             return this.Jump(nextNode, direction, start, end);
-        }
-
-        /// <summary>
-        /// Used by JPS algorithm.
-        /// Determines if a node has forced neighbors based on the Jump Point Search algorithm.
-        /// Forced neighbors are adjacent nodes that could lead to a shortest path but are not along the current path's direct line or diagonal.
-        /// </summary>
-        /// <param name="current">The current node being evaluated.</param>
-        /// <param name="direction">A tuple containing the deltaX and deltaY representing the direction of movement from the current node.</param>
-        /// <returns>Returns true if forced neighbors are detected in the specified direction, otherwise returns false.</returns>
-        private bool HasForcedNeighbors(Node current, (int x, int y) direction)
-        {
-            if (direction.x != 0)
-            {
-                if ((!this.graph.CanMove(current.X, current.Y + 1) && this.graph.CanMove(current.X + direction.x, current.Y + 1)) ||
-                    (!this.graph.CanMove(current.X, current.Y - 1) && this.graph.CanMove(current.X + direction.x, current.Y - 1)))
-                {
-                    //Console.WriteLine("HAS HORIZONTAL NEIGHBOR");
-                    return true;
-                }
-            }
-
-            if (direction.y != 0)
-            {
-                if ((!this.graph.CanMove(current.X + 1, current.Y) && this.graph.CanMove(current.X + 1, current.Y + direction.y)) ||
-                    (!this.graph.CanMove(current.X - 1, current.Y) && this.graph.CanMove(current.X - 1, current.Y + direction.y)))
-                {
-                    //Console.WriteLine("HAS VERTICAL NEIGHBOR");
-                    return true;
-                }
-            }
-
-            // Revised check for diagonal forced neighbors
-            if (direction.x != 0 && direction.y != 0)
-            {
-                if ((!this.graph.CanMove(current.X + direction.x, current.Y) && this.graph.CanMove(current.X + direction.x, current.Y + direction.y)) ||
-                    (!this.graph.CanMove(current.X, current.Y + direction.y) && this.graph.CanMove(current.X + direction.x, current.Y + direction.y)))
-                {
-                    //Console.WriteLine("HAS DIAGONAL NEIGHBOR");
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         /// <summary>
