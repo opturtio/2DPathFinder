@@ -26,4 +26,5 @@ Date       | Time | Target |
 2023-12-18 | 4h | Created result screen for algorithm comparison and fixed the graph so that jumping over corners is not possible. |
 2024-01-17 | 4h | Trying to fix JPS |
 2024-01-18 | 5h | Continued fixing JPS |
-SUM | 123h | |
+2024-01-19 | 3h | JPS IS WORKING!!! |
+SUM | 126h | |
