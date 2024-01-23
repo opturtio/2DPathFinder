@@ -36,6 +36,15 @@
         }
 
         /// <summary>
+        /// Retrieves a list of all non-obstacle nodes to be used as coordinates.
+        /// </summary>
+        /// <returns>Returns a list of non-obstacle nodes.</returns>
+        public List<Node> Coordinates()
+        {
+            return this.Nodes.SelectMany(row => row).Where(node => !node.IsObstacle).ToList();
+        }
+
+        /// <summary>
         /// Adds a new row of nodes to the graph.
         /// </summary>
         /// <param name="row">A list of Node objects representing a row in the graph.</param>
