@@ -20,6 +20,7 @@ namespace PathFinder.Tests
             this.fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
             this.londonMap = this.fileLoader.LoadMap("2");
             this.graph = GraphBuilder.CreateGraphFromString(this.londonMap);
+            var coordinates = this.graph.Coordinates();
         }
 
 
