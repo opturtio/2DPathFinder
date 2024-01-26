@@ -5,6 +5,11 @@
     /// </summary>
     static class ShortestPathBuilder
     {
+        /// <summary>
+        /// Creates shortest path.
+        /// </summary>
+        /// <param name="end">The end node.</param>
+        /// <returns>The shortest path as list of nodes.</returns>
         public static List<Node> ShortestPath(Node end)
         {
             var path = new List<Node>();

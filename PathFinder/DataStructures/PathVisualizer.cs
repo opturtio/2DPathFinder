@@ -11,6 +11,7 @@
         private readonly string currentMapInitalized;
         private readonly Graph graph;
         private string currentMap;
+        private bool isJps;
         private HashSet<Node> visitedNodes;
         private Node currentNode;
         private Node startNode;
@@ -86,13 +87,14 @@
         /// Visualizes the current state of the path on the map in the console if the debugger is turned on.
         /// </summary>
         /// <param name="currentNode">The node currently being visited or processed by the algorithm.</param>
-        public void VisualizePath(Node currentNode, Node start, Node end)
+        public void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
         {
             if (this.isDebug)
             {
                 this.currentNode = currentNode;
                 this.startNode = start;
                 this.endNode = end;
+                this.isJps = jps;
                 this.visitedNodes.Add(this.currentNode);
                 this.Visualize();
             }
@@ -117,6 +119,10 @@
                     if (node == this.currentNode)
                     {
                         outputBuffer.Append('X');
+                    }
+                    else if (node.JumpPoint && node != this.endNode && this.isJps)
+                    {
+                        outputBuffer.Append('J');
                     }
                     else if (node == this.startNode)
                     {

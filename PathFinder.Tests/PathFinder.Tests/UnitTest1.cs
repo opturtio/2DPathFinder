@@ -28,7 +28,7 @@ namespace PathFinder.Tests
             this.fileManager = new FileManager();
             this.fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
             this.map = this.fileLoader.LoadMap("1");
-            this.graph = GraphBuilder.CreateGraphFromString(map);
+            this.graph = GraphBuilder.CreateGraphFromString(this.map);
 
             this.expectedMapContent =
                 ".......................................\r\n" +
@@ -73,13 +73,11 @@ namespace PathFinder.Tests
                 ".@@@@@@@........@@@@@@@....@@@@@@@@@...";
         }
 
-
-
         [Test]
         public void File_Can_Be_Loaded_Test()
         {
             // Act
-            string fileContent = this.fileLoader.LoadMap("1");
+            string fileContent = this.fileLoader.LoadMap("6");
 
             // Assert
             Assert.AreEqual(this.expectedMapContent, fileContent);

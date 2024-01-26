@@ -19,6 +19,7 @@
             this.Cost = double.MaxValue;
             this.Parent = null;
             this.Visited = false;
+            this.JumpPoint = false;
         }
 
         /// <summary>
@@ -52,6 +53,11 @@
         public bool Visited { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the node is a jump point.
+        /// </summary>
+        public bool JumpPoint { get; set; }
+
+        /// <summary>
         /// Returns a string that represents the current node.
         /// </summary>
         /// <returns>A string representation of the node e.g. "." or "@".</returns>
@@ -66,7 +72,10 @@
         /// <returns>A string representation of the node's information.</returns>
         public string GetNodeInfo()
         {
-            return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: {this.Parent}.";
+            if (this.Parent != null)
+                return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: ({this.Parent.X},{this.Parent.Y}).";
+            else
+                return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: Null.";
         }
     }
 }

@@ -8,6 +8,7 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
+        private Node predecessor;
         private int visitedNodes = 0;
 
         /// <summary>
@@ -30,6 +31,7 @@
         public List<Node> FindShortestPath(Node start, Node end)
         {
             start.Cost = 0;
+
             var successors = new PriorityQueue<Node, double>();
             successors.Enqueue(start, start.Cost);
 
@@ -38,7 +40,6 @@
                 var currentNode = successors.Dequeue();
 
                 this.visitedNodes++;
-                this.pathVisualizer.VisualizePath(currentNode, start, end);
 
                 if (currentNode == end)
                 {
@@ -60,8 +61,7 @@
                     {
                         jumpPoint.Cost = newCost;
                         jumpPoint.Parent = currentNode;
-
-                        this.pathVisualizer.VisualizePath(jumpPoint, start, end);
+                        jumpPoint.JumpPoint = true;
 
                         successors.Enqueue(jumpPoint, newCost);
                     }
@@ -111,7 +111,8 @@
 
             nextNode.Visited = true;
 
-            this.pathVisualizer.VisualizePath(nextNode, start, end);
+            this.pathVisualizer.VisualizePath(nextNode, start, end, true);
+            Console.WriteLine(nextNode.Parent.GetNodeInfo());
 
             // If we've reached the end, return this node
             if (nextNode == end)
@@ -157,7 +158,6 @@
                 }
             }
 
-            // If no jump point found, stop and return null
             return this.Jump(nextNode, direction, start, end);
         }
 
