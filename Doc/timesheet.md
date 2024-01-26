@@ -28,4 +28,5 @@ Date       | Time | Target |
 2024-01-18 | 5h | Continued fixing JPS |
 2024-01-19 | 3h | JPS IS WORKING!!! |
 2024-25-01 | 2h | Created tests for algorithm speed comparison |
+2024-26-01 | 2h | Fixed the stopwatch so that the timing happens in side the pathfinding algorithms. |
 SUM | 128h | |
