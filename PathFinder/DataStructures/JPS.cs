@@ -1,4 +1,6 @@
-﻿namespace PathFinder.DataStructures
+﻿using System.Diagnostics;
+
+namespace PathFinder.DataStructures
 {
     /// <summary>
     /// Jump Point Search algorithm class.
@@ -8,7 +10,7 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
-        private Node predecessor;
+        private Stopwatch jpsStopwatch;
         private int visitedNodes = 0;
 
         /// <summary>
@@ -20,6 +22,7 @@
         {
             this.graph = graph;
             this.pathVisualizer = visualizer;
+            this.jpsStopwatch = new Stopwatch();
         }
 
         /// <summary>
@@ -30,6 +33,8 @@
         /// <returns>List of nodes representing the shortest path.</returns>
         public List<Node> FindShortestPath(Node start, Node end)
         {
+            this.jpsStopwatch.Start();
+
             start.Cost = 0;
 
             var successors = new PriorityQueue<Node, double>();
@@ -67,6 +72,8 @@
                     }
                 }
             }
+
+            this.jpsStopwatch.Stop();
 
             return ShortestPathBuilder.ShortestPath(end);
         }
@@ -187,6 +194,15 @@
         public int GetVisitedNodes()
         {
             return this.visitedNodes;
+        }
+
+        /// <summary>
+        /// Retrieves the time JPS took to find the end node.
+        /// </summary>
+        /// <returns>The time in ticks.</returns>
+        public long GetStopwatchTime()
+        {
+            return this.jpsStopwatch.ElapsedTicks;
         }
     }
 }

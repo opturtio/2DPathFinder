@@ -1,6 +1,7 @@
 ﻿namespace PathFinder.Algorithms
 {
     using PathFinder.DataStructures;
+    using System.Diagnostics;
 
     /// <summary>
     /// Dijkstra algorithm.
@@ -9,6 +10,7 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
+        private Stopwatch dijkstraStopwatch;
         private int visitedNodes = 0;
 
         /// <summary>
@@ -20,6 +22,7 @@
         {
             this.graph = graph;
             this.pathVisualizer = visualizer;
+            this.dijkstraStopwatch = new Stopwatch();
         }
 
         /// <summary>
@@ -30,6 +33,8 @@
         /// <returns>Shortest path in a form of a list of nodes.</returns>
         public List<Node> FindShortestPath(Node start, Node end)
         {
+            this.dijkstraStopwatch.Start();
+
             start.Cost = 0;
 
             // Create a queue that sorts points by how far they are
@@ -78,6 +83,8 @@
                 }
             }
 
+            this.dijkstraStopwatch.Stop();
+
             return ShortestPathBuilder.ShortestPath(end);
         }
 
@@ -88,6 +95,15 @@
         public int GetVisitedNodes()
         {
             return this.visitedNodes;
+        }
+
+        /// <summary>
+        /// Retrieves the time Dijkstra took to find the end node.
+        /// </summary>
+        /// <returns>The time in ticks.</returns>
+        public long GetStopwatchTime()
+        {
+            return this.dijkstraStopwatch.ElapsedTicks;
         }
     }
 }

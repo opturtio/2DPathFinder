@@ -1,4 +1,6 @@
-﻿namespace PathFinder.DataStructures
+﻿using System.Diagnostics;
+
+namespace PathFinder.DataStructures
 {
     /// <summary>
     /// A* algorithm.
@@ -7,6 +9,7 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
+        private Stopwatch aStarStopwatch;
         private int visitedNodes = 0;
 
         /// <summary>
@@ -18,6 +21,7 @@
         {
             this.graph = graph;
             this.pathVisualizer = visualizer;
+            this.aStarStopwatch = new Stopwatch();
         }
 
         /// <summary>
@@ -28,6 +32,7 @@
         /// <returns>Shortest path in a form of a list of nodes.</returns>
         public List<Node> FindShortestPath(Node start, Node end)
         {
+            this.aStarStopwatch.Start();
             start.Cost = 0;
             var costSoFar = new Dictionary<Node, double>();
             var priorityQueue = new PriorityQueue<Node, double>();
@@ -77,11 +82,13 @@
                     {
                         costSoFar[neighborNode] = newCost;
                         double priority = newCost + this.Heuristic(end, neighborNode);
-                        priorityQueue.Enqueue(neighborNode, priority);
                         neighborNode.Parent = currentNode;
+                        priorityQueue.Enqueue(neighborNode, priority);
                     }
                 }
             }
+
+            this.aStarStopwatch.Stop();
 
             return ShortestPathBuilder.ShortestPath(end);
         }
@@ -106,6 +113,15 @@
         private double Heuristic(Node end, Node node)
         {
             return Math.Sqrt(Math.Pow(end.X - node.X, 2) + Math.Pow(end.Y - node.Y, 2));
+        }
+
+        /// <summary>
+        /// Retrieves the time A* took to find the end node.
+        /// </summary>
+        /// <returns>The time in ticks.</returns>
+        public long GetStopwatchTime()
+        {
+            return this.aStarStopwatch.ElapsedTicks;
         }
     }
 }
