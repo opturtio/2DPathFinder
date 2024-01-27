@@ -103,7 +103,7 @@
         /// <summary>
         /// Visualizes the current and visited nodes on map state.
         /// </summary>
-        private void Visualize()
+        public void Visualize()
         {
             string[] rows = this.currentMap.Split('\n');
             var outputBuffer = new StringBuilder();

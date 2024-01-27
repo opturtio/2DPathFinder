@@ -79,22 +79,32 @@ namespace PathFinder.Tests
                 {
                     jpsFaster++;
                 }
-                else
+                else if (this.jps.GetStopwatchTime() > this.dijkstra.GetStopwatchTime())
                 {
                     dijkstraFaster++;
+                }
+                else
+                {
+                    continue;
                 }
 
                 if (this.jps.GetStopwatchTime() < this.aStar.GetStopwatchTime())
                 {
                     jpsFaster2++;
                 }
-                else
+                else if (this.jps.GetStopwatchTime() > this.aStar.GetStopwatchTime())
                 {
                     aStarFaster++;
                 }
+                else
+                {
+                    continue;
+                }
 
-                dijkstraVsJpsLondonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()}");
-                aStarVsJpsLondonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()}");
+                dijkstraVsJpsLondonWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes");
+                dijkstraVsJpsLondonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()}");
+                aStarVsJpsLondonWriter.WriteLine($"JPS time", "A* time", "JPS jump points", "A* visited nodes");
+                aStarVsJpsLondonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.aStar.GetVisitedNodes()}");
             }
 
             Console.WriteLine("London map result:");

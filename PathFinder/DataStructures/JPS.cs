@@ -198,7 +198,7 @@ namespace PathFinder.DataStructures
         /// <summary>
         /// Retrieves the time JPS took to find the end node.
         /// </summary>
-        /// <returns>The time in ticks.</returns>
+        /// <returns>The time in milliseconds.</returns>
         public double GetStopwatchTime()
         {
             return this.jpsStopwatch.Elapsed.TotalMilliseconds;

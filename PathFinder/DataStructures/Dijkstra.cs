@@ -58,11 +58,6 @@
                 // Visualizes the path.
                 this.pathVisualizer.VisualizePath(currentNode, start, end);
 
-                if (currentNode == end)
-                {
-                    break;
-                }
-
                 // Check the nodes connected to the current point.
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
@@ -100,7 +95,7 @@
         /// <summary>
         /// Retrieves the time Dijkstra took to find the end node.
         /// </summary>
-        /// <returns>The time in ticks.</returns>
+        /// <returns>The time in milliseconds.</returns>
         public double GetStopwatchTime()
         {
             return this.dijkstraStopwatch.Elapsed.TotalMilliseconds;
