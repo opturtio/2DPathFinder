@@ -119,9 +119,9 @@ namespace PathFinder.DataStructures
         /// Retrieves the time A* took to find the end node.
         /// </summary>
         /// <returns>The time in ticks.</returns>
-        public long GetStopwatchTime()
+        public double GetStopwatchTime()
         {
-            return this.aStarStopwatch.ElapsedTicks;
+            return this.aStarStopwatch.Elapsed.TotalMilliseconds;
         }
     }
 }

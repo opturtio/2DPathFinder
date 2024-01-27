@@ -119,7 +119,6 @@ namespace PathFinder.DataStructures
             nextNode.Visited = true;
 
             this.pathVisualizer.VisualizePath(nextNode, start, end, true);
-            Console.WriteLine(nextNode.Parent.GetNodeInfo());
 
             // If we've reached the end, return this node
             if (nextNode == end)
@@ -200,9 +199,9 @@ namespace PathFinder.DataStructures
         /// Retrieves the time JPS took to find the end node.
         /// </summary>
         /// <returns>The time in ticks.</returns>
-        public long GetStopwatchTime()
+        public double GetStopwatchTime()
         {
-            return this.jpsStopwatch.ElapsedTicks;
+            return this.jpsStopwatch.Elapsed.TotalMilliseconds;
         }
     }
 }

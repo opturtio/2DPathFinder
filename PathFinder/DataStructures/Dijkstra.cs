@@ -101,9 +101,9 @@
         /// Retrieves the time Dijkstra took to find the end node.
         /// </summary>
         /// <returns>The time in ticks.</returns>
-        public long GetStopwatchTime()
+        public double GetStopwatchTime()
         {
-            return this.dijkstraStopwatch.ElapsedTicks;
+            return this.dijkstraStopwatch.Elapsed.TotalMilliseconds;
         }
     }
 }

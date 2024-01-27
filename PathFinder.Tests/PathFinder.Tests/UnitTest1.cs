@@ -27,6 +27,7 @@ namespace PathFinder.Tests
             this.fileLoader = new FileLoader();
             this.fileManager = new FileManager();
             this.fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
+
             // Map numbers: 1. London, 2. Maze, 3. TestMap40x40
             this.map = this.fileLoader.LoadMap("2");
             this.graph = GraphBuilder.CreateGraphFromString(this.map);
