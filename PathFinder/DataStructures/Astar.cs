@@ -11,6 +11,7 @@ namespace PathFinder.DataStructures
         private readonly PathVisualizer pathVisualizer;
         private Stopwatch aStarStopwatch;
         private int visitedNodes = 0;
+        private bool pathFound;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Astar"/> class.
@@ -66,6 +67,7 @@ namespace PathFinder.DataStructures
 
                 if (currentNode == end)
                 {
+                    this.pathFound = true;
                     break;
                 }
 
@@ -90,7 +92,12 @@ namespace PathFinder.DataStructures
 
             this.aStarStopwatch.Stop();
 
-            return ShortestPathBuilder.ShortestPath(end);
+            if (this.pathFound)
+            {
+                return ShortestPathBuilder.ShortestPath(end);
+            }
+
+            return new List<Node>();
         }
 
         /// <summary>
@@ -122,6 +129,15 @@ namespace PathFinder.DataStructures
         public double GetStopwatchTime()
         {
             return this.aStarStopwatch.Elapsed.TotalMilliseconds;
+        }
+
+        /// <summary>
+        /// Determines whether a path from the start node to the end node has been found.
+        /// </summary>
+        /// <returns>A boolean value indicating whether a path was successfully found. Returns true if a path exists, otherwise false.</returns>
+        public bool IsPathFound()
+        {
+            return this.pathFound;
         }
     }
 }

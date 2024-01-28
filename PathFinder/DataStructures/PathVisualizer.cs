@@ -163,6 +163,8 @@
         /// Visualizes the pathfinding process for debugging purposes.
         /// </summary>
         /// <param name="map">Empty string representation of the map.</param>
+        /// <param name="jps">Indicates whether the visualization is for the Jump Point Search (JPS) algorithm.
+        /// Set to true if the map is being visualized for JPS. Defaults to false for other pathfinding algorithms.</param>
         /// <returns>A string representing the map after the pathfinding process, with special characters denoting key nodes and states.</returns>
         public string DebugVisualize(string map, bool jps = false)
         {

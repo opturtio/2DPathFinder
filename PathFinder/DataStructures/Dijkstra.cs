@@ -12,6 +12,7 @@
         private readonly PathVisualizer pathVisualizer;
         private Stopwatch dijkstraStopwatch;
         private int visitedNodes = 0;
+        private bool pathFound = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Dijkstra"/> class.
@@ -58,6 +59,11 @@
                 // Visualizes the path.
                 this.pathVisualizer.VisualizePath(currentNode, start, end);
 
+                if (currentNode == end)
+                {
+                    this.pathFound = true;
+                }
+
                 // Check the nodes connected to the current point.
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
@@ -80,7 +86,12 @@
 
             this.dijkstraStopwatch.Stop();
 
-            return ShortestPathBuilder.ShortestPath(end);
+            if (this.pathFound)
+            {
+                return ShortestPathBuilder.ShortestPath(end);
+            }
+
+            return new List<Node>();
         }
 
         /// <summary>
@@ -99,6 +110,15 @@
         public double GetStopwatchTime()
         {
             return this.dijkstraStopwatch.Elapsed.TotalMilliseconds;
+        }
+
+        /// <summary>
+        /// Determines whether a path from the start node to the end node has been found.
+        /// </summary>
+        /// <returns>A boolean value indicating whether a path was successfully found. Returns true if a path exists, otherwise false.</returns>
+        public bool IsPathFound()
+        {
+            return this.pathFound;
         }
     }
 }
