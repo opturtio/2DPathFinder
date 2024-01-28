@@ -1,6 +1,7 @@
 namespace PathFinder.Tests
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -57,6 +58,7 @@ namespace PathFinder.Tests
             int jpsFaster2 = 0;
             int dijkstraFaster = 0;
             int aStarFaster = 0;
+            int mapFileNumber = 1;
 
             // Initializing StreamWriters
             using StreamWriter dijkstraVsJpsLondonWriter = new StreamWriter(this.dijkstraVsJpsLondonFilePath, true);
@@ -76,6 +78,16 @@ namespace PathFinder.Tests
                 this.pathVisualizer.ClearVisitedNodes();
                 this.graphLondon.ResetNodes();
                 this.dijkstra.FindShortestPath(coordinates[start], coordinates[end]);
+
+                if (this.dijkstra.GetVisitedNodes() < 757314)
+                {
+                    string map = this.pathVisualizer.DebugVisualize(this.londonMap);
+                    string dijkstraVsJpsLondonMapFilePath = Path.Combine(this.speedComparisonDirectoryPath, $"JPSvsDijkstra-SpeedComparison-London-{mapFileNumber}.txt");
+                    using StreamWriter currentMapToFile = new StreamWriter(dijkstraVsJpsLondonMapFilePath);
+                    currentMapToFile.WriteLine($"Visited nodes: {this.dijkstra.GetVisitedNodes()}");
+                    currentMapToFile.WriteLine(map);
+                    mapFileNumber++;
+                }
 
                 this.pathVisualizer.ClearVisitedNodes();
                 this.graphLondon.ResetNodes();

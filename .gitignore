@@ -6,6 +6,9 @@ obj
 # Coverage report
 PathFinder.Tests/CoverageReport
 
+# Test results
+PathFinder.Tests/PathFinder.Tests/Results
+
 # Specific files
 PathFinder.csproj.user
 

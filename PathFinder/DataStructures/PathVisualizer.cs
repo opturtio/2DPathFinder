@@ -62,6 +62,15 @@
         }
 
         /// <summary>
+        /// Retrieves current map.
+        /// </summary>
+        /// <returns>Returns current map.</returns>
+        public string GetCurrentMap()
+        {
+            return this.currentMap;
+        }
+
+        /// <summary>
         /// Visualizes the shortest path of the used algorithm.
         /// </summary>
         /// <param name="nodes">A list of nodes representing the shortest path from the start node to the end node.</param>
@@ -148,6 +157,52 @@
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
             Thread.Sleep(30);
+        }
+
+        /// <summary>
+        /// Visualizes the pathfinding process for debugging purposes.
+        /// </summary>
+        /// <param name="map">Empty string representation of the map.</param>
+        /// <returns>A string representing the map after the pathfinding process, with special characters denoting key nodes and states.</returns>
+        public string DebugVisualize(string map, bool jps = false)
+        {
+            string[] rows = map.Split('\n');
+            var outputBuffer = new StringBuilder();
+
+            for (int y = 0; y < rows.Length; y++)
+            {
+                rows[y] = rows[y].Trim();
+
+                for (int x = 0; x < rows[y].Length; x++)
+                {
+                    Node node = this.graph.Nodes[y][x];
+
+                    if (node.Visited)
+                    {
+                        outputBuffer.Append('#');
+                    }
+                    else if (jps == true && node.JumpPoint && node != this.endNode)
+                    {
+                        outputBuffer.Append('J');
+                    }
+                    else if (node == this.startNode)
+                    {
+                        outputBuffer.Append('S');
+                    }
+                    else if (node == this.endNode)
+                    {
+                        outputBuffer.Append('G');
+                    }
+                    else
+                    {
+                        outputBuffer.Append(rows[y][x]);
+                    }
+                }
+
+                outputBuffer.AppendLine();
+            }
+
+            return outputBuffer.ToString();
         }
 
         private string ShortestPathVisualizer()
