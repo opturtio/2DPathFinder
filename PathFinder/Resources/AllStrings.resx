@@ -121,7 +121,7 @@
     <value>Turn debug on? [y/n]</value>
   </data>
   <data name="MainText" xml:space="preserve">
-    <value>1. Compare Dijkstra-algorithm, A* and Jump Point Search-algorithm
+    <value>1. Compare Dijkstra, A* and Jump Point Search-algorithms
 2. Choose Map
 3. Show Map
 0. Exit</value>
