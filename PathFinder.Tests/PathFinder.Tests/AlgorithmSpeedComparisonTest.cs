@@ -61,6 +61,8 @@ namespace PathFinder.Tests
             // Initializing StreamWriters
             using StreamWriter dijkstraVsJpsLondonWriter = new StreamWriter(this.dijkstraVsJpsLondonFilePath, true);
             using StreamWriter aStarVsJpsLondonWriter = new StreamWriter(this.aStarVsJpsLondonFilePath, true);
+            dijkstraVsJpsLondonWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes");
+            aStarVsJpsLondonWriter.WriteLine($"JPS time, A* time, JPS jump points, A* visited nodes");
 
             for (int i = 0; i < 100; i++)
             {
@@ -71,8 +73,16 @@ namespace PathFinder.Tests
                 int start = random.Next(0, coordinates.Count);
                 int end = random.Next(0, coordinates.Count);
 
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphLondon.ResetNodes();
                 this.dijkstra.FindShortestPath(coordinates[start], coordinates[end]);
+
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphLondon.ResetNodes();
                 this.aStar.FindShortestPath(coordinates[start], coordinates[end]);
+
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphLondon.ResetNodes();
                 this.jps.FindShortestPath(coordinates[start], coordinates[end]);
 
                 if (this.jps.GetStopwatchTime() < this.dijkstra.GetStopwatchTime())
@@ -101,9 +111,7 @@ namespace PathFinder.Tests
                     continue;
                 }
 
-                dijkstraVsJpsLondonWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes");
                 dijkstraVsJpsLondonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()}");
-                aStarVsJpsLondonWriter.WriteLine($"JPS time", "A* time", "JPS jump points", "A* visited nodes");
                 aStarVsJpsLondonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.aStar.GetVisitedNodes()}");
             }
 
@@ -133,6 +141,8 @@ namespace PathFinder.Tests
             // Initializing StreamWriters
             using StreamWriter dijkstraVsJpsMazeWriter = new StreamWriter(this.dijkstraVsJpsMazeFilePath, true);
             using StreamWriter aStarVsJpsMazeWriter = new StreamWriter(this.aStarVsJpsMazeFilePath, true);
+            dijkstraVsJpsMazeWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes");
+            aStarVsJpsMazeWriter.WriteLine($"JPS time, A* time, JPS jump points, A* visited nodes");
 
             for (int i = 0; i < 100; i++)
             {
@@ -143,10 +153,16 @@ namespace PathFinder.Tests
                 int start = random.Next(0, coordinates.Count);
                 int end = random.Next(0, coordinates.Count);
 
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphMaze.ResetNodes();
                 this.dijkstra.FindShortestPath(coordinates[start], coordinates[end]);
 
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphMaze.ResetNodes();
                 this.aStar.FindShortestPath(coordinates[start], coordinates[end]);
 
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphMaze.ResetNodes();
                 this.jps.FindShortestPath(coordinates[start], coordinates[end]);
 
                 if (this.jps.GetStopwatchTime() < this.dijkstra.GetStopwatchTime())
@@ -167,8 +183,8 @@ namespace PathFinder.Tests
                     aStarFaster++;
                 }
 
-                dijkstraVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()}");
-                aStarVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()}");
+                dijkstraVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()}");
+                aStarVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.aStar.GetVisitedNodes()}");
             }
 
             Console.WriteLine("Maze map result:");
