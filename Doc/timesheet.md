@@ -29,5 +29,7 @@ Date       | Time | Target |
 2024-01-19 | 3h | JPS IS WORKING!!! |
 2024-25-01 | 2h | Created tests for algorithm speed comparison |
 2024-26-01 | 3h | Fixed the stopwatch so that the timing happens in side the pathfinding algorithms. Tests work! JPS is always faster! |
-2024-27-01 | 5h | Created CSV-files for algorithm speed comparison. Were testing the algorithms. |
-SUM | 136h | |
+2024-27-01 | 5h | Created CSV-files for algorithm speed comparison. Were testing the algorithms |
+2024-28-01 | 4h | Created more debugging features |
+2024-29-01 | 1h | Testing and finding bugs |
+SUM | 141h | |
