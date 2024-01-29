@@ -113,14 +113,7 @@ namespace PathFinder.DataStructures
             // Check if next position is within bounds and not an obstacle
             if (!this.graph.CanMove(nextX, nextY))
             {
-                if (this.graph.Nodes[nextY][nextX].IsObstacle)
-                {
-                    return currentNode;
-                }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
 
             Node nextNode = this.graph.Nodes[nextY][nextX];
