@@ -123,8 +123,6 @@ namespace PathFinder.DataStructures
                 return null;
             }
 
-            nextNode.Visited = true;
-
             this.pathVisualizer.VisualizePath(nextNode, start, end, true);
 
             // If we've reached the end, return this node
@@ -154,7 +152,10 @@ namespace PathFinder.DataStructures
                 {
                     return newNodeY;
                 }
-            } else {
+            }
+            else
+            {
+                nextNode.Visited = true;
                 if (direction.x != 0)
                 {
                     if ((!this.graph.CanMove(nextNode.X, nextNode.Y + 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + 1)) ||
@@ -162,7 +163,9 @@ namespace PathFinder.DataStructures
                     {
                         return nextNode;
                     }
-                } else {
+                }
+                else
+                {
                     if ((!this.graph.CanMove(nextNode.X + 1, nextNode.Y) && this.graph.CanMove(nextNode.X + 1, nextNode.Y + direction.y)) ||
                         (!this.graph.CanMove(nextNode.X - 1, nextNode.Y) && this.graph.CanMove(nextNode.X - 1, nextNode.Y + direction.y)))
                     {
