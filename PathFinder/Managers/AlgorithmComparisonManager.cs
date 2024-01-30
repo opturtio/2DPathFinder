@@ -20,6 +20,9 @@
         private List<Node> shortestPathDijkstra;
         private List<Node> shortestPathAstar;
         private List<Node> shortestPathJps;
+        private int shortestPathLengthDijkstra;
+        private int shortestPathLengthAstar;
+        private int shortestPathLengthJps;
         private OutputManager outputManager;
 
         /// <summary>
@@ -63,18 +66,21 @@
 
             this.jps = new JPS(this.graph, this.pathVisualizer);
             this.shortestPathJps = this.jps.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
+            this.shortestPathLengthJps = ShortestPathBuilder.ShortestPathLength(this.graph.Nodes[coords[2]][coords[3]]);
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graph.ResetNodes();
 
             this.aStar = new Astar(this.graph, this.pathVisualizer);
             this.shortestPathAstar = this.aStar.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
+            this.shortestPathLengthAstar = ShortestPathBuilder.ShortestPathLength(this.graph.Nodes[coords[2]][coords[3]]);
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graph.ResetNodes();
 
             this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
             this.shortestPathDijkstra = this.dijkstra.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
+            this.shortestPathLengthDijkstra = ShortestPathBuilder.ShortestPathLength(this.graph.Nodes[coords[2]][coords[3]]);
 
             if (this.jps.IsPathFound() && this.aStar.IsPathFound() && this.dijkstra.IsPathFound())
             {
@@ -104,12 +110,13 @@
             Console.WriteLine(jpsMap);
 
             Console.WriteLine("Results:");
-            Console.WriteLine("------------------------------------------------------");
-            Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "Algorithm", "Visited nodes", "Time(milliseconds)"));
-            Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "Dijkstra", this.dijkstra.GetVisitedNodes(), this.dijkstra.GetStopwatchTime()));
-            Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "A*", this.aStar.GetVisitedNodes(), this.aStar.GetStopwatchTime()));
-            Console.WriteLine(String.Format("| {0,-10} | {1,-14} | {2,-20} |", "JPS", this.jps.GetVisitedNodes(), this.jps.GetStopwatchTime()));
-            Console.WriteLine("------------------------------------------------------");
+            Console.WriteLine("--------------------------------------------------------------------");
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "Algorithm", "Visited nodes", "Time(milliseconds)", "Length"));
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "Dijkstra", this.dijkstra.GetVisitedNodes(), this.dijkstra.GetStopwatchTime(), this.shortestPathLengthDijkstra));
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "A*", this.aStar.GetVisitedNodes(), this.aStar.GetStopwatchTime(), this.shortestPathLengthAstar));
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "JPS", this.jps.GetVisitedNodes(), this.jps.GetStopwatchTime(), this.shortestPathLengthJps));
+            Console.WriteLine("--------------------------------------------------------------------");
+
             Console.WriteLine();
         }
     }

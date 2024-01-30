@@ -35,6 +35,21 @@
             }
         }
 
+        public void PrintAllNodes()
+        {
+            for (int i = 0; i < this.Nodes.Count; i++)
+            {
+                for (int j = 0; j < this.Nodes[i].Count; j++)
+                {
+                    Node node = this.Nodes[i][j];
+                    if (node.Parent != null)
+                    {
+                        Console.WriteLine(node.GetNodeInfo());
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Retrieves a list of all non-obstacle nodes to be used as coordinates.
         /// </summary>

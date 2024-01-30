@@ -24,5 +24,24 @@
             path.Reverse();
             return path;
         }
+
+        /// <summary>
+        /// Calculates the length of the shortest path.
+        /// </summary>
+        /// <param name="end">The end node.</param>
+        /// <returns>The length of the shortest path.</returns>
+        public static int ShortestPathLength(Node end)
+        {
+            int length = 0;
+            var currentNode = end;
+
+            while (currentNode != null)
+            {
+                length++;
+                currentNode = currentNode.Parent;
+            }
+
+            return length;
+        }
     }
 }

@@ -67,7 +67,7 @@ namespace PathFinder.DataStructures
                     if (newCost < jumpPoint.Cost)
                     {
                         jumpPoint.Cost = newCost;
-                        jumpPoint.Parent = currentNode;
+
                         jumpPoint.JumpPoint = true;
 
                         successors.Enqueue(jumpPoint, newCost);
@@ -122,6 +122,8 @@ namespace PathFinder.DataStructures
             {
                 return null;
             }
+
+            nextNode.Parent = currentNode;
 
             this.pathVisualizer.VisualizePath(nextNode, start, end, true);
 
