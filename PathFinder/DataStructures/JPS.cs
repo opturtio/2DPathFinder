@@ -101,34 +101,7 @@ namespace PathFinder.DataStructures
                 int dx = (x - px) / Math.Max(Math.Abs(x - px), 1);
                 int dy = (y - py) / Math.Max(Math.Abs(y - py), 1);
 
-                if (dx != 0 && dy != 0)
-                {
-                    if (this.graph.CanMove(x, y + dy))
-                    {
-                        neighbors.Add(this.graph.Nodes[y + dy][x]);
-                    }
-
-                    if (this.graph.CanMove(x + dx, y))
-                    {
-                        neighbors.Add(this.graph.Nodes[y][x + dx]);
-                    }
-
-                    if (this.graph.CanMove(x + dx, y + dy))
-                    {
-                        neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
-                    }
-
-                    if (!this.graph.CanMove(x - dx, y))
-                    {
-                        neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
-                    }
-
-                    if (!this.graph.CanMove(x, y - dy))
-                    {
-                        neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
-                    }
-                }
-                else
+                if (dx == 0 || dy == 0)
                 {
                     if (dx == 0)
                     {
@@ -163,6 +136,34 @@ namespace PathFinder.DataStructures
                         {
                             neighbors.Add(this.graph.Nodes[y - 1][x + dx]);
                         }
+                    }
+                }
+
+                if (dx != 0 && dy != 0)
+                {
+                    if (this.graph.CanMove(x, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x]);
+                    }
+
+                    if (this.graph.CanMove(x + dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y][x + dx]);
+                    }
+
+                    if (this.graph.CanMove(x + dx, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
+                    }
+
+                    if (!this.graph.CanMove(x - dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
+                    }
+
+                    if (!this.graph.CanMove(x, y - dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
                     }
                 }
             }
