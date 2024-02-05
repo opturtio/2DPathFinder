@@ -32,4 +32,5 @@ Date       | Time | Target |
 2024-27-01 | 5h | Created CSV-files for algorithm speed comparison. Were testing the algorithms |
 2024-28-01 | 4h | Created more debugging features |
 2024-29-01 | 1h | Testing and finding bugs |
-SUM | 141h | |
+2024-05-02 | 6h | Created new branches and created pruning method |
+SUM | 147h | |
