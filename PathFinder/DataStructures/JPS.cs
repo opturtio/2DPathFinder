@@ -53,9 +53,11 @@ namespace PathFinder.DataStructures
                     break;
                 }
 
-                foreach (var direction in this.GetDirections())
+                var neighbors = this.PruneNeighbors(currentNode);
+                for (int i = 0; i < neighbors.Count; i++)
                 {
-                    var jumpPoint = this.Jump(currentNode, direction, start, end);
+                    var neighbor = neighbors[i];
+                    var jumpPoint = this.Jump(currentNode, neighbor.X, neighbor.Y, start, end);
 
                     if (jumpPoint == null)
                     {
@@ -85,6 +87,99 @@ namespace PathFinder.DataStructures
             return new List<Node>();
         }
 
+        private List<Node> PruneNeighbors(Node current)
+        {
+            List<Node> neighbors = new List<Node>();
+
+            if (current.Parent != null)
+            {
+                int x = current.X;
+                int y = current.Y;
+                int px = current.Parent.X;
+                int py = current.Parent.Y;
+
+                int dx = (x - px) / Math.Max(Math.Abs(x - px), 1);
+                int dy = (y - py) / Math.Max(Math.Abs(y - py), 1);
+
+                if (dx != 0 && dy != 0)
+                {
+                    if (this.graph.CanMove(x, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x]);
+                    }
+
+                    if (this.graph.CanMove(x + dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y][x + dx]);
+                    }
+
+                    if (this.graph.CanMove(x + dx, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
+                    }
+
+                    if (!this.graph.CanMove(x - dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
+                    }
+
+                    if (!this.graph.CanMove(x, y - dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
+                    }
+                }
+                else
+                {
+                    if (dx == 0)
+                    {
+                        if (this.graph.CanMove(x, y + dy))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + dy][x]);
+                        }
+
+                        if (!this.graph.CanMove(x + 1, y))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + dy][x + 1]);
+                        }
+
+                        if (!this.graph.CanMove(x - 1, y))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + dy][x - 1]);
+                        }
+                    }
+                    else
+                    {
+                        if (this.graph.CanMove(x + dx, y))
+                        {
+                            neighbors.Add(this.graph.Nodes[y][x + dx]);
+                        }
+
+                        if (!this.graph.CanMove(x, y + 1))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + 1][x + dx]);
+                        }
+
+                        if (!this.graph.CanMove(x, y - 1))
+                        {
+                            neighbors.Add(this.graph.Nodes[y - 1][x + dx]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var direction in this.GetDirections())
+                {
+                    if (this.graph.CanMove(direction.x, direction.y))
+                    {
+                        neighbors.Add(this.graph.Nodes[direction.x][direction.x]);
+                    }
+                }
+            }
+
+            return neighbors;
+        }
+
         /// <summary>
         /// Generates potential directions for movement..
         /// </summary>
@@ -105,10 +200,10 @@ namespace PathFinder.DataStructures
         /// <param name="direction">The direction to jump in.</param>
         /// <param name="end">The end node of the pathfinding process.</param>
         /// <returns>The jump point node if one is found, otherwise null.</returns>
-        private Node? Jump(Node currentNode, (int x, int y) direction, Node start, Node end)
+        private Node? Jump(Node currentNode, int x, int y, Node start, Node end)
         {
-            int nextX = currentNode.X + direction.x;
-            int nextY = currentNode.Y + direction.y;
+            int nextX = currentNode.X + x;
+            int nextY = currentNode.Y + y;
 
             // Check if next position is within bounds and not an obstacle
             if (!this.graph.CanMove(nextX, nextY))
@@ -135,48 +230,40 @@ namespace PathFinder.DataStructures
             }
 
             // For diagonal movement, check for forced neighbors along both axes
-            if (direction.x != 0 && direction.y != 0)
+            if (x != 0 && y != 0)
             {
-                if ((!this.graph.CanMove(nextNode.X + direction.x, nextNode.Y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)) ||
-                    (!this.graph.CanMove(nextNode.X, nextNode.Y + direction.y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)))
+                if ((!this.graph.CanMove(nextNode.X + x, nextNode.Y) && this.graph.CanMove(nextNode.X + x, nextNode.Y + y)) ||
+                    (!this.graph.CanMove(nextNode.X, nextNode.Y + y) && this.graph.CanMove(nextNode.X + x, nextNode.Y + y)))
                 {
                     return nextNode;
                 }
 
-                Node? newNodeX = this.Jump(nextNode, (direction.x, 0), start, end);
-                Node? newNodeY = this.Jump(nextNode, (0, direction.y), start, end);
-
-                if (newNodeX != null)
+                if (this.Jump(nextNode, x + nextX, y, start, end) != null || this.Jump(nextNode, x, y + nextY, start, end) != null)
                 {
-                    return newNodeX;
-                }
-
-                if (newNodeY != null)
-                {
-                    return newNodeY;
+                    return nextNode;
                 }
             }
             else
             {
-                if (direction.x != 0)
+                if (x != 0)
                 {
-                    if ((!this.graph.CanMove(nextNode.X, nextNode.Y + 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + 1)) ||
-                        (!this.graph.CanMove(nextNode.X, nextNode.Y - 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y - 1)))
+                    if ((!this.graph.CanMove(nextNode.X, nextNode.Y + 1) && this.graph.CanMove(nextNode.X + x, nextNode.Y + 1)) ||
+                        (!this.graph.CanMove(nextNode.X, nextNode.Y - 1) && this.graph.CanMove(nextNode.X + x, nextNode.Y - 1)))
                     {
                         return nextNode;
                     }
                 }
                 else
                 {
-                    if ((!this.graph.CanMove(nextNode.X + 1, nextNode.Y) && this.graph.CanMove(nextNode.X + 1, nextNode.Y + direction.y)) ||
-                        (!this.graph.CanMove(nextNode.X - 1, nextNode.Y) && this.graph.CanMove(nextNode.X - 1, nextNode.Y + direction.y)))
+                    if ((!this.graph.CanMove(nextNode.X + 1, nextNode.Y) && this.graph.CanMove(nextNode.X + 1, nextNode.Y + y)) ||
+                        (!this.graph.CanMove(nextNode.X - 1, nextNode.Y) && this.graph.CanMove(nextNode.X - 1, nextNode.Y + y)))
                     {
                         return nextNode;
                     }
                 }
             }
 
-            return this.Jump(nextNode, direction, start, end);
+            return this.Jump(nextNode, x, y, start, end);
         }
 
         /// <summary>
