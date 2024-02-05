@@ -32,5 +32,6 @@ Date       | Time | Target |
 2024-27-01 | 5h | Created CSV-files for algorithm speed comparison. Were testing the algorithms |
 2024-28-01 | 4h | Created more debugging features |
 2024-29-01 | 1h | Testing and finding bugs |
+2024-03-02 | 2h | Trying to find out what is the problem with JPS |
 2024-05-02 | 6h | Created new branches and created pruning method |
-SUM | 147h | |
+SUM | 149h | |
