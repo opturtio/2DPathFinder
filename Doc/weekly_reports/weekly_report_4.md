@@ -23,4 +23,4 @@ if (newNodeY != null)
     return newNodeY;
 }
 ```
-I think next week I will need help!
+One problem is that I need more time to focus on this project, but it is taking too much time from my studies. Still, it is the most exciting project I have worked on. I think next week I will need help!

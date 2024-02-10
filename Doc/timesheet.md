@@ -34,4 +34,6 @@ Date       | Time | Target |
 2024-29-01 | 1h | Testing and finding bugs |
 2024-03-02 | 2h | Trying to find out what is the problem with JPS |
 2024-05-02 | 6h | Created new branches and created pruning method |
-SUM | 149h | |
+2024-09-02 | 3h | Studied more JPS and tried to make pruning work in JPS-pruning-added branch |
+2024-10-02 | 5h | Created user guide and tried to figure out how to make JPS work |
+SUM | 157h | |
