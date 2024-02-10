@@ -4,6 +4,8 @@
 
 ## Installation
 
+Install [Git](https://git-scm.com/download/win) for Windows.
+
 Clone the repository using the command prompt:
 ```bash
 git clone https://github.com/opturtio/PathFinder.git
@@ -12,7 +14,7 @@ git clone https://github.com/opturtio/PathFinder.git
 I recommend to download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030).
 
 
-Open the project in it. It should automatically install all dependencies/packages.
+Open the project in Visual Studio 2022. It should automatically install all dependencies/packages.
 
 ### Debugger: Character Representation
 
