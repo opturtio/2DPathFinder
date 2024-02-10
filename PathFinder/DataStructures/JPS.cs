@@ -101,7 +101,33 @@ namespace PathFinder.DataStructures
                 int dx = (x - px) / Math.Max(Math.Abs(x - px), 1);
                 int dy = (y - py) / Math.Max(Math.Abs(y - py), 1);
 
-                if (dx == 0 || dy == 0)
+                // search diagonally
+                if (dx != 0 && dy != 0)
+                {
+                    if (this.graph.CanMove(x, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x]);
+                    }
+                    if (this.graph.CanMove(x + dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y][x + dx]);
+                    }
+                    if (this.graph.CanMove(x + dx, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
+                    }
+                    if (!this.graph.CanMove(x - dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
+                    }
+                    if (!this.graph.CanMove(x, y - dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
+                    }
+                }
+
+                // search horizontally/vertically
+                else
                 {
                     if (dx == 0)
                     {
@@ -109,12 +135,10 @@ namespace PathFinder.DataStructures
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x]);
                         }
-
                         if (!this.graph.CanMove(x + 1, y))
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x + 1]);
                         }
-
                         if (!this.graph.CanMove(x - 1, y))
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x - 1]);
@@ -126,72 +150,28 @@ namespace PathFinder.DataStructures
                         {
                             neighbors.Add(this.graph.Nodes[y][x + dx]);
                         }
-
                         if (!this.graph.CanMove(x, y + 1))
                         {
                             neighbors.Add(this.graph.Nodes[y + 1][x + dx]);
                         }
-
                         if (!this.graph.CanMove(x, y - 1))
                         {
                             neighbors.Add(this.graph.Nodes[y - 1][x + dx]);
                         }
                     }
                 }
-
-                if (dx != 0 && dy != 0)
-                {
-                    if (this.graph.CanMove(x, y + dy))
-                    {
-                        neighbors.Add(this.graph.Nodes[y + dy][x]);
-                    }
-
-                    if (this.graph.CanMove(x + dx, y))
-                    {
-                        neighbors.Add(this.graph.Nodes[y][x + dx]);
-                    }
-
-                    if (this.graph.CanMove(x + dx, y + dy))
-                    {
-                        neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
-                    }
-
-                    if (!this.graph.CanMove(x - dx, y))
-                    {
-                        neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
-                    }
-
-                    if (!this.graph.CanMove(x, y - dy))
-                    {
-                        neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
-                    }
-                }
             }
             else
             {
-                foreach (var direction in this.GetDirections())
+                var neighborCosts = this.graph.GetNeighborsWithCosts(current);
+
+                foreach (var (neighbor, cost) in neighborCosts)
                 {
-                    if (this.graph.CanMove(direction.x, direction.y))
-                    {
-                        neighbors.Add(this.graph.Nodes[direction.x][direction.x]);
-                    }
+                    neighbors.Add(neighbor);
                 }
             }
 
             return neighbors;
-        }
-
-        /// <summary>
-        /// Generates potential directions for movement..
-        /// </summary>
-        /// <returns>A list of tuples representing the possible directions for movement.</returns>
-        private IEnumerable<(int x, int y)> GetDirections()
-        {
-            return new List<(int x, int y)>
-            {
-                (0, -1), (1, 0), (0, 1), (-1, 0),
-                (1, -1), (1, 1), (-1, 1), (-1, -1),
-            };
         }
 
         /// <summary>
@@ -212,7 +192,7 @@ namespace PathFinder.DataStructures
                 return null;
             }
 
-            Node nextNode = this.graph.Nodes[nextY][nextX];
+            Node nextNode = this.graph.Nodes[y][x];
 
             if (nextNode.Visited)
             {
