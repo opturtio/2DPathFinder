@@ -8,14 +8,12 @@
 
 2. Recommendation! Download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030). (Choose from workloads .NET desktop development)
 
-3. Install [.NET](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) for Windows.
-
-4. Clone the project in Visual Studio 2022 or clone the repository using the command prompt:
+3. Clone the project in Visual Studio 2022 or clone the repository using the command prompt:
 ```bash
 git clone https://github.com/opturtio/PathFinder.git
 ```
 
-5. Open the project in Visual Studio 2022 by navigating to ./PathFinder/PathFinder.sln. Dependencies should install automatically. If prompted, proceed with the installation of the .NET Runtime environment. You're ready to go!
+4. Open the project in Visual Studio 2022 by navigating to ./PathFinder/PathFinder.sln. Dependencies should install automatically. If prompted, proceed with the installation of the .NET Runtime environment. Additionally, you can install it manually: [.NET](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) for Windows. All set!
 
 
 ### Debugger: Character Representation
