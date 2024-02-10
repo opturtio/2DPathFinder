@@ -13,7 +13,7 @@
 git clone https://github.com/opturtio/PathFinder.git
 ```
 
-4. Open the project in Visual Studio 2022 by navigating to ./PathFinder/PathFinder.sln. Dependencies should install automatically. If prompted, proceed with the installation of the .NET Runtime environment. Additionally, you can install it manually: [.NET](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) for Windows. All set!
+4. Open the project in Visual Studio 2022 by navigating to ./PathFinder/PathFinder.sln. Dependencies should install automatically. If prompted, proceed with the installation of the .NET Runtime environment. Additionally, you can install it manually: [.NET for Windows](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks). All set!
 
 
 ### Debugger: Character Representation
@@ -45,7 +45,7 @@ git clone https://github.com/opturtio/PathFinder.git
 
 ### Show the map
 
-#### After choosing the map, you can see the map by pressing 3. This step is optional. Remember, you can zoom in and out on the console screen, which is essential for large maps.
+#### After choosing the map, you can see the map by pressing 3. This step is optional. Remember, you can zoom in and out on the console screen to see the maps better, which is essential for large maps.
 
 ![](./Pics/ShowMap.png)
 
@@ -55,7 +55,7 @@ git clone https://github.com/opturtio/PathFinder.git
 
 ![](./Pics/ChoosingCoordinates.png)
 
-#### Choosing out-of-bound coordinates lets you choose coordinates again.
+#### Choosing out-of-bound coordinates lets you choose coordinates again. The coordinates are given between zero and max value.
 
 ![](./Pics/WrongCoordinate.png)
 
