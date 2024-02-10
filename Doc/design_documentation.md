@@ -1,5 +1,7 @@
 # Design Document
-This document outlines the structure, components, and functionalities of the project.
+This document outlines the structure, components, and functionalities of the project. 
+
+THIS WILL BE LATER UPDATED!!!
 
 ## Design
 The PathFinder program is structured into five main parts: Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, a User Interface for user interaction and display, and Resources to store all the resource files e.g. maps and strings used in the program.
