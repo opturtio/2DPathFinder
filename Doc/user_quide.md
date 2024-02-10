@@ -6,29 +6,31 @@
 
 Install [Git](https://git-scm.com/download/win) for Windows.
 
-Clone the repository using the command prompt:
+I recommend to download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030). (Choose from workloads .NET desktop development)
+
+Install [.NET](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) for Windows.
+
+Clone the project in Visual Studio 2022 or clone the repository using the command prompt:
 ```bash
 git clone https://github.com/opturtio/PathFinder.git
 ```
 
-I recommend to download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030).
-
-
 Open the project in Visual Studio 2022. It should automatically install all dependencies/packages.
+
 
 ### Debugger: Character Representation
 
-#### Wall: @
+#### Wall: `@`
 
-#### Visited: \#
+#### Visited: `#`
 
-#### Current: X
+#### Current: `X`
 
-#### Start: E
+#### Start: `E`
 
-#### Goal: G
+#### Goal: `G`
 
-#### Jump point: J
+#### Jump Point: `J`
 
 
 ## How to use the program
