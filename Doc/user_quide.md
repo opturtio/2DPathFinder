@@ -4,18 +4,18 @@
 
 ## Installation
 
-Install [Git](https://git-scm.com/download/win) for Windows.
+1. Install [Git](https://git-scm.com/download/win) for Windows.
 
-I recommend to download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030). (Choose from workloads .NET desktop development)
+2. Recommendation! Download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030). (Choose from workloads .NET desktop development)
 
-Install [.NET](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) for Windows.
+3. Install [.NET](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) for Windows.
 
-Clone the project in Visual Studio 2022 or clone the repository using the command prompt:
+4. Clone the project in Visual Studio 2022 or clone the repository using the command prompt:
 ```bash
 git clone https://github.com/opturtio/PathFinder.git
 ```
 
-Open the project in Visual Studio 2022. It should automatically install all dependencies/packages.
+5. Open the project in Visual Studio 2022 by navigating to ./PathFinder/PathFinder.sln. Dependencies should install automatically. If prompted, proceed with the installation of the .NET Runtime environment. You're ready to go!
 
 
 ### Debugger: Character Representation
@@ -47,13 +47,13 @@ Open the project in Visual Studio 2022. It should automatically install all depe
 
 ### Show the map
 
-#### After choosing the map, you can see the map by pressing 3. This is optional. Remember, you can zoom in and out on the console screen. This is essential when you choose a large map and want to see it.
+#### After choosing the map, you can see the map by pressing 3. This step is optional. Remember, you can zoom in and out on the console screen, which is essential for large maps.
 
 ![](./Pics/ShowMap.png)
 
 ### Algorithm comparison
 
-#### Compare algorithms by pressing 1. Choose if you want to turn on the debug mode by selecting y or n. Then, choose the coordinates.
+#### Compare algorithms by pressing 1. Decide whether to turn on the debug mode by selecting `y` or `n`. Then, enter the coordinates.
 
 ![](./Pics/ChoosingCoordinates.png)
 
@@ -63,6 +63,5 @@ Open the project in Visual Studio 2022. It should automatically install all depe
 
 ### Result screen
 
-#### In the end, you can see the search results. You can scroll up to see other algorithms' shortest paths.
-
+#### Finally, view the search results. You may need to scroll up to see other algorithms' shortest paths.
 ![](./Pics/Result.png)
