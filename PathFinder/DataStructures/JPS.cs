@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 
 namespace PathFinder.DataStructures
 {
@@ -54,10 +55,15 @@ namespace PathFinder.DataStructures
                 }
 
                 var neighbors = this.PruneNeighbors(currentNode);
+
                 for (int i = 0; i < neighbors.Count; i++)
                 {
                     var neighbor = neighbors[i];
-                    var jumpPoint = this.Jump(currentNode, neighbor.X, neighbor.Y, start, end);
+
+                    int directionX = this.MovementDirection(neighbor.X, currentNode.X);
+                    int directionY = this.MovementDirection(neighbor.Y, currentNode.Y);
+
+                    var jumpPoint = this.Jump(neighbor, directionX, directionY, start, end);
 
                     if (jumpPoint == null)
                     {
@@ -87,6 +93,22 @@ namespace PathFinder.DataStructures
             return new List<Node>();
         }
 
+        private int MovementDirection(int to, int from)
+        {
+            int direction = to - from;
+
+            if (direction > 0)
+            {
+                return 1;
+            }
+            else if (direction < 0)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
         private List<Node> PruneNeighbors(Node current)
         {
             List<Node> neighbors = new List<Node>();
@@ -98,35 +120,40 @@ namespace PathFinder.DataStructures
                 int px = current.Parent.X;
                 int py = current.Parent.Y;
 
-                int dx = (x - px) / Math.Max(Math.Abs(x - px), 1);
-                int dy = (y - py) / Math.Max(Math.Abs(y - py), 1);
+                int dx = this.MovementDirection(x, px);
+                int dy = this.MovementDirection(y, py);
+                Console.WriteLine("Movent direction X: " + dx + ", Movent direction Y: " + dy);
 
-                // search diagonally
+                // Diagonal movement
                 if (dx != 0 && dy != 0)
                 {
                     if (this.graph.CanMove(x, y + dy))
                     {
                         neighbors.Add(this.graph.Nodes[y + dy][x]);
                     }
+
                     if (this.graph.CanMove(x + dx, y))
                     {
                         neighbors.Add(this.graph.Nodes[y][x + dx]);
                     }
+
                     if (this.graph.CanMove(x + dx, y + dy))
                     {
                         neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
                     }
+
                     if (!this.graph.CanMove(x - dx, y))
                     {
                         neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
                     }
+
                     if (!this.graph.CanMove(x, y - dy))
                     {
                         neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
                     }
                 }
 
-                // search horizontally/vertically
+                // Horizontal or vertical movement
                 else
                 {
                     if (dx == 0)
@@ -135,10 +162,12 @@ namespace PathFinder.DataStructures
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x]);
                         }
+
                         if (!this.graph.CanMove(x + 1, y))
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x + 1]);
                         }
+
                         if (!this.graph.CanMove(x - 1, y))
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x - 1]);
@@ -150,10 +179,12 @@ namespace PathFinder.DataStructures
                         {
                             neighbors.Add(this.graph.Nodes[y][x + dx]);
                         }
+
                         if (!this.graph.CanMove(x, y + 1))
                         {
                             neighbors.Add(this.graph.Nodes[y + 1][x + dx]);
                         }
+
                         if (!this.graph.CanMove(x, y - 1))
                         {
                             neighbors.Add(this.graph.Nodes[y - 1][x + dx]);
@@ -171,6 +202,7 @@ namespace PathFinder.DataStructures
                 }
             }
 
+            neighbors.ForEach(node => Console.WriteLine(node.GetNodeInfo()));
             return neighbors;
         }
 
@@ -185,32 +217,33 @@ namespace PathFinder.DataStructures
         {
             int nextX = currentNode.X + x;
             int nextY = currentNode.Y + y;
+            Console.WriteLine(nextX);
+            Console.WriteLine(nextY);
 
-            // Check if next position is within bounds and not an obstacle
             if (!this.graph.CanMove(nextX, nextY))
             {
                 return null;
             }
 
-            Node nextNode = this.graph.Nodes[y][x];
+            Node nextNode = this.graph.Nodes[nextY][nextX];
 
+/*
             if (nextNode.Visited)
             {
                 return null;
             }
 
             nextNode.Visited = true;
+*/
             nextNode.Parent = currentNode;
 
             this.pathVisualizer.VisualizePath(nextNode, start, end, true);
 
-            // If we've reached the end, return this node
             if (nextNode == end)
             {
                 return nextNode;
             }
 
-            // For diagonal movement, check for forced neighbors along both axes
             if (x != 0 && y != 0)
             {
                 if ((!this.graph.CanMove(nextNode.X + x, nextNode.Y) && this.graph.CanMove(nextNode.X + x, nextNode.Y + y)) ||
@@ -219,7 +252,7 @@ namespace PathFinder.DataStructures
                     return nextNode;
                 }
 
-                if (this.Jump(nextNode, x + nextX, y, start, end) != null || this.Jump(nextNode, x, y + nextY, start, end) != null)
+                if (this.Jump(nextNode, x, 0, start, end) != null || this.Jump(nextNode, 0, y, start, end) != null)
                 {
                     return nextNode;
                 }
@@ -246,6 +279,7 @@ namespace PathFinder.DataStructures
 
             return this.Jump(nextNode, x, y, start, end);
         }
+
 
         /// <summary>
         /// This method estimates how close a node is to the end point. It uses the Euclidean distance,
