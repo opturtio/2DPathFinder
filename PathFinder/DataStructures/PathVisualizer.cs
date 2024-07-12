@@ -161,7 +161,7 @@
 
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
-            Thread.Sleep(30);
+            Thread.Sleep(10);
         }
 
         /// <summary>

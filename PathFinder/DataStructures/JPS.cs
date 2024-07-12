@@ -233,6 +233,12 @@ namespace PathFinder.DataStructures
                 {
                     return (x, y);
                 }
+
+                // When moving diagonally, must check for vertical/horizontal jump points
+                if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
+                {
+                    return (x, y);
+                }
             }
             else
             {
@@ -253,12 +259,6 @@ namespace PathFinder.DataStructures
                         return (x, y);
                     }
                 }
-            }
-
-            // When moving diagonally, must check for vertical/horizontal jump points
-            if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
-            {
-                return (x, y);
             }
 
             // Recursive call in the direction of movement
