@@ -33,9 +33,8 @@ namespace PathFinder.DataStructures
 
                 this.visitedNodes++;
 
-                if (currentNode == end)
+                if (this.pathFound)
                 {
-                    this.pathFound = true;
                     break;
                 }
 
@@ -43,7 +42,7 @@ namespace PathFinder.DataStructures
 
                 foreach (var neighbor in neighbors)
                 {
-                    var jumpPointCoords = this.Jump(neighbor.X, neighbor.Y, currentNode.X, currentNode.Y, end);
+                    var jumpPointCoords = this.Jump(neighbor.X, neighbor.Y, currentNode.X, currentNode.Y, start, end);
 
                     if (jumpPointCoords == null)
                     {
@@ -194,7 +193,7 @@ namespace PathFinder.DataStructures
                    x >= 0 && x < this.graph.Nodes[y].Count;
         }
 
-        private (int x, int y)? Jump(int x, int y, int px, int py, Node end)
+        private (int x, int y)? Jump(int x, int y, int px, int py, Node start, Node end)
         {
             int dx = x - px;
             int dy = y - py;
@@ -217,11 +216,12 @@ namespace PathFinder.DataStructures
             currentNode.Parent = parentNode;
             currentNode.Visited = true;
 
-            this.pathVisualizer.VisualizePath(currentNode, parentNode, end, true);
+            this.pathVisualizer.VisualizePath(currentNode, start, end, true);
 
             // Check if the current position is the end node
             if (currentNode == end)
             {
+                this.pathFound = true;
                 return (x, y);
             }
 
@@ -230,12 +230,6 @@ namespace PathFinder.DataStructures
             {
                 if ((this.IsValidPosition(x - dx, y + dy) && this.graph.CanMove(x - dx, y + dy) && !this.graph.CanMove(x - dx, y)) ||
                     (this.IsValidPosition(x + dx, y - dy) && this.graph.CanMove(x + dx, y - dy) && !this.graph.CanMove(x, y - dy)))
-                {
-                    return (x, y);
-                }
-
-                // When moving diagonally, must check for vertical/horizontal jump points
-                if (this.Jump(x + dx, y, x, y, end) != null || this.Jump(x, y + dy, x, y, end) != null)
                 {
                     return (x, y);
                 }
@@ -261,8 +255,14 @@ namespace PathFinder.DataStructures
                 }
             }
 
+            // When moving diagonally, must check for vertical/horizontal jump points
+            if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
+            {
+                return (x, y);
+            }
+
             // Recursive call in the direction of movement
-            return this.Jump(x + dx, y + dy, x, y, end);
+            return this.Jump(x + dx, y + dy, x, y, start, end);
         }
 
         private double Heuristic(Node current, Node jumpPoint)
