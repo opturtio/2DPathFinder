@@ -1,4 +1,4 @@
-﻿namespace PathFinder.DataStructures
+namespace PathFinder.DataStructures
 {
     /// <summary>
     /// Creates a graph object.
@@ -91,6 +91,17 @@
                     continue;
                 }
 
+                // Check is the movement diagonal and prevents jumping over corners.
+                /*
+                if (Math.Abs(deltaX) == 1 && Math.Abs(deltaY) == 1)
+                {
+                    // Check if adjacent nodes are obstacles or out of bound in diagonal movement.
+                    if (!this.CanMove(node.X + deltaX, node.Y) || !this.CanMove(node.X, node.Y + deltaY))
+                    {
+                        continue;
+                    }
+                }
+                */
                 yield return (this.Nodes[neighborY][neighborX], cost);
             }
         }

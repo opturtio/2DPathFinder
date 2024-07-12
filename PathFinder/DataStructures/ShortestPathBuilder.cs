@@ -19,6 +19,8 @@
             {
                 path.Add(currentNode);
                 currentNode = currentNode.Parent;
+                //Console.WriteLine("Current Node: " + currentNode.GetNodeInfo());
+                //Console.WriteLine("Parent Node: " + currentNode.Parent.GetNodeInfo());
             }
 
             path.Reverse();

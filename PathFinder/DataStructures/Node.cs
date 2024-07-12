@@ -73,9 +73,9 @@
         public string GetNodeInfo()
         {
             if (this.Parent != null)
-                return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: ({this.Parent.X},{this.Parent.Y}).";
+                return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: ({this.Parent.X},{this.Parent.Y}). Jump Point: {this.JumpPoint}.";
             else
-                return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: Null.";
+                return $"Node position: ({this.X}, {this.Y}). Visited: {this.Visited}. Cost: {this.Cost}. Obstacle: {this.IsObstacle}. Parent: Null. Jump Point: {this.JumpPoint}.";
         }
     }
 }

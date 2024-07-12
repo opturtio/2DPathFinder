@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 
 namespace PathFinder.DataStructures
 {
@@ -34,16 +35,17 @@ namespace PathFinder.DataStructures
         /// <returns>List of nodes representing the shortest path.</returns>
         public List<Node> FindShortestPath(Node start, Node end)
         {
+            this.jpsStopwatch = new Stopwatch();
             this.jpsStopwatch.Start();
 
             start.Cost = 0;
 
-            var successors = new PriorityQueue<Node, double>();
-            successors.Enqueue(start, start.Cost);
+            var openList = new PriorityQueue<Node, double>();
+            openList.Enqueue(start, start.Cost);
 
-            while (successors.Count > 0)
+            while (openList.Count > 0)
             {
-                var currentNode = successors.Dequeue();
+                var currentNode = openList.Dequeue();
 
                 this.visitedNodes++;
 
@@ -53,24 +55,28 @@ namespace PathFinder.DataStructures
                     break;
                 }
 
-                foreach (var direction in this.GetDirections())
-                {
-                    var jumpPoint = this.Jump(currentNode, direction, start, end);
+                var neighbors = this.PruneNeighbors(currentNode);
 
-                    if (jumpPoint == null)
+                foreach (var neighbor in neighbors)
+                {
+                    var jumpPointCoords = this.Jump(neighbor.X, neighbor.Y, currentNode.X, currentNode.Y, start, end);
+
+                    if (jumpPointCoords == null)
                     {
                         continue;
                     }
+
+                    var jumpPoint = this.graph.Nodes[jumpPointCoords.Value.y][jumpPointCoords.Value.x];
+                    Console.WriteLine(jumpPoint.GetNodeInfo());
 
                     double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
 
                     if (newCost < jumpPoint.Cost)
                     {
                         jumpPoint.Cost = newCost;
-
                         jumpPoint.JumpPoint = true;
-
-                        successors.Enqueue(jumpPoint, newCost);
+                        Console.WriteLine(jumpPoint.GetNodeInfo());
+                        openList.Enqueue(jumpPoint, newCost);
                     }
                 }
             }
@@ -85,18 +91,126 @@ namespace PathFinder.DataStructures
             return new List<Node>();
         }
 
-        /// <summary>
-        /// Generates potential directions for movement..
-        /// </summary>
-        /// <returns>A list of tuples representing the possible directions for movement.</returns>
-        private IEnumerable<(int x, int y)> GetDirections()
+        private int MovementDirection(int to, int from)
         {
-            return new List<(int x, int y)>
+            int direction = to - from;
+
+            if (direction > 0)
             {
-                (0, -1), (1, 0), (0, 1), (-1, 0),
-                (1, -1), (1, 1), (-1, 1), (-1, -1),
-            };
+                return 1;
+            }
+            else if (direction < 0)
+            {
+                return -1;
+            }
+
+            return 0;
         }
+
+        private List<Node> PruneNeighbors(Node current)
+        {
+            List<Node> neighbors = new List<Node>();
+
+            if (current.Parent != null)
+            {
+                int x = current.X;
+                int y = current.Y;
+                int px = current.Parent.X;
+                int py = current.Parent.Y;
+
+                int dx = this.MovementDirection(x, px);
+                int dy = this.MovementDirection(y, py);
+
+                // Diagonal movement
+                if (dx != 0 && dy != 0)
+                {
+                    if (this.IsValidPosition(x, y + dy) && this.graph.CanMove(x, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x]);
+                    }
+
+                    if (this.IsValidPosition(x + dx, y) && this.graph.CanMove(x + dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y][x + dx]);
+                    }
+
+                    if (this.IsValidPosition(x + dx, y + dy) && this.graph.CanMove(x + dx, y + dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
+                    }
+
+                    if (this.IsValidPosition(x - dx, y) && !this.graph.CanMove(x - dx, y))
+                    {
+                        neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
+                    }
+
+                    if (this.IsValidPosition(x, y - dy) && !this.graph.CanMove(x, y - dy))
+                    {
+                        neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
+                    }
+                }
+                // Horizontal or vertical movement
+                else
+                {
+                    if (dx == 0)
+                    {
+                        if (this.IsValidPosition(x, y + dy) && this.graph.CanMove(x, y + dy))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + dy][x]);
+                        }
+
+                        if (this.IsValidPosition(x + 1, y + dy) && !this.graph.CanMove(x + 1, y))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + dy][x + 1]);
+                        }
+
+                        if (this.IsValidPosition(x - 1, y + dy) && !this.graph.CanMove(x - 1, y))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + dy][x - 1]);
+                        }
+                    }
+                    else
+                    {
+                        if (this.IsValidPosition(x + dx, y) && this.graph.CanMove(x + dx, y))
+                        {
+                            neighbors.Add(this.graph.Nodes[y][x + dx]);
+                        }
+
+                        if (this.IsValidPosition(x + dx, y + 1) && !this.graph.CanMove(x, y + 1))
+                        {
+                            neighbors.Add(this.graph.Nodes[y + 1][x + dx]);
+                        }
+
+                        if (this.IsValidPosition(x + dx, y - 1) && !this.graph.CanMove(x, y - 1))
+                        {
+                            neighbors.Add(this.graph.Nodes[y - 1][x + dx]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var neighborCosts = this.graph.GetNeighborsWithCosts(current);
+
+                foreach (var (neighbor, cost) in neighborCosts)
+                {
+                    if (this.IsValidPosition(neighbor.X, neighbor.Y))
+                    {
+                        neighbors.Add(neighbor);
+                    }
+                }
+            }
+
+            neighbors.ForEach(node => Console.WriteLine(node.GetNodeInfo()));
+            return neighbors;
+        }
+
+        private bool IsValidPosition(int x, int y)
+        {
+            return y >= 0 && y < this.graph.Nodes.Count &&
+                   x >= 0 && x < this.graph.Nodes[y].Count;
+        }
+
 
         /// <summary>
         /// Recursive function to find a jump point in a specific direction.
@@ -105,78 +219,65 @@ namespace PathFinder.DataStructures
         /// <param name="direction">The direction to jump in.</param>
         /// <param name="end">The end node of the pathfinding process.</param>
         /// <returns>The jump point node if one is found, otherwise null.</returns>
-        private Node? Jump(Node currentNode, (int x, int y) direction, Node start, Node end)
+        private (int x, int y)? Jump(int x, int y, int px, int py, Node start, Node end)
         {
-            int nextX = currentNode.X + direction.x;
-            int nextY = currentNode.Y + direction.y;
+            int dx = x - px;
+            int dy = y - py;
 
-            // Check if next position is within bounds and not an obstacle
-            if (!this.graph.CanMove(nextX, nextY))
+            // Check if the next position is within bounds and not an obstacle
+            if (!this.graph.CanMove(x, y))
             {
                 return null;
             }
 
-            Node nextNode = this.graph.Nodes[nextY][nextX];
+            this.graph.Nodes[y][x].Parent = this.graph.Nodes[py][px];
 
-            if (nextNode.Visited)
+            this.pathVisualizer.VisualizePath(this.graph.Nodes[y][x], start, end, true);
+
+            // Check if the current position is the end node
+            if (this.graph.Nodes[y][x] == this.graph.Nodes[end.Y][end.X])
             {
-                return null;
+                return (x, y);
             }
 
-            nextNode.Visited = true;
-            nextNode.Parent = currentNode;
-
-            this.pathVisualizer.VisualizePath(nextNode, start, end, true);
-
-            // If we've reached the end, return this node
-            if (nextNode == end)
+            // Check for forced neighbors when moving diagonally
+            if (dx != 0 && dy != 0)
             {
-                return nextNode;
-            }
-
-            // For diagonal movement, check for forced neighbors along both axes
-            if (direction.x != 0 && direction.y != 0)
-            {
-                if ((!this.graph.CanMove(nextNode.X + direction.x, nextNode.Y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)) ||
-                    (!this.graph.CanMove(nextNode.X, nextNode.Y + direction.y) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + direction.y)))
+                if ((this.graph.CanMove(x - dx, y + dy) && !this.graph.CanMove(x - dx, y)) ||
+                    (this.graph.CanMove(x + dx, y - dy) && !this.graph.CanMove(x, y - dy)))
                 {
-                    return nextNode;
+                    return (x, y);
                 }
 
-                Node? newNodeX = this.Jump(nextNode, (direction.x, 0), start, end);
-                Node? newNodeY = this.Jump(nextNode, (0, direction.y), start, end);
-
-                if (newNodeX != null)
+                // When moving diagonally, must check for vertical/horizontal jump points
+                if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
                 {
-                    return newNodeX;
-                }
-
-                if (newNodeY != null)
-                {
-                    return newNodeY;
+                    return (x, y);
                 }
             }
             else
             {
-                if (direction.x != 0)
+                // Check for forced neighbors when moving horizontally or vertically
+                if (dx != 0) // Moving along x-axis
                 {
-                    if ((!this.graph.CanMove(nextNode.X, nextNode.Y + 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y + 1)) ||
-                        (!this.graph.CanMove(nextNode.X, nextNode.Y - 1) && this.graph.CanMove(nextNode.X + direction.x, nextNode.Y - 1)))
+                    if ((this.graph.CanMove(x + dx, y + 1) && !this.graph.CanMove(x, y + 1)) ||
+                        (this.graph.CanMove(x + dx, y - 1) && !this.graph.CanMove(x, y - 1)))
                     {
-                        return nextNode;
+                        return (x, y);
                     }
                 }
-                else
+                else // Moving along y-axis
                 {
-                    if ((!this.graph.CanMove(nextNode.X + 1, nextNode.Y) && this.graph.CanMove(nextNode.X + 1, nextNode.Y + direction.y)) ||
-                        (!this.graph.CanMove(nextNode.X - 1, nextNode.Y) && this.graph.CanMove(nextNode.X - 1, nextNode.Y + direction.y)))
+                    if ((this.graph.CanMove(x + 1, y + dy) && !this.graph.CanMove(x + 1, y)) ||
+                        (this.graph.CanMove(x - 1, y + dy) && !this.graph.CanMove(x - 1, y)))
                     {
-                        return nextNode;
+                        return (x, y);
                     }
                 }
             }
 
-            return this.Jump(nextNode, direction, start, end);
+            // Recursive call in the direction of movement
+            return this.Jump(x + dx, y + dy, x, y, start, end);
         }
 
         /// <summary>

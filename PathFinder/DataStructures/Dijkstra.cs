@@ -62,6 +62,7 @@
                 if (currentNode == end)
                 {
                     this.pathFound = true;
+                    break;
                 }
 
                 // Check the nodes connected to the current point.
