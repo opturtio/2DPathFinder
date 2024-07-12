@@ -86,6 +86,11 @@
             }
 
             // The last node in the list is the current node (end node of the path)
+            if (this.currentNode == null)
+            {
+                return this.ShortestPathVisualizer();
+            }
+
             this.currentNode = nodes.Last();
 
             // Generate the visualized map as a string

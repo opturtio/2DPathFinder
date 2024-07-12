@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a node in a graph.
     /// </summary>
-    public class Node
+    public class Node : IComparable<Node>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Node"/> class.
@@ -64,6 +64,17 @@
         public string GetNodeSymbol()
         {
             return this.IsObstacle ? "@" : ".";
+        }
+
+        /// <summary>
+        /// Compares the current node with another node based on cost.
+        /// </summary>
+        /// <param name="other">The other node to compare to.</param>
+        /// <returns>An integer that indicates the relative order of the nodes being compared.</returns>
+        public int CompareTo(Node other)
+        {
+            if (other == null) return 1;
+            return this.Cost.CompareTo(other.Cost);
         }
 
         /// <summary>

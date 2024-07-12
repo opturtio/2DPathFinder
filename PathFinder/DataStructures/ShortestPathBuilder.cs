@@ -14,11 +14,19 @@
         {
             var path = new List<Node>();
             var currentNode = end;
+            var visitedNodes = new HashSet<Node>();
 
             while (currentNode != null)
             {
+                if (visitedNodes.Contains(currentNode))
+                {
+                    throw new InvalidOperationException("Cyclic reference detected in path reconstruction.");
+                }
+
+                visitedNodes.Add(currentNode);
                 path.Add(currentNode);
                 currentNode = currentNode.Parent;
+
                 //Console.WriteLine("Current Node: " + currentNode.GetNodeInfo());
                 //Console.WriteLine("Parent Node: " + currentNode.Parent.GetNodeInfo());
             }

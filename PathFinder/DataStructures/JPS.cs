@@ -3,10 +3,6 @@ using System.Diagnostics;
 
 namespace PathFinder.DataStructures
 {
-    /// <summary>
-    /// Jump Point Search algorithm class.
-    /// Implements the pathfinding logic using the Jump Point Search algorithm.
-    /// </summary>
     public class JPS
     {
         private readonly Graph graph;
@@ -15,11 +11,6 @@ namespace PathFinder.DataStructures
         private int visitedNodes = 0;
         private bool pathFound = false;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JPS"/> class.
-        /// </summary>
-        /// <param name="graph">Graph on which pathfinding is performed.</param>
-        /// <param name="visualizer">Visualizer for path visualization.</param>
         public JPS(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
@@ -27,25 +18,18 @@ namespace PathFinder.DataStructures
             this.jpsStopwatch = new Stopwatch();
         }
 
-        /// <summary>
-        /// Finds the shortest path between the start and end nodes using Jump Point Search algorithm.
-        /// </summary>
-        /// <param name="start">The start node of the path.</param>
-        /// <param name="end">The end node of the path.</param>
-        /// <returns>List of nodes representing the shortest path.</returns>
         public List<Node> FindShortestPath(Node start, Node end)
         {
-            this.jpsStopwatch = new Stopwatch();
             this.jpsStopwatch.Start();
 
             start.Cost = 0;
 
-            var openList = new PriorityQueue<Node, double>();
-            openList.Enqueue(start, start.Cost);
+            var openList = new BinaryHeap<Node>();
+            openList.Insert(start);
 
             while (openList.Count > 0)
             {
-                var currentNode = openList.Dequeue();
+                var currentNode = openList.ExtractMin();
 
                 this.visitedNodes++;
 
@@ -59,7 +43,7 @@ namespace PathFinder.DataStructures
 
                 foreach (var neighbor in neighbors)
                 {
-                    var jumpPointCoords = this.Jump(neighbor.X, neighbor.Y, currentNode.X, currentNode.Y, start, end);
+                    var jumpPointCoords = this.Jump(neighbor.X, neighbor.Y, currentNode.X, currentNode.Y, end);
 
                     if (jumpPointCoords == null)
                     {
@@ -67,16 +51,16 @@ namespace PathFinder.DataStructures
                     }
 
                     var jumpPoint = this.graph.Nodes[jumpPointCoords.Value.y][jumpPointCoords.Value.x];
-                    Console.WriteLine(jumpPoint.GetNodeInfo());
 
-                    double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
+                    double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
 
                     if (newCost < jumpPoint.Cost)
                     {
                         jumpPoint.Cost = newCost;
+
                         jumpPoint.JumpPoint = true;
-                        Console.WriteLine(jumpPoint.GetNodeInfo());
-                        openList.Enqueue(jumpPoint, newCost);
+
+                        openList.Insert(jumpPoint);
                     }
                 }
             }
@@ -201,7 +185,6 @@ namespace PathFinder.DataStructures
                 }
             }
 
-            neighbors.ForEach(node => Console.WriteLine(node.GetNodeInfo()));
             return neighbors;
         }
 
@@ -211,15 +194,7 @@ namespace PathFinder.DataStructures
                    x >= 0 && x < this.graph.Nodes[y].Count;
         }
 
-
-        /// <summary>
-        /// Recursive function to find a jump point in a specific direction.
-        /// </summary>
-        /// <param name="currentNode">The current node to jump from.</param>
-        /// <param name="direction">The direction to jump in.</param>
-        /// <param name="end">The end node of the pathfinding process.</param>
-        /// <returns>The jump point node if one is found, otherwise null.</returns>
-        private (int x, int y)? Jump(int x, int y, int px, int py, Node start, Node end)
+        private (int x, int y)? Jump(int x, int y, int px, int py, Node end)
         {
             int dx = x - px;
             int dy = y - py;
@@ -230,12 +205,22 @@ namespace PathFinder.DataStructures
                 return null;
             }
 
-            this.graph.Nodes[y][x].Parent = this.graph.Nodes[py][px];
+            Node currentNode = this.graph.Nodes[y][x];
+            Node parentNode = this.graph.Nodes[py][px];
 
-            this.pathVisualizer.VisualizePath(this.graph.Nodes[y][x], start, end, true);
+            // Avoid revisiting nodes
+            if (currentNode.Parent != null && currentNode.Parent != parentNode)
+            {
+                return null;
+            }
+
+            currentNode.Parent = parentNode;
+            currentNode.Visited = true;
+
+            this.pathVisualizer.VisualizePath(currentNode, parentNode, end, true);
 
             // Check if the current position is the end node
-            if (this.graph.Nodes[y][x] == this.graph.Nodes[end.Y][end.X])
+            if (currentNode == end)
             {
                 return (x, y);
             }
@@ -243,14 +228,14 @@ namespace PathFinder.DataStructures
             // Check for forced neighbors when moving diagonally
             if (dx != 0 && dy != 0)
             {
-                if ((this.graph.CanMove(x - dx, y + dy) && !this.graph.CanMove(x - dx, y)) ||
-                    (this.graph.CanMove(x + dx, y - dy) && !this.graph.CanMove(x, y - dy)))
+                if ((this.IsValidPosition(x - dx, y + dy) && this.graph.CanMove(x - dx, y + dy) && !this.graph.CanMove(x - dx, y)) ||
+                    (this.IsValidPosition(x + dx, y - dy) && this.graph.CanMove(x + dx, y - dy) && !this.graph.CanMove(x, y - dy)))
                 {
                     return (x, y);
                 }
 
                 // When moving diagonally, must check for vertical/horizontal jump points
-                if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
+                if (this.Jump(x + dx, y, x, y, end) != null || this.Jump(x, y + dy, x, y, end) != null)
                 {
                     return (x, y);
                 }
@@ -260,16 +245,16 @@ namespace PathFinder.DataStructures
                 // Check for forced neighbors when moving horizontally or vertically
                 if (dx != 0) // Moving along x-axis
                 {
-                    if ((this.graph.CanMove(x + dx, y + 1) && !this.graph.CanMove(x, y + 1)) ||
-                        (this.graph.CanMove(x + dx, y - 1) && !this.graph.CanMove(x, y - 1)))
+                    if ((this.IsValidPosition(x + dx, y + 1) && this.graph.CanMove(x + dx, y + 1) && !this.graph.CanMove(x, y + 1)) ||
+                        (this.IsValidPosition(x + dx, y - 1) && this.graph.CanMove(x + dx, y - 1) && !this.graph.CanMove(x, y - 1)))
                     {
                         return (x, y);
                     }
                 }
                 else // Moving along y-axis
                 {
-                    if ((this.graph.CanMove(x + 1, y + dy) && !this.graph.CanMove(x + 1, y)) ||
-                        (this.graph.CanMove(x - 1, y + dy) && !this.graph.CanMove(x - 1, y)))
+                    if ((this.IsValidPosition(x + 1, y + dy) && this.graph.CanMove(x + 1, y + dy) && !this.graph.CanMove(x + 1, y)) ||
+                        (this.IsValidPosition(x - 1, y + dy) && this.graph.CanMove(x - 1, y + dy) && !this.graph.CanMove(x - 1, y)))
                     {
                         return (x, y);
                     }
@@ -277,50 +262,26 @@ namespace PathFinder.DataStructures
             }
 
             // Recursive call in the direction of movement
-            return this.Jump(x + dx, y + dy, x, y, start, end);
+            return this.Jump(x + dx, y + dy, x, y, end);
         }
 
-        /// <summary>
-        /// This method estimates how close a node is to the end point. It uses the Euclidean distance,
-        /// which is just adding up the horizontal and vertical distances. This helps the algorithm
-        /// decide which paths are worth looking at first to find the shortest route faster.
-        /// </summary>
-        /// <param name="end">The end point given by the user.</param>
-        /// <param name="neighborNode">The node currently processed.</param>
-        /// <returns>An estimated distance from the current node to the end point.</returns>
-        private double Heuristic(Node jumpPoint, Node end)
+        private double Heuristic(Node current, Node jumpPoint)
         {
-            /*
-            Console.WriteLine($"end.X: {end.X}");
-            Console.WriteLine($"end.Y: {end.Y}");
-            Console.WriteLine($"jumpPoint.X: {jumpPoint.X}");
-            Console.WriteLine($"jumpPoint.Y: {jumpPoint.Y}");
-            */
-            return Math.Sqrt(Math.Pow(end.X - jumpPoint.X, 2) + Math.Pow(end.Y - jumpPoint.Y, 2));
+            int dx = Math.Abs(jumpPoint.X - current.X);
+            int dy = Math.Abs(jumpPoint.Y - current.Y);
+            return Math.Sqrt(dx * dx + dy * dy);
         }
 
-        /// <summary>
-        /// Retrieves the total number of nodes that have been visited during the pathfinding.
-        /// </summary>
-        /// <returns>An integer representing the count of visited nodes.</returns>
         public int GetVisitedNodes()
         {
             return this.visitedNodes;
         }
 
-        /// <summary>
-        /// Retrieves the time JPS took to find the end node.
-        /// </summary>
-        /// <returns>The time in milliseconds.</returns>
         public double GetStopwatchTime()
         {
             return this.jpsStopwatch.Elapsed.TotalMilliseconds;
         }
 
-        /// <summary>
-        /// Determines whether a path from the start node to the end node has been found.
-        /// </summary>
-        /// <returns>A boolean value indicating whether a path was successfully found. Returns true if a path exists, otherwise false.</returns>
         public bool IsPathFound()
         {
             return this.pathFound;
