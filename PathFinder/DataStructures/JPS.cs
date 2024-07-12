@@ -8,8 +8,10 @@ namespace PathFinder.DataStructures
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
         private Stopwatch jpsStopwatch;
+        private int shortestPathLength = 0;
         private int visitedNodes = 0;
         private bool pathFound = false;
+
 
         public JPS(Graph graph, PathVisualizer visualizer)
         {
@@ -68,6 +70,7 @@ namespace PathFinder.DataStructures
 
             if (this.pathFound)
             {
+                this.shortestPathLength = ShortestPathBuilder.ShortestPathLength(end);
                 return ShortestPathBuilder.ShortestPath(end);
             }
 
@@ -285,6 +288,11 @@ namespace PathFinder.DataStructures
         public bool IsPathFound()
         {
             return this.pathFound;
+        }
+
+        public int GetShortestPathLength()
+        {
+            return this.shortestPathLength;
         }
     }
 }

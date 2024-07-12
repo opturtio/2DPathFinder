@@ -153,8 +153,8 @@ namespace PathFinder.Tests
             // Initializing StreamWriters
             using StreamWriter dijkstraVsJpsMazeWriter = new StreamWriter(this.dijkstraVsJpsMazeFilePath, true);
             using StreamWriter aStarVsJpsMazeWriter = new StreamWriter(this.aStarVsJpsMazeFilePath, true);
-            dijkstraVsJpsMazeWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes");
-            aStarVsJpsMazeWriter.WriteLine($"JPS time, A* time, JPS jump points, A* visited nodes");
+            dijkstraVsJpsMazeWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes, Dijkstra path found, JPS path found, Dijkstra shortest path length, JPS shortest path length");
+            aStarVsJpsMazeWriter.WriteLine($"JPS time, A* time, JPS jump points, A* visited nodes, A* path found, JPS path found, A* shortest path length, JPS shortest path length");
 
             for (int i = 0; i < 100; i++)
             {
@@ -195,8 +195,8 @@ namespace PathFinder.Tests
                     aStarFaster++;
                 }
 
-                dijkstraVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()}");
-                aStarVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.aStar.GetVisitedNodes()}");
+                dijkstraVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathLength()},{this.jps.GetShortestPathLength()}");
+                aStarVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.aStar.GetShortestPathLength()},{this.jps.GetShortestPathLength()}");
             }
 
             Console.WriteLine("Maze map result:");

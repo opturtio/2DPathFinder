@@ -2,6 +2,7 @@
 {
     using PathFinder.DataStructures;
     using System.Diagnostics;
+    using System.Net.Http.Headers;
 
     /// <summary>
     /// Dijkstra algorithm.
@@ -11,6 +12,7 @@
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
         private Stopwatch dijkstraStopwatch;
+        private int shortestPathLength = 0;
         private int visitedNodes = 0;
         private bool pathFound = false;
 
@@ -89,6 +91,7 @@
 
             if (this.pathFound)
             {
+                this.shortestPathLength = ShortestPathBuilder.ShortestPathLength(end);
                 return ShortestPathBuilder.ShortestPath(end);
             }
 
@@ -120,6 +123,11 @@
         public bool IsPathFound()
         {
             return this.pathFound;
+        }
+
+        public int GetShortestPathLength()
+        {
+            return this.shortestPathLength;
         }
     }
 }

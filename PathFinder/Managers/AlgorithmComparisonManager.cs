@@ -66,21 +66,21 @@
 
             this.jps = new JPS(this.graph, this.pathVisualizer);
             this.shortestPathJps = this.jps.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            this.shortestPathLengthJps = ShortestPathBuilder.ShortestPathLength(this.graph.Nodes[coords[2]][coords[3]]);
+            this.shortestPathLengthJps = this.jps.GetShortestPathLength();
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graph.ResetNodes();
 
             this.aStar = new Astar(this.graph, this.pathVisualizer);
             this.shortestPathAstar = this.aStar.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            this.shortestPathLengthAstar = ShortestPathBuilder.ShortestPathLength(this.graph.Nodes[coords[2]][coords[3]]);
+            this.shortestPathLengthAstar = this.aStar.GetShortestPathLength();
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graph.ResetNodes();
 
             this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
             this.shortestPathDijkstra = this.dijkstra.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            this.shortestPathLengthDijkstra = ShortestPathBuilder.ShortestPathLength(this.graph.Nodes[coords[2]][coords[3]]);
+            this.shortestPathLengthDijkstra = this.dijkstra.GetShortestPathLength();
 
             if (this.jps.IsPathFound() && this.aStar.IsPathFound() && this.dijkstra.IsPathFound())
             {
