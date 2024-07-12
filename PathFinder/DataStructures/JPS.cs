@@ -67,6 +67,7 @@ namespace PathFinder.DataStructures
                     }
 
                     var jumpPoint = this.graph.Nodes[jumpPointCoords.Value.y][jumpPointCoords.Value.x];
+                    Console.WriteLine(jumpPoint.GetNodeInfo());
 
                     double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
 
@@ -74,7 +75,7 @@ namespace PathFinder.DataStructures
                     {
                         jumpPoint.Cost = newCost;
                         jumpPoint.JumpPoint = true;
-
+                        Console.WriteLine(jumpPoint.GetNodeInfo());
                         openList.Enqueue(jumpPoint, newCost);
                     }
                 }
@@ -231,7 +232,7 @@ namespace PathFinder.DataStructures
 
             this.graph.Nodes[y][x].Parent = this.graph.Nodes[py][px];
 
-            this.pathVisualizer.VisualizePath(this.graph.Nodes[y][x], this.graph.Nodes[py][px], end, true);
+            this.pathVisualizer.VisualizePath(this.graph.Nodes[y][x], start, end, true);
 
             // Check if the current position is the end node
             if (this.graph.Nodes[y][x] == this.graph.Nodes[end.Y][end.X])
