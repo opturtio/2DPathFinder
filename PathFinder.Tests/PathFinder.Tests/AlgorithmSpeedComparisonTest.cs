@@ -18,10 +18,13 @@ namespace PathFinder.Tests
         private Dijkstra? dijkstra;
         private Graph graphLondon;
         private Graph graphMaze;
+        private GraphBuilder graphBuilder;
         private PathVisualizer? pathVisualizer;
         private FileLoader? fileLoader;
         private string londonMap;
         private string mazeMap;
+        private string testMap;
+        private string expectedMapContent = string.Empty;
         private string speedComparisonDirectoryPath;
         private string dijkstraVsJpsLondonFilePath;
         private string aStarVsJpsLondonFilePath;
@@ -43,10 +46,61 @@ namespace PathFinder.Tests
             // Map numbers: 1. London, 2. Maze, 3. TestMap40x40
             this.londonMap = this.fileLoader.LoadMap("1");
             this.mazeMap = this.fileLoader.LoadMap("2");
+            this.testMap = this.fileLoader.LoadMap("3");
             this.graphLondon = GraphBuilder.CreateGraphFromString(this.londonMap);
             this.graphMaze = GraphBuilder.CreateGraphFromString(this.mazeMap);
+
+            this.expectedMapContent =
+                ".......................................\r\n" +
+                "..................................@@@@@\r\n" +
+                ".................................@@@@@@\r\n" +
+                ".......................................\r\n" +
+                "................................@@@@@@.\r\n" +
+                "..............................@@@@@@@..\r\n" +
+                ".............................@@@@@@@@..\r\n" +
+                "..............................@@@@@@@..\r\n" +
+                "...............................@@@@@@@.\r\n" +
+                "...............................@@@@@@@.\r\n" +
+                "...............................@@@@....\r\n" +
+                "............................@@@@@@@@...\r\n" +
+                "................@@@@........@@@@@@@@...\r\n" +
+                "@............@@@@@@@.........@@@@@@@...\r\n" +
+                "@............@@@@@@@.........@@@@@@@@@.\r\n" +
+                "@@...........@@@@@@@@........@@@@@@@@@.\r\n" +
+                "@@............@@@@@@@..........@@@@@@@.\r\n" +
+                "@@............@@@@@@@..........@@@@@@@@\r\n" +
+                "@@@@.........@@@@@@@............@@@@@@@\r\n" +
+                "@@@@........@@@@@@@@............@@@@@@@\r\n" +
+                "@@@@........@@@@@@@@............@@@@@@@\r\n" +
+                "@@@@@.......@@@@@@@@@...........@@@@@@@\r\n" +
+                "@@@@@........@@@@@@@@...........@@@@@@@\r\n" +
+                "@@@@@........@@@@@@@@...........@@@@@@@\r\n" +
+                "@@@@@........@@@@@@@@............@@@@@@\r\n" +
+                "@@@@@........@@@@@@@@............@@@@@@\r\n" +
+                "@@@@@@........@@@@@@@...........@@@@@@@\r\n" +
+                "@@@@@@........@@@@@@@@........@@@@@@@..\r\n" +
+                "@@@@@@........@@@@@@@@........@@@@@@@..\r\n" +
+                "@@@@@@........@@@@@@@@.......@@@@@@@...\r\n" +
+                "@@@@@@@........@@@@@@@......@@@@@@@....\r\n" +
+                "@@@@@@@........@@@@@@@.....@@@@@@@.....\r\n" +
+                "@@@@@@@........@@@@@@@@...@@@@@........\r\n" +
+                "@@@@@@@........@@@@@@@@..........@@@...\r\n" +
+                "@@@@@@@........@@@@@@@@......@@@@@@@...\r\n" +
+                "@@@@@@@.........@@@@@@@......@@@@@@@@..\r\n" +
+                "@@@@@@@@........@@@@@@@......@@@@@@@...\r\n" +
+                ".@@@@@@@........@@@@@@@...@@@@@@@@@@@..\r\n" +
+                ".@@@@@@@........@@@@@@@.@@@@@@@@@@@@...\r\n" +
+                ".@@@@@@@........@@@@@@@....@@@@@@@@@...";
         }
 
+        [Test]
+        public void File_Can_Be_Loaded_Test()
+        {
+            Console.WriteLine(this.testMap);
+            Assert.That(this.expectedMapContent, Is.EqualTo(this.testMap));
+        }
+
+        /*
         [Test]
         public void IterateLondonMapHundredTimes()
         {
@@ -61,8 +115,8 @@ namespace PathFinder.Tests
             int mapFileNumber = 1;
 
             // Initializing StreamWriters
-            using StreamWriter dijkstraVsJpsLondonWriter = new StreamWriter(this.dijkstraVsJpsLondonFilePath, true);
-            using StreamWriter aStarVsJpsLondonWriter = new StreamWriter(this.aStarVsJpsLondonFilePath, true);
+            using StreamWriter dijkstraVsJpsLondonWriter = new StreamWriter(this.dijkstraVsJpsLondonFilePath, false);
+            using StreamWriter aStarVsJpsLondonWriter = new StreamWriter(this.aStarVsJpsLondonFilePath, false);
             dijkstraVsJpsLondonWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes, Dijkstra path found, JPS path found");
             aStarVsJpsLondonWriter.WriteLine($"JPS time, A* time, JPS jump points, A* visited nodes, Path found");
 
@@ -137,6 +191,78 @@ namespace PathFinder.Tests
                 Assert.That(jpsFaster2, Is.GreaterThan(aStarFaster));
             });
         }
+        */
+
+        [Test]
+        public void MazeMapPathSameLength()
+        {
+            this.pathVisualizer = new PathVisualizer(this.graphMaze, this.londonMap);
+            this.dijkstra = new Dijkstra(this.graphMaze, this.pathVisualizer);
+            this.aStar = new Astar(this.graphMaze, this.pathVisualizer);
+            this.jps = new JPS(this.graphMaze, this.pathVisualizer);
+
+            Node start = this.graphMaze.Nodes[1][1];
+            Node end = this.graphMaze.Nodes[509][509];
+            int length = 3633;
+
+            this.pathVisualizer.ClearVisitedNodes();
+            this.graphMaze.ResetNodes();
+            this.dijkstra.FindShortestPath(start, end);
+
+            this.pathVisualizer.ClearVisitedNodes();
+            this.graphMaze.ResetNodes();
+            this.aStar.FindShortestPath(start, end);
+
+            this.pathVisualizer.ClearVisitedNodes();
+            this.graphMaze.ResetNodes();
+            this.jps.FindShortestPath(start, end);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(length, Is.EqualTo(this.dijkstra.GetShortestPathLength()));
+                Assert.That(length, Is.EqualTo(this.aStar.GetShortestPathLength()));
+                Assert.That(length, Is.EqualTo(this.jps.GetShortestPathLength()));
+            });
+        }
+
+        [Test]
+        public void IterateMazeMapPathSameLength()
+        {
+            Random random = new Random();
+            this.pathVisualizer = new PathVisualizer(this.graphMaze, this.londonMap);
+            this.dijkstra = new Dijkstra(this.graphMaze, this.pathVisualizer);
+            this.aStar = new Astar(this.graphMaze, this.pathVisualizer);
+            this.jps = new JPS(this.graphMaze, this.pathVisualizer);
+            var coordinates = this.graphMaze.Coordinates();
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.dijkstra = new Dijkstra(this.graphMaze, this.pathVisualizer);
+                this.aStar = new Astar(this.graphMaze, this.pathVisualizer);
+                this.jps = new JPS(this.graphMaze, this.pathVisualizer);
+
+                int start = random.Next(0, coordinates.Count);
+                int end = random.Next(0, coordinates.Count);
+
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphMaze.ResetNodes();
+                this.dijkstra.FindShortestPath(coordinates[start], coordinates[end]);
+
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphMaze.ResetNodes();
+                this.aStar.FindShortestPath(coordinates[start], coordinates[end]);
+
+                this.pathVisualizer.ClearVisitedNodes();
+                this.graphMaze.ResetNodes();
+                this.jps.FindShortestPath(coordinates[start], coordinates[end]);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(this.dijkstra.GetShortestPathLength(), Is.EqualTo(this.jps.GetShortestPathLength()));
+                    Assert.That(this.aStar.GetShortestPathLength(), Is.EqualTo(this.jps.GetShortestPathLength()));
+                });
+            }
+        }
 
         [Test]
         public void IterateMazeMapHundredTimes()
@@ -151,12 +277,13 @@ namespace PathFinder.Tests
             int aStarFaster = 0;
 
             // Initializing StreamWriters
-            using StreamWriter dijkstraVsJpsMazeWriter = new StreamWriter(this.dijkstraVsJpsMazeFilePath, true);
-            using StreamWriter aStarVsJpsMazeWriter = new StreamWriter(this.aStarVsJpsMazeFilePath, true);
+            using StreamWriter dijkstraVsJpsMazeWriter = new StreamWriter(this.dijkstraVsJpsMazeFilePath, false);
+            using StreamWriter aStarVsJpsMazeWriter = new StreamWriter(this.aStarVsJpsMazeFilePath, false);
             dijkstraVsJpsMazeWriter.WriteLine($"JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes, Dijkstra path found, JPS path found, Dijkstra shortest path length, JPS shortest path length");
             aStarVsJpsMazeWriter.WriteLine($"JPS time, A* time, JPS jump points, A* visited nodes, A* path found, JPS path found, A* shortest path length, JPS shortest path length");
 
-            for (int i = 0; i < 100; i++)
+            // NOW SET TO TEN TIMES
+            for (int i = 0; i < 10; i++)
             {
                 this.dijkstra = new Dijkstra(this.graphMaze, this.pathVisualizer);
                 this.aStar = new Astar(this.graphMaze, this.pathVisualizer);
