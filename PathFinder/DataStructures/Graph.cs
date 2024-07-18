@@ -69,7 +69,7 @@ namespace PathFinder.DataStructures
         }
 
         /// <summary>
-        /// Used by Dijkstra and A* algorithms. 
+        /// Used by Dijkstra and A* algorithms.
         /// Retrieves the neighboring nodes of a given node and the costs associated with moving to each neighbor.
         /// This method considers all eight possible directions (horizontal, vertical, and diagonal) and calculates the cost for each movement.
         /// </summary>

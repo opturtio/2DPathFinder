@@ -27,13 +27,19 @@ Date       | Time | Target |
 2024-01-17 | 4h | Trying to fix JPS |
 2024-01-18 | 5h | Continued fixing JPS |
 2024-01-19 | 3h | JPS IS WORKING!!! |
-2024-25-01 | 2h | Created tests for algorithm speed comparison |
-2024-26-01 | 3h | Fixed the stopwatch so that the timing happens in side the pathfinding algorithms. Tests work! JPS is always faster! |
-2024-27-01 | 5h | Created CSV-files for algorithm speed comparison. Were testing the algorithms |
-2024-28-01 | 4h | Created more debugging features |
-2024-29-01 | 1h | Testing and finding bugs |
-2024-03-02 | 2h | Trying to find out what is the problem with JPS |
-2024-05-02 | 6h | Created new branches and created pruning method |
-2024-09-02 | 3h | Studied more JPS and tried to make pruning work in JPS-pruning-added branch |
-2024-10-02 | 5h | Created user guide and tried to figure out how to make JPS work |
-SUM | 157h | |
+2024-01-25 | 2h | Created tests for algorithm speed comparison |
+2024-01-26 | 3h | Fixed the stopwatch so that the timing happens in side the pathfinding algorithms. Tests work! JPS is always faster! |
+2024-01-27 | 5h | Created CSV-files for algorithm speed comparison. Were testing the algorithms |
+2024-01-28 | 4h | Created more debugging features |
+2024-01-29 | 1h | Testing and finding bugs |
+2024-02-03 | 2h | Trying to find out what is the problem with JPS |
+2024-02-05 | 6h | Created new branches and created pruning method |
+2024-02-09 | 3h | Studied more JPS and tried to make pruning work in JPS-pruning-added branch |
+2024-02-10 | 5h | Created user guide and tried to figure out how to make JPS work |
+2024-07-10 | 3h | Fixing pruning |
+2024-07-11 | 4h | Fixing jump method |
+2024-07-12 | 8h | JPS works bit not in big open maps. Created heap |
+2024-07-13 | 5h | Created tests for maze map. Now it is easy to check if JPS works |
+2024-07-17 | 5h | Debugging what is wrong with big open maps |
+2024-07-18 | 3h | More debugging |
+SUM | 185h | |
