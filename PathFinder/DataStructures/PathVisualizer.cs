@@ -1,6 +1,7 @@
 ﻿namespace PathFinder.DataStructures
 {
     using PathFinder.Managers;
+    using System.Diagnostics;
     using System.Text;
 
     /// <summary>
@@ -161,7 +162,8 @@
 
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
-            Thread.Sleep(10);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            while (stopwatch.ElapsedTicks < (Stopwatch.Frequency / 10000)) { }
         }
 
         /// <summary>

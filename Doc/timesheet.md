@@ -42,4 +42,5 @@ Date       | Time | Target |
 2024-07-13 | 5h | Created tests for maze map. Now it is easy to check if JPS works |
 2024-07-17 | 5h | Debugging what is wrong with big open maps |
 2024-07-18 | 3h | More debugging |
+2024-07-31 | 6h | More debugging |
 SUM | 185h | |
