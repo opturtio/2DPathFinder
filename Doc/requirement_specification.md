@@ -7,13 +7,16 @@ The core objective is to explore these algorithms' efficiency and performance ch
 
 ## References
 
-Original study paper: 
+Original study paper:
+
 [Online Graph Pruning for Pathfinding on Grid Maps by Daniel Harabor and Alban Grastien](http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf)
 
 Original JPS algorithm:
+
 [JPS algorithm](https://bitbucket.org/dharabor/pathfinding/src/master/warthog/src/jps/)
 
 Maps:
+
 [2D Pathfinding Benchmarks by Nathan Sturtevant's Moving AI Lab](https://www.movingai.com/benchmarks/grids.html)
 
 Additional references:
