@@ -5,8 +5,18 @@ As part of the Bachelor of Computer Science program at the Algorithms and AI Lab
 
 The core objective is to explore these algorithms' efficiency and performance characteristics in determining the shortest path on a grid-based map, which could be comparable to urban road networks. The application will require a defined starting and ending point on the grid to conduct pathfinding tasks. Through this implementation, the project aims to evaluate the speed and effectiveness of each algorithm, providing a comparative study of their results in practical scenarios.
 
-## Sources and Material
-[Original release: Online Graph Pruning for Pathfinding on Grid Maps by Daniel Harabor and Alban Grastien](http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf)
+## References
+
+Original study paper: 
+[Online Graph Pruning for Pathfinding on Grid Maps by Daniel Harabor and Alban Grastien](http://users.cecs.anu.edu.au/~dharabor/data/papers/harabor-grastien-aaai11.pdf)
+
+Original JPS algorithm:
+[JPS algorithm](https://bitbucket.org/dharabor/pathfinding/src/master/warthog/src/jps/)
+
+Maps:
+[2D Pathfinding Benchmarks by Nathan Sturtevant's Moving AI Lab](https://www.movingai.com/benchmarks/grids.html)
+
+Additional references:
 
 [Introduction to the A* Algorithm from Red Blob Games](https://www.redblobgames.com/pathfinding/a-star/introduction.html)
 
@@ -17,5 +27,3 @@ The core objective is to explore these algorithms' efficiency and performance ch
 [Visualization](https://qiao.github.io/PathFinding.js/visual/)
 
 [Project2_Jump-Point-Search-Algorithm by Simon Stoyanov](https://simonstoyanov.github.io/Project2_Jump-Point-Search-Algorithm/)
-
-[2D Pathfinding Benchmarks by Nathan Sturtevant's Moving AI Lab](https://www.movingai.com/benchmarks/grids.html)
