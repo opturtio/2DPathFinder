@@ -100,8 +100,26 @@ namespace PathFinder.Tests
             Assert.That(this.expectedMapContent, Is.EqualTo(this.testMap));
         }
 
-        /*
         [Test]
+        public void RightLength()
+        {
+            this.pathVisualizer = new PathVisualizer(this.graphLondon, this.londonMap);
+            var coordinates = this.graphLondon.Coordinates();
+
+            int length = 1220;
+            this.jps = new JPS(this.graphLondon, this.pathVisualizer);
+
+            this.pathVisualizer.ClearVisitedNodes();
+            this.graphLondon.ResetNodes();
+
+            this.jps.FindShortestPath(coordinates[0], coordinates[coordinates.Count - 1]);
+
+            Console.WriteLine("JPS shortest path length: " + this.jps.GetShortestPathLength());
+
+            Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(length));
+        }
+
+        /*
         public void IterateLondonMapHundredTimes()
         {
             Random random = new Random();
@@ -219,9 +237,9 @@ namespace PathFinder.Tests
 
             Assert.Multiple(() =>
             {
-                Assert.That(length, Is.EqualTo(this.dijkstra.GetShortestPathLength()));
-                Assert.That(length, Is.EqualTo(this.aStar.GetShortestPathLength()));
-                Assert.That(length, Is.EqualTo(this.jps.GetShortestPathLength()));
+                Assert.That(this.dijkstra.GetShortestPathLength(), Is.EqualTo(length));
+                Assert.That(this.aStar.GetShortestPathLength(), Is.EqualTo(length));
+                Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(length));
             });
         }
 
@@ -258,8 +276,8 @@ namespace PathFinder.Tests
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(this.dijkstra.GetShortestPathLength(), Is.EqualTo(this.jps.GetShortestPathLength()));
-                    Assert.That(this.aStar.GetShortestPathLength(), Is.EqualTo(this.jps.GetShortestPathLength()));
+                    Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(this.dijkstra.GetShortestPathLength()));
+                    Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(this.aStar.GetShortestPathLength()));
                 });
             }
         }
