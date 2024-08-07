@@ -4,24 +4,24 @@
 
 ## Installation to Linux, Mac or Windows
 
-1. Download latest [dotnet SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and install it.
+1. Choose correct OS, download latest [dotnet SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and install it.
 
 2. Open CLI or CMD and clone the repository:
 ```bash
 git clone https://github.com/opturtio/PathFinder.git
 ```
 
-1. Navigate to the project directory:
+3. Navigate to the project directory:
 ```bash
 cd PathFinder/PathFinder
 ```
 
-1. Build the project:
+4. Build the project:
 ```bash
 dotnet build
 ```
 
-1. Run the project:
+5. Run the project:
 ```bash
 dotnet run
 ```
