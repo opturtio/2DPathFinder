@@ -2,26 +2,26 @@
 
 #### This program is developed using Windows, thus it is recommended to use it. To test the program on Linux or Mac, follow the installation instructions below.
 
-## Installation to Linux or Mac
+## Installation to Linux, Mac or Windows
 
 1. Download latest [dotnet SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and install it.
 
-2. Clone the repository using the CLI:
+2. Open CLI or CMD and clone the repository:
 ```bash
 git clone https://github.com/opturtio/PathFinder.git
 ```
 
-3. Navigate to the project directory
+1. Navigate to the project directory:
 ```bash
 cd PathFinder/PathFinder
 ```
 
-4. Build the project
+1. Build the project:
 ```bash
 dotnet build
 ```
 
-5. Run the project
+1. Run the project:
 ```bash
 dotnet run
 ```
@@ -46,7 +46,7 @@ git clone https://github.com/opturtio/PathFinder.git
 5. Press ![](./Pics/PlayButton.png) button to start the program.
 
 
-### Debugger: Character Representation
+## Debugger: Character Representation
 
 #### Wall: `@`
 
