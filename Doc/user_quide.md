@@ -1,12 +1,38 @@
 # User Guide
 
-#### This program is developed using Windows, thus it is recommended to use it.
+#### This program is developed using Windows, thus it is recommended to use it. Just to test the program use installation instruction
 
-## Installation
+## Installation to Linux or Mac
+
+1. Download latest [dotnet SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and install it.
+
+2. Clone the repository using the CLI:
+```bash
+git clone https://github.com/opturtio/PathFinder.git
+```
+
+3. Navigate to the project directory
+```bash
+cd PathFinder
+```
+
+4. Build the project
+```bash
+dotnet build
+```
+
+5. Run the project
+```bash
+dotnet run
+```
+
+
+## Installation for Windows with Visual Studio 2022
+#### (Best option to test the program because it is developed this way)
 
 1. Install [Git](https://git-scm.com/download/win) for Windows.
 
-2. Recommendation! Download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030). (Choose from workloads .NET desktop development)
+2. Download and installing [Visual Studio 2022](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&passive=false&cid=2030). (Choose from workloads .NET desktop development)
 
 3. Clone the project in Visual Studio 2022 or clone the repository using the command prompt:
 ```bash
