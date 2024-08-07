@@ -1,6 +1,6 @@
 # User Guide
 
-#### This program is developed using Windows, thus it is recommended to use it. Just to test the program use installation instruction
+#### This program is developed using Windows, thus it is recommended to use it. To test the program on Linux or Mac, follow the installation instructions below.
 
 ## Installation to Linux or Mac
 
@@ -13,7 +13,7 @@ git clone https://github.com/opturtio/PathFinder.git
 
 3. Navigate to the project directory
 ```bash
-cd PathFinder
+cd PathFinder/PathFinder
 ```
 
 4. Build the project
@@ -25,6 +25,8 @@ dotnet build
 ```bash
 dotnet run
 ```
+
+Note: There might be problems with packages. Follow the instructions provided by the CLI to resolve any issues.
 
 
 ## Installation for Windows with Visual Studio 2022
