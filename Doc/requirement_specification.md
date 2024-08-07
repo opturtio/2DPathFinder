@@ -15,6 +15,10 @@ Original JPS algorithm:
 
 [JPS algorithm](https://bitbucket.org/dharabor/pathfinding/src/master/warthog/src/jps/)
 
+Original blog post series by Daniel Harabor:
+
+[Blog by Daniel Harabor](https://harablog.wordpress.com/)
+
 Maps:
 
 [2D Pathfinding Benchmarks by Nathan Sturtevant's Moving AI Lab](https://www.movingai.com/benchmarks/grids.html)
