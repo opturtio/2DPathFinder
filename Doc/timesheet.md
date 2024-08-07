@@ -43,4 +43,6 @@ Date       | Time | Target |
 2024-07-17 | 5h | Debugging what is wrong with big open maps |
 2024-07-18 | 3h | More debugging |
 2024-07-31 | 6h | More debugging |
-SUM | 185h | |
+2024-08-05 | 2h | Debugging pruning method |
+2024-08-07 | 4h | Updating documentary and created test for London map |
+SUM | 196h | |

@@ -101,7 +101,7 @@ namespace PathFinder.Tests
         }
 
         [Test]
-        public void RightLength()
+        public void ShortestPathInLondonMapIsRightLength()
         {
             this.pathVisualizer = new PathVisualizer(this.graphLondon, this.londonMap);
             var coordinates = this.graphLondon.Coordinates();
