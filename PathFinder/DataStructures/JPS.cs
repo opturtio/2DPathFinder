@@ -11,7 +11,6 @@ namespace PathFinder.DataStructures
         private int shortestPathLength = 0;
         private int visitedNodes = 0;
         private bool pathFound = false;
-        private Tuple<int, int> realJumpPoint = null;
 
 
         public JPS(Graph graph, PathVisualizer visualizer)
@@ -52,7 +51,7 @@ namespace PathFinder.DataStructures
                         continue;
                     }
 
-                    var jumpPoint = this.graph.Nodes[this.realJumpPoint.Item2][this.realJumpPoint.Item1];
+                    var jumpPoint = this.graph.Nodes[jumpPointCoords.Value.y][jumpPointCoords.Value.x];
 
                     double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
 
@@ -212,13 +211,14 @@ namespace PathFinder.DataStructures
             Node currentNode = this.graph.Nodes[y][x];
             Node parentNode = this.graph.Nodes[py][px];
 
-            currentNode.Parent = parentNode;
-            currentNode.Visited = true;
-
+            // Avoid revisiting nodes
             if (currentNode.Parent != null && currentNode.Parent != parentNode)
             {
                 return null;
             }
+
+            currentNode.Parent = parentNode;
+            currentNode.Visited = true;
 
             this.pathVisualizer.VisualizePath(currentNode, start, end, true);
 
@@ -235,14 +235,12 @@ namespace PathFinder.DataStructures
                 if ((this.IsValidPosition(x - dx, y + dy) && !this.IsValidPosition(x - dx, y)) ||
                     (this.IsValidPosition(x + dx, y - dy) && !this.IsValidPosition(x, y - dy)))
                 {
-                    this.realJumpPoint = Tuple.Create(x, y);
                     return (x, y);
                 }
 
                 // When moving diagonally, must check for vertical/horizontal jump points
                 if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
                 {
-                    this.realJumpPoint = Tuple.Create(x, y);
                     return (x, y);
                 }
             }
@@ -254,7 +252,6 @@ namespace PathFinder.DataStructures
                     if ((this.IsValidPosition(x + dx, y + 1) && !this.IsValidPosition(x, y + 1)) ||
                         (this.IsValidPosition(x + dx, y - 1) && !this.IsValidPosition(x, y - 1)))
                     {
-                        this.realJumpPoint = Tuple.Create(x, y);
                         return (x, y);
                     }
                 }
@@ -263,7 +260,6 @@ namespace PathFinder.DataStructures
                     if ((this.IsValidPosition(x + 1, y + dy) && !this.IsValidPosition(x + 1, y)) ||
                         (this.IsValidPosition(x - 1, y + dy) && !this.IsValidPosition(x - 1, y)))
                     {
-                        this.realJumpPoint = Tuple.Create(x, y);
                         return (x, y);
                     }
                 }
