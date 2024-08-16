@@ -163,7 +163,7 @@
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
             Stopwatch stopwatch = Stopwatch.StartNew();
-            while (stopwatch.ElapsedTicks < (Stopwatch.Frequency / 10000)) { }
+            while (stopwatch.ElapsedTicks < (Stopwatch.Frequency / 10)) { }
         }
 
         /// <summary>

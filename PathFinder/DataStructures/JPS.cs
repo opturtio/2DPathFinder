@@ -11,6 +11,7 @@ namespace PathFinder.DataStructures
         private int shortestPathLength = 0;
         private int visitedNodes = 0;
         private bool pathFound = false;
+        private Tuple<int, int> realJumpPoint = null;
 
 
         public JPS(Graph graph, PathVisualizer visualizer)
@@ -51,7 +52,7 @@ namespace PathFinder.DataStructures
                         continue;
                     }
 
-                    var jumpPoint = this.graph.Nodes[jumpPointCoords.Value.y][jumpPointCoords.Value.x];
+                    var jumpPoint = this.graph.Nodes[this.realJumpPoint.Item2][this.realJumpPoint.Item1];
 
                     double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
 
@@ -110,27 +111,27 @@ namespace PathFinder.DataStructures
                 // Diagonal movement
                 if (dx != 0 && dy != 0)
                 {
-                    if (this.IsValidPosition(x, y + dy) && this.graph.CanMove(x, y + dy))
+                    if (this.IsValidPosition(x, y + dy))
                     {
                         neighbors.Add(this.graph.Nodes[y + dy][x]);
                     }
 
-                    if (this.IsValidPosition(x + dx, y) && this.graph.CanMove(x + dx, y))
+                    if (this.IsValidPosition(x + dx, y))
                     {
                         neighbors.Add(this.graph.Nodes[y][x + dx]);
                     }
 
-                    if (this.IsValidPosition(x + dx, y + dy) && this.graph.CanMove(x + dx, y + dy))
+                    if (this.IsValidPosition(x + dx, y + dy))
                     {
                         neighbors.Add(this.graph.Nodes[y + dy][x + dx]);
                     }
 
-                    if (this.IsValidPosition(x - dx, y) && !this.graph.CanMove(x - dx, y))
+                    if (!this.IsValidPosition(x - dx, y) && this.IsValidPosition(x - dx, y + dy))
                     {
                         neighbors.Add(this.graph.Nodes[y + dy][x - dx]);
                     }
 
-                    if (this.IsValidPosition(x, y - dy) && !this.graph.CanMove(x, y - dy))
+                    if (!this.IsValidPosition(x, y - dy) && this.IsValidPosition(x + dx, y - dy))
                     {
                         neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
                     }
@@ -140,34 +141,34 @@ namespace PathFinder.DataStructures
                 {
                     if (dx == 0)
                     {
-                        if (this.IsValidPosition(x, y + dy) && this.graph.CanMove(x, y + dy))
+                        if (this.IsValidPosition(x, y + dy))
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x]);
                         }
 
-                        if (this.IsValidPosition(x + 1, y + dy) && !this.graph.CanMove(x + 1, y))
+                        if (!this.IsValidPosition(x + 1, y) && this.IsValidPosition(x + 1, y + dy))
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x + 1]);
                         }
 
-                        if (this.IsValidPosition(x - 1, y + dy) && !this.graph.CanMove(x - 1, y))
+                        if (!this.IsValidPosition(x - 1, y) && this.IsValidPosition(x - 1, y + dy))
                         {
                             neighbors.Add(this.graph.Nodes[y + dy][x - 1]);
                         }
                     }
                     else
                     {
-                        if (this.IsValidPosition(x + dx, y) && this.graph.CanMove(x + dx, y))
+                        if (this.IsValidPosition(x + dx, y))
                         {
                             neighbors.Add(this.graph.Nodes[y][x + dx]);
                         }
 
-                        if (this.IsValidPosition(x + dx, y + 1) && !this.graph.CanMove(x, y + 1))
+                        if (!this.IsValidPosition(x, y + 1) && this.IsValidPosition(x + dx, y + 1))
                         {
                             neighbors.Add(this.graph.Nodes[y + 1][x + dx]);
                         }
 
-                        if (this.IsValidPosition(x + dx, y - 1) && !this.graph.CanMove(x, y - 1))
+                        if (!this.IsValidPosition(x, y - 1) && this.IsValidPosition(x + dx, y - 1))
                         {
                             neighbors.Add(this.graph.Nodes[y - 1][x + dx]);
                         }
@@ -193,7 +194,8 @@ namespace PathFinder.DataStructures
         private bool IsValidPosition(int x, int y)
         {
             return y >= 0 && y < this.graph.Nodes.Count &&
-                   x >= 0 && x < this.graph.Nodes[y].Count;
+                   x >= 0 && x < this.graph.Nodes[y].Count &&
+                   !this.graph.Nodes[y][x].IsObstacle;
         }
 
         private (int x, int y)? Jump(int x, int y, int px, int py, Node start, Node end)
@@ -202,7 +204,7 @@ namespace PathFinder.DataStructures
             int dy = y - py;
 
             // Check if the next position is within bounds and not an obstacle
-            if (!this.graph.CanMove(x, y))
+            if (!this.IsValidPosition(x, y))
             {
                 return null;
             }
@@ -210,14 +212,13 @@ namespace PathFinder.DataStructures
             Node currentNode = this.graph.Nodes[y][x];
             Node parentNode = this.graph.Nodes[py][px];
 
-            // Avoid revisiting nodes
+            currentNode.Parent = parentNode;
+            currentNode.Visited = true;
+
             if (currentNode.Parent != null && currentNode.Parent != parentNode)
             {
                 return null;
             }
-
-            currentNode.Parent = parentNode;
-            currentNode.Visited = true;
 
             this.pathVisualizer.VisualizePath(currentNode, start, end, true);
 
@@ -231,15 +232,17 @@ namespace PathFinder.DataStructures
             // Check for forced neighbors when moving diagonally
             if (dx != 0 && dy != 0)
             {
-                if ((this.IsValidPosition(x - dx, y + dy) && this.graph.CanMove(x - dx, y + dy) && !this.graph.CanMove(x - dx, y)) ||
-                    (this.IsValidPosition(x + dx, y - dy) && this.graph.CanMove(x + dx, y - dy) && !this.graph.CanMove(x, y - dy)))
+                if ((this.IsValidPosition(x - dx, y + dy) && !this.IsValidPosition(x - dx, y)) ||
+                    (this.IsValidPosition(x + dx, y - dy) && !this.IsValidPosition(x, y - dy)))
                 {
+                    this.realJumpPoint = Tuple.Create(x, y);
                     return (x, y);
                 }
 
                 // When moving diagonally, must check for vertical/horizontal jump points
                 if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
                 {
+                    this.realJumpPoint = Tuple.Create(x, y);
                     return (x, y);
                 }
             }
@@ -248,17 +251,19 @@ namespace PathFinder.DataStructures
                 // Check for forced neighbors when moving horizontally or vertically
                 if (dx != 0) // Moving along x-axis
                 {
-                    if ((this.IsValidPosition(x + dx, y + 1) && this.graph.CanMove(x + dx, y + 1) && !this.graph.CanMove(x, y + 1)) ||
-                        (this.IsValidPosition(x + dx, y - 1) && this.graph.CanMove(x + dx, y - 1) && !this.graph.CanMove(x, y - 1)))
+                    if ((this.IsValidPosition(x + dx, y + 1) && !this.IsValidPosition(x, y + 1)) ||
+                        (this.IsValidPosition(x + dx, y - 1) && !this.IsValidPosition(x, y - 1)))
                     {
+                        this.realJumpPoint = Tuple.Create(x, y);
                         return (x, y);
                     }
                 }
                 else // Moving along y-axis
                 {
-                    if ((this.IsValidPosition(x + 1, y + dy) && this.graph.CanMove(x + 1, y + dy) && !this.graph.CanMove(x + 1, y)) ||
-                        (this.IsValidPosition(x - 1, y + dy) && this.graph.CanMove(x - 1, y + dy) && !this.graph.CanMove(x - 1, y)))
+                    if ((this.IsValidPosition(x + 1, y + dy) && !this.IsValidPosition(x + 1, y)) ||
+                        (this.IsValidPosition(x - 1, y + dy) && !this.IsValidPosition(x - 1, y)))
                     {
+                        this.realJumpPoint = Tuple.Create(x, y);
                         return (x, y);
                     }
                 }
