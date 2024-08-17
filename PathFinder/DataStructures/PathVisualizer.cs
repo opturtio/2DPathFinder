@@ -163,7 +163,7 @@
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
             Stopwatch stopwatch = Stopwatch.StartNew();
-            while (stopwatch.ElapsedTicks < (Stopwatch.Frequency / 10)) { }
+            while (stopwatch.ElapsedTicks < (Stopwatch.Frequency / 100)) { }
         }
 
         /// <summary>
@@ -236,6 +236,14 @@
                     else if (this.visitedNodes.Contains(node))
                     {
                         visualizedMap.Append("#");
+                    }
+                    else if (node == this.startNode)
+                    {
+                        visualizedMap.Append('S');
+                    }
+                    else if (node == this.endNode)
+                    {
+                        visualizedMap.Append('G');
                     }
                     else
                     {

@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace PathFinder.DataStructures
 {
+    /// <summary>
+    /// Jump Point Search (JPS) algorithm implementation.
+    /// </summary>
     public class JPS
     {
         private readonly Graph graph;
@@ -12,7 +14,11 @@ namespace PathFinder.DataStructures
         private int visitedNodes = 0;
         private bool pathFound = false;
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JPS"/> class.
+        /// </summary>
+        /// <param name="graph">The graph to be processed by the JPS algorithm.</param>
+        /// <param name="visualizer">The path visualizer to visualize the JPS algorithm in the console.</param>
         public JPS(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
@@ -20,6 +26,12 @@ namespace PathFinder.DataStructures
             this.jpsStopwatch = new Stopwatch();
         }
 
+        /// <summary>
+        /// Finds the shortest path between two given nodes using the JPS algorithm.
+        /// </summary>
+        /// <param name="start">The point where the path begins.</param>
+        /// <param name="end">The point where the path ends.</param>
+        /// <returns>Shortest path in a form of a list of nodes.</returns>
         public List<Node> FindShortestPath(Node start, Node end)
         {
             this.jpsStopwatch.Start();
@@ -53,7 +65,7 @@ namespace PathFinder.DataStructures
 
                     var jumpPoint = this.graph.Nodes[jumpPointCoords.Value.y][jumpPointCoords.Value.x];
 
-                    double newCost = currentNode.Cost + this.Heuristic(currentNode, jumpPoint);
+                    double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
 
                     if (newCost < jumpPoint.Cost)
                     {
@@ -77,6 +89,12 @@ namespace PathFinder.DataStructures
             return new List<Node>();
         }
 
+        /// <summary>
+        /// Determines the movement direction between two points.
+        /// </summary>
+        /// <param name="to">The destination coordinate.</param>
+        /// <param name="from">The starting coordinate.</param>
+        /// <returns>An integer representing the direction of movement: -1, 0, or 1.</returns>
         private int MovementDirection(int to, int from)
         {
             int direction = to - from;
@@ -93,6 +111,11 @@ namespace PathFinder.DataStructures
             return 0;
         }
 
+        /// <summary>
+        /// Prunes the neighbors of the current node to identify possible jump points.
+        /// </summary>
+        /// <param name="current">The current node being processed.</param>
+        /// <returns>A list of neighboring nodes that are potential jump points.</returns>
         private List<Node> PruneNeighbors(Node current)
         {
             List<Node> neighbors = new List<Node>();
@@ -135,6 +158,7 @@ namespace PathFinder.DataStructures
                         neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
                     }
                 }
+
                 // Horizontal or vertical movement
                 else
                 {
@@ -190,6 +214,12 @@ namespace PathFinder.DataStructures
             return neighbors;
         }
 
+        /// <summary>
+        /// Checks whether a position is valid (within bounds and not an obstacle).
+        /// </summary>
+        /// <param name="x">The X-coordinate of the position.</param>
+        /// <param name="y">The Y-coordinate of the position.</param>
+        /// <returns>A boolean indicating if the position is valid.</returns>
         private bool IsValidPosition(int x, int y)
         {
             return y >= 0 && y < this.graph.Nodes.Count &&
@@ -197,12 +227,21 @@ namespace PathFinder.DataStructures
                    !this.graph.Nodes[y][x].IsObstacle;
         }
 
+        /// <summary>
+        /// Performs the Jump function, which identifies the next jump point in a given direction.
+        /// </summary>
+        /// <param name="x">The current X-coordinate in the direction of movement.</param>
+        /// <param name="y">The current Y-coordinate in the direction of movement.</param>
+        /// <param name="px">The previous X-coordinate (from the parent node).</param>
+        /// <param name="py">The previous Y-coordinate (from the parent node).</param>
+        /// <param name="start">The start node of the path.</param>
+        /// <param name="end">The end node of the path.</param>
+        /// <returns>The coordinates of the jump point if found, otherwise null.</returns>
         private (int x, int y)? Jump(int x, int y, int px, int py, Node start, Node end)
         {
             int dx = x - px;
             int dy = y - py;
 
-            // Check if the next position is within bounds and not an obstacle
             if (!this.IsValidPosition(x, y))
             {
                 return null;
@@ -211,7 +250,7 @@ namespace PathFinder.DataStructures
             Node currentNode = this.graph.Nodes[y][x];
             Node parentNode = this.graph.Nodes[py][px];
 
-            // Avoid revisiting nodes
+            // Avoid revisiting nodes. This should not be here but is needed to prevent infinite loop when building the path.
             if (currentNode.Parent != null && currentNode.Parent != parentNode)
             {
                 return null;
@@ -222,10 +261,10 @@ namespace PathFinder.DataStructures
 
             this.pathVisualizer.VisualizePath(currentNode, start, end, true);
 
-            // Check if the current position is the end node
             if (currentNode == end)
             {
                 this.pathFound = true;
+                end.Cost = currentNode.Cost;
                 return (x, y);
             }
 
@@ -247,7 +286,7 @@ namespace PathFinder.DataStructures
             else
             {
                 // Check for forced neighbors when moving horizontally or vertically
-                if (dx != 0) // Moving along x-axis
+                if (dx != 0)
                 {
                     if ((this.IsValidPosition(x + dx, y + 1) && !this.IsValidPosition(x, y + 1)) ||
                         (this.IsValidPosition(x + dx, y - 1) && !this.IsValidPosition(x, y - 1)))
@@ -255,7 +294,7 @@ namespace PathFinder.DataStructures
                         return (x, y);
                     }
                 }
-                else // Moving along y-axis
+                else
                 {
                     if ((this.IsValidPosition(x + 1, y + dy) && !this.IsValidPosition(x + 1, y)) ||
                         (this.IsValidPosition(x - 1, y + dy) && !this.IsValidPosition(x - 1, y)))
@@ -265,32 +304,56 @@ namespace PathFinder.DataStructures
                 }
             }
 
-            // Recursive call in the direction of movement
             return this.Jump(x + dx, y + dy, x, y, start, end);
         }
 
-        private double Heuristic(Node current, Node jumpPoint)
+        /// <summary>
+        /// Estimates the distance between the current jump point and the end node using the Octile heuristic.
+        /// </summary>
+        /// <param name="jumpPoint">The current node being evaluated.</param>
+        /// <param name="end">The end node.</param>
+        /// <returns>The estimated cost from the current node to the goal node.</returns>
+        private double Heuristic(Node jumpPoint, Node end)
         {
-            int dx = Math.Abs(jumpPoint.X - current.X);
-            int dy = Math.Abs(jumpPoint.Y - current.Y);
-            return Math.Sqrt(dx * dx + dy * dy);
+            int dx = Math.Abs(end.X - jumpPoint.X);
+            int dy = Math.Abs(end.Y - jumpPoint.Y);
+            double D = 1.0;
+            double D2 = Math.Sqrt(2);
+
+            return D * (dx + dy) + (D2 - 2 * D) * Math.Min(dx, dy);
         }
 
+        /// <summary>
+        /// Retrieves the total number of nodes that have been visited during the pathfinding.
+        /// </summary>
+        /// <returns>An integer representing the count of visited nodes.</returns>
         public int GetVisitedNodes()
         {
             return this.visitedNodes;
         }
 
+        /// <summary>
+        /// Retrieves the time JPS took to find the end node.
+        /// </summary>
+        /// <returns>The time in milliseconds.</returns>
         public double GetStopwatchTime()
         {
             return this.jpsStopwatch.Elapsed.TotalMilliseconds;
         }
 
+        /// <summary>
+        /// Determines whether a path from the start node to the end node has been found.
+        /// </summary>
+        /// <returns>A boolean value indicating whether a path was successfully found. Returns true if a path exists, otherwise false.</returns>
         public bool IsPathFound()
         {
             return this.pathFound;
         }
 
+        /// <summary>
+        /// Retrieves the length of the shortest path found by the JPS algorithm.
+        /// </summary>
+        /// <returns>The length of the shortest path in number of nodes.</returns>
         public int GetShortestPathLength()
         {
             return this.shortestPathLength;

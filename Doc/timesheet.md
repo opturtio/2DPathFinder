@@ -45,4 +45,6 @@ Date       | Time | Target |
 2024-07-31 | 6h | More debugging |
 2024-08-05 | 2h | Debugging pruning method |
 2024-08-07 | 4h | Updating documentary and created test for London map |
-SUM | 196h | |
+2024-08-16 | 5h | Trying to solve the problem of revisited nodes |
+2024-08-17 | 6h | Continued to solve the problem |
+SUM | 207h | |
