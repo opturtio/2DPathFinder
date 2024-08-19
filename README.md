@@ -9,9 +9,9 @@ Language of implementation is C#. This project is for the Algorithms and AI Lab,
 
 [User Guide](./Doc/user_quide.md)
 
-[Design Documentation](./Doc/design_documentation.md)
+[Implementation Document](./Doc/implementation_document.md)
 
-[Testing Documentation](./Doc/testing_documentation.md)
+[Testing Document](./Doc/testing_document.md)
 
 [Timesheet](./Doc/timesheet.md)
 

@@ -47,4 +47,5 @@ Date       | Time | Target |
 2024-08-07 | 4h | Updating documentary and created test for London map |
 2024-08-16 | 5h | Trying to solve the problem of revisited nodes |
 2024-08-17 | 6h | Continued to solve the problem |
-SUM | 207h | |
+2024-08-19 | 2h | Planned and updated documentation. Mainly updated desing documentation. |
+SUM | 209h | |

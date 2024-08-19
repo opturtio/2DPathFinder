@@ -2,7 +2,7 @@
 #### This document outlines the structure, components, and functionalities of the project. 
 
 ## **Design**
-The PathFinder program is structured into six main parts: Pathfinding Algorithms for finding the shortest paths, Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, a User Interface for user interaction and display, and Resources to store all the resource files, such as maps and strings used in the program.
+The PathFinder program is structured into six main parts: Pathfinding Algorithms for finding the shortest paths, Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, User Interface for user interaction and display, and Resources to store all the resource files, such as maps and strings used in the program.
 
 ## **Pathfinding Algorithms**
 The Pathfinding Algorithms contains classes to determine the shortest or most efficient paths in a graph.

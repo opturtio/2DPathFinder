@@ -1,4 +1,4 @@
-# Testing documentation
+# Testing document
 
 ### Unit testing
 Unit testing was made by using NUint and NUnit 3 Test Adapter
