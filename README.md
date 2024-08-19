@@ -1,6 +1,6 @@
 # PathFinder
 
-## Dijkstra vs JPS Algorithm Comparison
+## Dijkstra vs A* vs JPS Algorithms Comparison
 
 Language of implementation is C#. This project is for the Algorithms and AI Lab, part of the Bachelor of Computer Science program.
 
