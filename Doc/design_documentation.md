@@ -2,9 +2,10 @@
 #### This document outlines the structure, components, and functionalities of the project. 
 
 ## **Design**
-The PathFinder program is structured into six main parts: Pathfinding Algorithms for finding the shortest paths, Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, a User Interface for user interaction and display, and Resources to store all the resource files e.g. maps and strings used in the program.
+The PathFinder program is structured into six main parts: Pathfinding Algorithms for finding the shortest paths, Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, a User Interface for user interaction and display, and Resources to store all the resource files, such as maps and strings used in the program.
 
 ## **Pathfinding Algorithms**
+The Pathfinding Algorithms contains classes to determine the shortest or most efficient paths in a graph.
 
 #### **Dijkstra**
 Implements Dijkstra's algorithm for finding the shortest path in a graph. This algorithm explores all possible paths to find the shortest one, making it a reliable but potentially slower method depending on the graph.
@@ -16,7 +17,7 @@ Implements the A algorithm, that combines the benefits of Dijkstra's algorithm w
 Implements the Jump Point Search algorithm, which is an optimized version of A* designed for uniform grids. JPS speeds up the process by skipping over unnecessary nodes, making it faster in many grid-based scenarios.
 
 ## **Data Structures**
-The Data Structures contains classes that are essential for creating the map and managing the paths for the pathfinding algorithms. 
+The Data Structures contains classes that are essential for setting up, representing, and managing the graph and its elements, which are used by the pathfinding algorithms.
 
 #### **Binary Heap**
 Used by the JPS algorithm to manage nodes, enabling quick insertion and removal of elements.
