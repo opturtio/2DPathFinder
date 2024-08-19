@@ -14,7 +14,7 @@ Implements Dijkstra's algorithm for finding the shortest path in a graph. This a
 Implements the A algorithm, that combines the benefits of Dijkstra's algorithm with a heuristic approach to guide the search process, often making it faster by prioritizing promising paths.
 
 ### **JPS (Jump Point Search)**
-Implements the Jump Point Search algorithm, which is an optimized version of A* designed for uniform grids. JPS speeds up the process by skipping over unnecessary nodes, making it faster in many grid-based scenarios.
+Implements the Jump Point Search algorithm, which is an optimized version of A* designed for unweighted uniform grids. JPS speeds up the process by skipping over unnecessary nodes, making it faster in many grid-based scenarios.
 
 ## **Data Structures**
 The Data Structures contains classes that are essential for setting up, representing, and managing the graph and its elements, which are used by the pathfinding algorithms.
