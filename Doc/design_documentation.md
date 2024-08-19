@@ -4,12 +4,12 @@
 ## **Design**
 The PathFinder program is structured into six main parts: Pathfinding Algorithms for finding the shortest paths, Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, a User Interface for user interaction and display, and Resources to store all the resource files e.g. maps and strings used in the program.
 
-## **Pathfinding Algorigms**
+## **Pathfinding Algorithms**
 
 #### **Dijkstra**
 Implements Dijkstra's algorithm for finding the shortest path in a graph. This algorithm explores all possible paths to find the shortest one, making it a reliable but potentially slower method depending on the graph.
 
-#### **A* (A-star)**
+#### **A\* (A-star)**
 Implements the A algorithm, that combines the benefits of Dijkstra's algorithm with a heuristic approach to guide the search process, often making it faster by prioritizing promising paths.
 
 #### **JPS (Jump Point Search)**
