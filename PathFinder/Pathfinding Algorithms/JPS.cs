@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using PathFinder.Managers;
 
 namespace PathFinder.DataStructures
 {

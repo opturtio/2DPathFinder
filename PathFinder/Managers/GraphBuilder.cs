@@ -1,4 +1,6 @@
-﻿namespace PathFinder.DataStructures
+﻿using PathFinder.DataStructures;
+
+namespace PathFinder.Managers
 {
     /// <summary>
     /// Creates a graph from the chosen string.

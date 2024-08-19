@@ -1,6 +1,6 @@
-﻿namespace PathFinder.DataStructures
+﻿namespace PathFinder.Managers
 {
-    using PathFinder.Managers;
+    using PathFinder.DataStructures;
     using System.Diagnostics;
     using System.Text;
 
@@ -28,14 +28,14 @@
         {
             this.graph = graph;
             this.currentMap = currentMap;
-            this.currentMapInitalized = currentMap;
-            this.visitedNodes = new HashSet<Node>();
-            this.isDebug = false;
+            currentMapInitalized = currentMap;
+            visitedNodes = new HashSet<Node>();
+            isDebug = false;
         }
 
         public void ClearVisitedNodes()
         {
-            this.visitedNodes.Clear();
+            visitedNodes.Clear();
         }
 
         /// <summary>
@@ -43,7 +43,7 @@
         /// </summary>
         public void ActivateDebugger()
         {
-            this.isDebug = true;
+            isDebug = true;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@
         /// </summary>
         public void DeactivateDebugger()
         {
-            this.isDebug = false;
+            isDebug = false;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@
         /// </summary>
         public void InitializeCurrentMap()
         {
-            this.currentMap = this.currentMapInitalized;
+            currentMap = currentMapInitalized;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@
         /// <returns>Returns current map.</returns>
         public string GetCurrentMap()
         {
-            return this.currentMap;
+            return currentMap;
         }
 
         /// <summary>
@@ -77,25 +77,25 @@
         /// <param name="nodes">A list of nodes representing the shortest path from the start node to the end node.</param>
         public string VisualizeShortestPath(List<Node> nodes)
         {
-            this.InitializeCurrentMap();
-            this.visitedNodes.Clear();
+            InitializeCurrentMap();
+            visitedNodes.Clear();
 
             foreach (Node node in nodes)
             {
                 // Add each node in the path to the visitedNodes list
-                this.visitedNodes.Add(node);
+                visitedNodes.Add(node);
             }
 
             // The last node in the list is the current node (end node of the path)
-            if (this.currentNode == null)
+            if (currentNode == null)
             {
-                return this.ShortestPathVisualizer();
+                return ShortestPathVisualizer();
             }
 
-            this.currentNode = nodes.Last();
+            currentNode = nodes.Last();
 
             // Generate the visualized map as a string
-            return this.ShortestPathVisualizer();
+            return ShortestPathVisualizer();
         }
 
         /// <summary>
@@ -104,14 +104,14 @@
         /// <param name="currentNode">The node currently being visited or processed by the algorithm.</param>
         public void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
         {
-            if (this.isDebug)
+            if (isDebug)
             {
                 this.currentNode = currentNode;
-                this.startNode = start;
-                this.endNode = end;
-                this.isJps = jps;
-                this.visitedNodes.Add(this.currentNode);
-                this.Visualize();
+                startNode = start;
+                endNode = end;
+                isJps = jps;
+                visitedNodes.Add(this.currentNode);
+                Visualize();
             }
         }
 
@@ -120,7 +120,7 @@
         /// </summary>
         public void Visualize()
         {
-            string[] rows = this.currentMap.Split('\n');
+            string[] rows = currentMap.Split('\n');
             var outputBuffer = new StringBuilder();
 
             for (int y = 0; y < rows.Length; y++)
@@ -129,25 +129,25 @@
 
                 for (int x = 0; x < rows[y].Length; x++)
                 {
-                    Node node = this.graph.Nodes[y][x];
+                    Node node = graph.Nodes[y][x];
 
-                    if (node == this.currentNode)
+                    if (node == currentNode)
                     {
                         outputBuffer.Append('X');
                     }
-                    else if (node.JumpPoint && node != this.endNode && this.isJps)
+                    else if (node.JumpPoint && node != endNode && isJps)
                     {
                         outputBuffer.Append('J');
                     }
-                    else if (node == this.startNode)
+                    else if (node == startNode)
                     {
                         outputBuffer.Append('S');
                     }
-                    else if (node == this.endNode)
+                    else if (node == endNode)
                     {
                         outputBuffer.Append('G');
                     }
-                    else if (this.visitedNodes.Contains(node))
+                    else if (visitedNodes.Contains(node))
                     {
                         outputBuffer.Append('#');
                     }
@@ -163,7 +163,7 @@
             Console.SetCursorPosition(0, 0);
             Console.Write(outputBuffer.ToString());
             Stopwatch stopwatch = Stopwatch.StartNew();
-            while (stopwatch.ElapsedTicks < (Stopwatch.Frequency / 100)) { }
+            while (stopwatch.ElapsedTicks < Stopwatch.Frequency / 100) { }
         }
 
         /// <summary>
@@ -184,21 +184,21 @@
 
                 for (int x = 0; x < rows[y].Length; x++)
                 {
-                    Node node = this.graph.Nodes[y][x];
+                    Node node = graph.Nodes[y][x];
 
                     if (node.Visited)
                     {
                         outputBuffer.Append('#');
                     }
-                    else if (jps == true && node.JumpPoint && node != this.endNode)
+                    else if (jps == true && node.JumpPoint && node != endNode)
                     {
                         outputBuffer.Append('J');
                     }
-                    else if (node == this.startNode)
+                    else if (node == startNode)
                     {
                         outputBuffer.Append('S');
                     }
-                    else if (node == this.endNode)
+                    else if (node == endNode)
                     {
                         outputBuffer.Append('G');
                     }
@@ -217,7 +217,7 @@
         private string ShortestPathVisualizer()
         {
             StringBuilder visualizedMap = new StringBuilder();
-            string[] rows = this.currentMap.Split('\n');
+            string[] rows = currentMap.Split('\n');
 
             for (int y = 0; y < rows.Length; y++)
             {
@@ -227,21 +227,21 @@
 
                 for (int x = 0; x < rows[y].Length; x++)
                 {
-                    Node node = this.graph.Nodes[y][x];
+                    Node node = graph.Nodes[y][x];
 
-                    if (node == this.currentNode)
+                    if (node == currentNode)
                     {
                         visualizedMap.Append("X");
                     }
-                    else if (this.visitedNodes.Contains(node))
+                    else if (visitedNodes.Contains(node))
                     {
                         visualizedMap.Append("#");
                     }
-                    else if (node == this.startNode)
+                    else if (node == startNode)
                     {
                         visualizedMap.Append('S');
                     }
-                    else if (node == this.endNode)
+                    else if (node == endNode)
                     {
                         visualizedMap.Append('G');
                     }

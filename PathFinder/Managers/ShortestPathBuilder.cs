@@ -1,4 +1,6 @@
-﻿namespace PathFinder.DataStructures
+﻿using PathFinder.DataStructures;
+
+namespace PathFinder.Managers
 {
     /// <summary>
     /// A static class to reconstruct the shortest path

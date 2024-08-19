@@ -1,29 +1,32 @@
-﻿using System.Diagnostics;
-
-namespace PathFinder.DataStructures
+﻿namespace PathFinder.Algorithms
 {
+    using PathFinder.DataStructures;
+    using PathFinder.Managers;
+    using System.Diagnostics;
+    using System.Net.Http.Headers;
+
     /// <summary>
-    /// A* algorithm.
+    /// Dijkstra algorithm.
     /// </summary>
-    public class Astar
+    public class Dijkstra
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
-        private Stopwatch aStarStopwatch;
+        private Stopwatch dijkstraStopwatch;
         private int shortestPathLength = 0;
         private int visitedNodes = 0;
-        private bool pathFound;
+        private bool pathFound = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Astar"/> class.
+        /// Initializes a new instance of the <see cref="Dijkstra"/> class.
         /// </summary>
-        /// <param name="graph">The graph to be processed by the A* algorithm.</param>
+        /// <param name="graph">The graph to be processed by the Dijkstra algorithm.</param>
         /// <param name="visualizer">The path visualizer to visualize the A* algorithm in the console.</param>
-        public Astar(Graph graph, PathVisualizer visualizer)
+        public Dijkstra(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
             this.pathVisualizer = visualizer;
-            this.aStarStopwatch = new Stopwatch();
+            this.dijkstraStopwatch = new Stopwatch();
         }
 
         /// <summary>
@@ -34,25 +37,17 @@ namespace PathFinder.DataStructures
         /// <returns>Shortest path in a form of a list of nodes.</returns>
         public List<Node> FindShortestPath(Node start, Node end)
         {
-            this.aStarStopwatch.Start();
+            this.dijkstraStopwatch.Start();
+
             start.Cost = 0;
-            var costSoFar = new Dictionary<Node, double>();
+
+            // Create a queue that sorts points by how far they are
             var priorityQueue = new PriorityQueue<Node, double>();
             priorityQueue.Enqueue(start, 0);
 
-            // Initialize all nodes with max cost
-            foreach (var row in this.graph.Nodes)
-            {
-                foreach (var node in row)
-                {
-                    costSoFar[node] = double.MaxValue;
-                }
-            }
-
-            costSoFar[start] = 0;
-
             while (priorityQueue.Count > 0)
             {
+                // Selects the node with the shortest distance from the queue.
                 var currentNode = priorityQueue.Dequeue();
 
                 if (currentNode.Visited)
@@ -64,6 +59,7 @@ namespace PathFinder.DataStructures
 
                 this.visitedNodes++;
 
+                // Visualizes the path.
                 this.pathVisualizer.VisualizePath(currentNode, start, end);
 
                 if (currentNode == end)
@@ -72,6 +68,7 @@ namespace PathFinder.DataStructures
                     break;
                 }
 
+                // Check the nodes connected to the current point.
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
                     if (neighborNode.Visited)
@@ -79,19 +76,19 @@ namespace PathFinder.DataStructures
                         continue;
                     }
 
-                    double newCost = costSoFar[currentNode] + cost;
+                    double newCost = currentNode.Cost + cost;
 
-                    if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])
+                    // Update neighbor's distance and parent if a shorter path is found, then queue it for further exploration.
+                    if (newCost < neighborNode.Cost)
                     {
-                        costSoFar[neighborNode] = newCost;
-                        double priority = newCost + this.Heuristic(end, neighborNode);
+                        neighborNode.Cost = newCost;
                         neighborNode.Parent = currentNode;
-                        priorityQueue.Enqueue(neighborNode, priority);
+                        priorityQueue.Enqueue(neighborNode, newCost);
                     }
                 }
             }
 
-            this.aStarStopwatch.Stop();
+            this.dijkstraStopwatch.Stop();
 
             if (this.pathFound)
             {
@@ -112,25 +109,12 @@ namespace PathFinder.DataStructures
         }
 
         /// <summary>
-        /// This method estimates how close a node is to the end point. It uses the Euclidean distance,
-        /// which is just adding up the horizontal and vertical distances. This helps the algorithm
-        /// decide which paths are worth looking at first to find the shortest route faster.
-        /// </summary>
-        /// <param name="end">The end point given by the user.</param>
-        /// <param name="node">The node currently processed.</param>
-        /// <returns>An estimated distance from the current node to the end point.</returns>
-        private double Heuristic(Node end, Node node)
-        {
-            return Math.Sqrt(Math.Pow(end.X - node.X, 2) + Math.Pow(end.Y - node.Y, 2));
-        }
-
-        /// <summary>
-        /// Retrieves the time A* took to find the end node.
+        /// Retrieves the time Dijkstra took to find the end node.
         /// </summary>
         /// <returns>The time in milliseconds.</returns>
         public double GetStopwatchTime()
         {
-            return this.aStarStopwatch.Elapsed.TotalMilliseconds;
+            return this.dijkstraStopwatch.Elapsed.TotalMilliseconds;
         }
 
         /// <summary>
