@@ -13,7 +13,7 @@ namespace PathFinder.DataStructures
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
         private Stopwatch jpsStopwatch;
-        private int shortestPathLength = 0;
+        private double shortestPathCost = 0;
         private int visitedNodes = 0;
         private bool pathFound = false;
 
@@ -88,7 +88,7 @@ namespace PathFinder.DataStructures
 
             if (this.pathFound)
             {
-                this.shortestPathLength = ShortestPathBuilder.ShortestPathLength(end);
+                this.shortestPathCost = Math.Round(gscore[end], 1);
                 return (ShortestPathBuilder.ShortestPath(end), this.visitedNodes, gscore[end], gscore.Keys.ToList());
             }
 
@@ -353,9 +353,9 @@ namespace PathFinder.DataStructures
         /// Retrieves the length of the shortest path found by the JPS algorithm.
         /// </summary>
         /// <returns>The length of the shortest path in number of nodes.</returns>
-        public int GetShortestPathLength()
+        public double GetShortestPathLength()
         {
-            return this.shortestPathLength;
+            return Math.Round(this.shortestPathCost, 1);
         }
     }
 }

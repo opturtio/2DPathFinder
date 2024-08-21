@@ -149,7 +149,7 @@ namespace PathFinder.DataStructures
         /// <returns>The cost of the shortest path.</returns>
         public double GetShortestPathCost()
         {
-            return this.shortestPathCost;
+            return Math.Round(this.shortestPathCost, 1);
         }
     }
 }

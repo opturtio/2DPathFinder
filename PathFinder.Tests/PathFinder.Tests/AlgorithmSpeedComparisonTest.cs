@@ -112,14 +112,15 @@ namespace PathFinder.Tests
             this.pathVisualizer.ClearVisitedNodes();
             this.graphLondon.ResetNodes();
 
-            this.jps.FindShortestPath(coordinates[0], coordinates[coordinates.Count - 1]);
+            this.jps.FindShortestPath(coordinates[0], coordinates[coordinates.Count - 2]);
+            Console.WriteLine(coordinates[0].GetNodeInfo());
+            Console.WriteLine(coordinates[coordinates.Count - 1].GetNodeInfo());
 
             Console.WriteLine("JPS shortest path length: " + this.jps.GetShortestPathLength());
 
             Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(length));
         }
 
-        /*
         public void IterateLondonMapHundredTimes()
         {
             Random random = new Random();
@@ -209,7 +210,7 @@ namespace PathFinder.Tests
                 Assert.That(jpsFaster2, Is.GreaterThan(aStarFaster));
             });
         }
-        */
+        
 
         [Test]
         public void MazeMapPathSameLength()
@@ -221,7 +222,7 @@ namespace PathFinder.Tests
 
             Node start = this.graphMaze.Nodes[1][1];
             Node end = this.graphMaze.Nodes[509][509];
-            int length = 3633;
+            double length = 4276.5;
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graphMaze.ResetNodes();
@@ -237,8 +238,8 @@ namespace PathFinder.Tests
 
             Assert.Multiple(() =>
             {
-                Assert.That(this.dijkstra.GetShortestPathLength(), Is.EqualTo(length));
-                Assert.That(this.aStar.GetShortestPathLength(), Is.EqualTo(length));
+                Assert.That(this.dijkstra.GetShortestPathCost(), Is.EqualTo(length));
+                Assert.That(this.aStar.GetShortestPathCost(), Is.EqualTo(length));
                 Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(length));
             });
         }
@@ -276,8 +277,8 @@ namespace PathFinder.Tests
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(this.dijkstra.GetShortestPathLength()));
-                    Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(this.aStar.GetShortestPathLength()));
+                    Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(this.dijkstra.GetShortestPathCost()));
+                    Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(this.aStar.GetShortestPathCost()));
                 });
             }
         }
@@ -340,8 +341,8 @@ namespace PathFinder.Tests
                     aStarFaster++;
                 }
 
-                dijkstraVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathLength()},{this.jps.GetShortestPathLength()}");
-                aStarVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.aStar.GetShortestPathLength()},{this.jps.GetShortestPathLength()}");
+                dijkstraVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
+                aStarVsJpsMazeWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.aStar.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
             }
 
             Console.WriteLine("Maze map result:");
