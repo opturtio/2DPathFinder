@@ -121,6 +121,7 @@ namespace PathFinder.Tests
             Assert.That(this.jps.GetShortestPathLength(), Is.EqualTo(length));
         }
 
+        [Test]
         public void IterateLondonMapHundredTimes()
         {
             Random random = new Random();
