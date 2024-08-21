@@ -302,7 +302,7 @@ namespace PathFinder.Tests
             aStarVsJpsMazeWriter.WriteLine($"JPS time, A* time, JPS jump points, A* visited nodes, A* path found, JPS path found, A* shortest path length, JPS shortest path length");
 
             // NOW SET TO TEN TIMES
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
             {
                 this.dijkstra = new Dijkstra(this.graphMaze, this.pathVisualizer);
                 this.aStar = new Astar(this.graphMaze, this.pathVisualizer);
