@@ -48,13 +48,7 @@
             // Run JPS algorithm
             this.jps = new JPS(this.graph, this.pathVisualizer);
             var jpsResult = this.jps.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            if (jpsResult.Path.Count > 0)
-            {
-                this.shortestPathJps = jpsResult.Path
-                    .Select(position => new Node(position.X, position.Y, false))
-                    .ToList();
-                this.shortestPathCostJps = jpsResult.Cost;
-            }
+            this.shortestPathCostJps = this.jps.GetShortestPathLength();
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graph.ResetNodes();

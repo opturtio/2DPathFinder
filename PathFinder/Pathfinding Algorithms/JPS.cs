@@ -89,7 +89,7 @@ namespace PathFinder.DataStructures
             if (this.pathFound)
             {
                 this.shortestPathCost = Math.Round(gscore[end], 1);
-                return (ShortestPathBuilder.ShortestPath(end), this.visitedNodes, gscore[end], gscore.Keys.ToList());
+                return (null, this.visitedNodes, gscore[end], gscore.Keys.ToList());
             }
 
             return (new List<Node>(), this.visitedNodes, 0, new List<Node>());

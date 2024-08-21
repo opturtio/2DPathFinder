@@ -106,13 +106,13 @@ namespace PathFinder.Tests
             this.pathVisualizer = new PathVisualizer(this.graphLondon, this.londonMap);
             var coordinates = this.graphLondon.Coordinates();
 
-            int length = 1220;
+            double length = 1548.3;
             this.jps = new JPS(this.graphLondon, this.pathVisualizer);
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graphLondon.ResetNodes();
 
-            this.jps.FindShortestPath(coordinates[0], coordinates[coordinates.Count - 2]);
+            this.jps.FindShortestPath(coordinates[0], coordinates[coordinates.Count - 1]);
             Console.WriteLine(coordinates[0].GetNodeInfo());
             Console.WriteLine(coordinates[coordinates.Count - 1].GetNodeInfo());
 
@@ -211,7 +211,6 @@ namespace PathFinder.Tests
             });
         }
         
-
         [Test]
         public void MazeMapPathSameLength()
         {
