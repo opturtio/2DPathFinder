@@ -1,8 +1,8 @@
 ﻿namespace PathFinder.Managers
 {
-    using System.Diagnostics;
     using PathFinder.Algorithms;
     using PathFinder.DataStructures;
+    using System.Linq;
 
     /// <summary>
     /// Manages algorithm comparison.
@@ -10,9 +10,7 @@
     public class AlgorithmComparisonManager
     {
         private readonly string currentMap;
-        private readonly string debugInput;
         private readonly Graph graph;
-        private readonly CommandManager commandManager;
         private Dijkstra dijkstra;
         private Astar aStar;
         private JPS jps;
@@ -20,75 +18,88 @@
         private List<Node> shortestPathDijkstra;
         private List<Node> shortestPathAstar;
         private List<Node> shortestPathJps;
-        private int shortestPathLengthDijkstra;
-        private int shortestPathLengthAstar;
-        private int shortestPathLengthJps;
-        private OutputManager outputManager;
+        private double shortestPathCostDijkstra;
+        private double shortestPathCostAstar;
+        private double shortestPathCostJps;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AlgorithmComparisonManager"/> class.
         /// </summary>
-        /// <param name="comparisonGraph">The graph used to compare the Dijkstra and JPS algorithms.</param>
-        /// /// <param name="currentMap">Current map in a string form.</param>
+        /// <param name="comparisonGraph">The graph used to compare the Dijkstra, A*, and JPS algorithms.</param>
+        /// <param name="currentMap">Current map in a string form.</param>
         public AlgorithmComparisonManager(Graph comparisonGraph, string currentMap)
         {
             this.graph = comparisonGraph;
             this.currentMap = currentMap;
-            this.debugInput = debugInput;
             this.pathVisualizer = new PathVisualizer(this.graph, this.currentMap);
             this.shortestPathDijkstra = new List<Node>();
             this.shortestPathAstar = new List<Node>();
             this.shortestPathJps = new List<Node>();
-            this.commandManager = new CommandManager();
-            this.outputManager = new OutputManager();
         }
 
         /// <summary>
-        /// Initializes the algorihms.
+        /// Initializes the algorithms and compares their performance.
         /// </summary>
         public void Initialize()
         {
-            var debugInput = this.commandManager.ProcessDebugOption();
-            if (debugInput == "y")
-            {
-                this.pathVisualizer.ActivateDebugger();
-            }
-            else if (debugInput == "n")
-            {
-                this.pathVisualizer.DeactivateDebugger();
-            }
-            else
-            {
-                return;
-            }
-
+            // Get the start and end coordinates from user input.
             var coords = PathCoordinatesValidator.StartValidation(this.graph, this.currentMap);
 
+            // Run JPS algorithm
             this.jps = new JPS(this.graph, this.pathVisualizer);
-            this.shortestPathJps = this.jps.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            this.shortestPathLengthJps = this.jps.GetShortestPathLength();
+            var jpsResult = this.jps.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
+            if (jpsResult.Path.Count > 0)
+            {
+                this.shortestPathJps = jpsResult.Path
+                    .Select(position => new Node(position.X, position.Y, false))
+                    .ToList();
+                this.shortestPathCostJps = jpsResult.Cost;
+            }
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graph.ResetNodes();
 
+            // Run A* algorithm
             this.aStar = new Astar(this.graph, this.pathVisualizer);
             this.shortestPathAstar = this.aStar.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            this.shortestPathLengthAstar = this.aStar.GetShortestPathLength();
+            this.shortestPathCostAstar = this.aStar.GetShortestPathCost();
 
             this.pathVisualizer.ClearVisitedNodes();
             this.graph.ResetNodes();
 
+            // Run Dijkstra algorithm
             this.dijkstra = new Dijkstra(this.graph, this.pathVisualizer);
             this.shortestPathDijkstra = this.dijkstra.FindShortestPath(this.graph.Nodes[coords[0]][coords[1]], this.graph.Nodes[coords[2]][coords[3]]);
-            this.shortestPathLengthDijkstra = this.dijkstra.GetShortestPathLength();
+            this.shortestPathCostDijkstra = this.dijkstra.GetShortestPathCost();
 
-            if (this.jps.IsPathFound() && this.aStar.IsPathFound() && this.dijkstra.IsPathFound())
+            // Display results
+            this.PrintResults();
+
+            // Check and print if paths were found
+            bool jpsFound = this.jps.IsPathFound();
+            bool aStarFound = this.aStar.IsPathFound();
+            bool dijkstraFound = this.dijkstra.IsPathFound();
+
+            if (!jpsFound && !aStarFound && !dijkstraFound)
             {
-                this.PrintResults();
+                Console.WriteLine("No paths found!\n");
             }
             else
             {
-                Console.WriteLine("No paths found!\n");
+                if (jpsFound)
+                {
+                    Console.WriteLine("Path found by JPS.");
+                }
+
+                if (aStarFound)
+                {
+                    Console.WriteLine("Path found by A*.");
+                }
+
+                if (dijkstraFound)
+                {
+                    Console.WriteLine("Path found by Dijkstra.");
+                }
             }
         }
 
@@ -111,10 +122,10 @@
 
             Console.WriteLine("Results:");
             Console.WriteLine("--------------------------------------------------------------------");
-            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "Algorithm", "Visited nodes", "Time(milliseconds)", "Length"));
-            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "Dijkstra", this.dijkstra.GetVisitedNodes(), this.dijkstra.GetStopwatchTime(), this.shortestPathLengthDijkstra));
-            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "A*", this.aStar.GetVisitedNodes(), this.aStar.GetStopwatchTime(), this.shortestPathLengthAstar));
-            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "JPS", this.jps.GetVisitedNodes(), this.jps.GetStopwatchTime(), this.shortestPathLengthJps));
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "Algorithm", "Visited nodes", "Time(milliseconds)", "Cost"));
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "Dijkstra", this.dijkstra.GetVisitedNodes(), this.dijkstra.GetStopwatchTime(), this.shortestPathCostDijkstra));
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "A*", this.aStar.GetVisitedNodes(), this.aStar.GetStopwatchTime(), this.shortestPathCostAstar));
+            Console.WriteLine(String.Format("| {0,-11} | {1,-14} | {2,-20} | {3,-10} |", "JPS", this.jps.GetVisitedNodes(), this.jps.GetStopwatchTime(), this.shortestPathCostJps));
             Console.WriteLine("--------------------------------------------------------------------");
 
             Console.WriteLine();

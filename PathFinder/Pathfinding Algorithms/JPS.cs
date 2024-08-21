@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using PathFinder.Managers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PathFinder.DataStructures
 {
@@ -32,24 +34,24 @@ namespace PathFinder.DataStructures
         /// </summary>
         /// <param name="start">The point where the path begins.</param>
         /// <param name="end">The point where the path ends.</param>
-        /// <returns>Shortest path in a form of a list of nodes.</returns>
-        public List<Node> FindShortestPath(Node start, Node end)
+        /// <returns>A tuple containing the shortest path, number of operations, the total cost, and the list of visited nodes.</returns>
+        public (List<Node> Path, int Operations, double Cost, List<Node> Visited) FindShortestPath(Node start, Node end)
         {
             this.jpsStopwatch.Start();
 
             start.Cost = 0;
-
+            var gscore = new Dictionary<Node, double> { { start, 0 } };
             var openList = new BinaryHeap<Node>();
             openList.Insert(start);
 
             while (openList.Count > 0)
             {
                 var currentNode = openList.ExtractMin();
-
                 this.visitedNodes++;
 
-                if (this.pathFound)
+                if (currentNode == end)
                 {
+                    this.pathFound = true;
                     break;
                 }
 
@@ -65,16 +67,19 @@ namespace PathFinder.DataStructures
                     }
 
                     var jumpPoint = this.graph.Nodes[jumpPointCoords.Value.y][jumpPointCoords.Value.x];
+                    double tentative_g_score = gscore[currentNode] + this.Heuristic(currentNode, jumpPoint);
 
-                    double newCost = currentNode.Cost + this.Heuristic(jumpPoint, end);
-
-                    if (newCost < jumpPoint.Cost)
+                    if (!gscore.ContainsKey(jumpPoint) || tentative_g_score < gscore[jumpPoint])
                     {
-                        jumpPoint.Cost = newCost;
-
+                        gscore[jumpPoint] = tentative_g_score;
+                        jumpPoint.Parent = currentNode;
+                        jumpPoint.Cost = tentative_g_score + this.Heuristic(jumpPoint, end);
                         jumpPoint.JumpPoint = true;
 
-                        openList.Insert(jumpPoint);
+                        if (!openList.Contains(jumpPoint))
+                        {
+                            openList.Insert(jumpPoint);
+                        }
                     }
                 }
             }
@@ -84,10 +89,10 @@ namespace PathFinder.DataStructures
             if (this.pathFound)
             {
                 this.shortestPathLength = ShortestPathBuilder.ShortestPathLength(end);
-                return ShortestPathBuilder.ShortestPath(end);
+                return (ShortestPathBuilder.ShortestPath(end), this.visitedNodes, gscore[end], gscore.Keys.ToList());
             }
 
-            return new List<Node>();
+            return (new List<Node>(), this.visitedNodes, 0, new List<Node>());
         }
 
         /// <summary>
@@ -251,12 +256,6 @@ namespace PathFinder.DataStructures
             Node currentNode = this.graph.Nodes[y][x];
             Node parentNode = this.graph.Nodes[py][px];
 
-            // Avoid revisiting nodes. This should not be here but is needed to prevent infinite loop when building the path.
-            if (currentNode.Parent != null && currentNode.Parent != parentNode)
-            {
-                return null;
-            }
-
             currentNode.Parent = parentNode;
             currentNode.Visited = true;
 
@@ -265,7 +264,6 @@ namespace PathFinder.DataStructures
             if (currentNode == end)
             {
                 this.pathFound = true;
-                end.Cost = currentNode.Cost;
                 return (x, y);
             }
 

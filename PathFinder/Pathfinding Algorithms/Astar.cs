@@ -11,9 +11,9 @@ namespace PathFinder.DataStructures
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
         private Stopwatch aStarStopwatch;
-        private int shortestPathLength = 0;
         private int visitedNodes = 0;
         private bool pathFound;
+        private double shortestPathCost = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Astar"/> class.
@@ -37,7 +37,7 @@ namespace PathFinder.DataStructures
         {
             this.aStarStopwatch.Start();
             start.Cost = 0;
-            var costSoFar = new Dictionary<Node, double>();
+            var gscore = new Dictionary<Node, double>();
             var priorityQueue = new PriorityQueue<Node, double>();
             priorityQueue.Enqueue(start, 0);
 
@@ -46,11 +46,11 @@ namespace PathFinder.DataStructures
             {
                 foreach (var node in row)
                 {
-                    costSoFar[node] = double.MaxValue;
+                    gscore[node] = double.MaxValue;
                 }
             }
 
-            costSoFar[start] = 0;
+            gscore[start] = 0;
 
             while (priorityQueue.Count > 0)
             {
@@ -70,6 +70,7 @@ namespace PathFinder.DataStructures
                 if (currentNode == end)
                 {
                     this.pathFound = true;
+                    this.shortestPathCost = gscore[end];
                     break;
                 }
 
@@ -80,12 +81,12 @@ namespace PathFinder.DataStructures
                         continue;
                     }
 
-                    double newCost = costSoFar[currentNode] + cost;
+                    double tentative_g_score = gscore[currentNode] + cost;
 
-                    if (!costSoFar.ContainsKey(neighborNode) || newCost < costSoFar[neighborNode])
+                    if (tentative_g_score < gscore[neighborNode])
                     {
-                        costSoFar[neighborNode] = newCost;
-                        double priority = newCost + this.Heuristic(end, neighborNode);
+                        gscore[neighborNode] = tentative_g_score;
+                        double priority = tentative_g_score + this.Heuristic(end, neighborNode);
                         neighborNode.Parent = currentNode;
                         priorityQueue.Enqueue(neighborNode, priority);
                     }
@@ -96,7 +97,6 @@ namespace PathFinder.DataStructures
 
             if (this.pathFound)
             {
-                this.shortestPathLength = ShortestPathBuilder.ShortestPathLength(end);
                 return ShortestPathBuilder.ShortestPath(end);
             }
 
@@ -143,9 +143,13 @@ namespace PathFinder.DataStructures
             return this.pathFound;
         }
 
-        public int GetShortestPathLength()
+        /// <summary>
+        /// Retrieves the cost of the shortest path found by the A* algorithm.
+        /// </summary>
+        /// <returns>The cost of the shortest path.</returns>
+        public double GetShortestPathCost()
         {
-            return this.shortestPathLength;
+            return this.shortestPathCost;
         }
     }
 }

@@ -86,5 +86,10 @@
         /// Gets the number of items in the heap.
         /// </summary>
         public int Count => this.heap.Count;
+
+        public bool Contains(T item)
+        {
+            return this.heap.Contains(item);
+        }
     }
 }

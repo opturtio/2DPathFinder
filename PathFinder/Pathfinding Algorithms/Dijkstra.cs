@@ -3,7 +3,6 @@
     using PathFinder.DataStructures;
     using PathFinder.Managers;
     using System.Diagnostics;
-    using System.Net.Http.Headers;
 
     /// <summary>
     /// Dijkstra algorithm.
@@ -13,15 +12,15 @@
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
         private Stopwatch dijkstraStopwatch;
-        private int shortestPathLength = 0;
         private int visitedNodes = 0;
         private bool pathFound = false;
+        private double shortestPathCost = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Dijkstra"/> class.
         /// </summary>
         /// <param name="graph">The graph to be processed by the Dijkstra algorithm.</param>
-        /// <param name="visualizer">The path visualizer to visualize the A* algorithm in the console.</param>
+        /// <param name="visualizer">The path visualizer to visualize the Dijkstra algorithm in the console.</param>
         public Dijkstra(Graph graph, PathVisualizer visualizer)
         {
             this.graph = graph;
@@ -38,8 +37,19 @@
         public List<Node> FindShortestPath(Node start, Node end)
         {
             this.dijkstraStopwatch.Start();
-
             start.Cost = 0;
+            var gscore = new Dictionary<Node, double>();
+
+            // Initialize all nodes with max cost
+            foreach (var row in this.graph.Nodes)
+            {
+                foreach (var node in row)
+                {
+                    gscore[node] = double.MaxValue;
+                }
+            }
+
+            gscore[start] = 0;
 
             // Create a queue that sorts points by how far they are
             var priorityQueue = new PriorityQueue<Node, double>();
@@ -65,6 +75,7 @@
                 if (currentNode == end)
                 {
                     this.pathFound = true;
+                    this.shortestPathCost = gscore[end];
                     break;
                 }
 
@@ -76,14 +87,14 @@
                         continue;
                     }
 
-                    double newCost = currentNode.Cost + cost;
+                    double tentative_g_score = gscore[currentNode] + cost;
 
                     // Update neighbor's distance and parent if a shorter path is found, then queue it for further exploration.
-                    if (newCost < neighborNode.Cost)
+                    if (tentative_g_score < gscore[neighborNode])
                     {
-                        neighborNode.Cost = newCost;
+                        gscore[neighborNode] = tentative_g_score;
                         neighborNode.Parent = currentNode;
-                        priorityQueue.Enqueue(neighborNode, newCost);
+                        priorityQueue.Enqueue(neighborNode, tentative_g_score);
                     }
                 }
             }
@@ -92,7 +103,6 @@
 
             if (this.pathFound)
             {
-                this.shortestPathLength = ShortestPathBuilder.ShortestPathLength(end);
                 return ShortestPathBuilder.ShortestPath(end);
             }
 
@@ -126,9 +136,13 @@
             return this.pathFound;
         }
 
-        public int GetShortestPathLength()
+        /// <summary>
+        /// Retrieves the cost of the shortest path found by the Dijkstra algorithm.
+        /// </summary>
+        /// <returns>The cost of the shortest path.</returns>
+        public double GetShortestPathCost()
         {
-            return this.shortestPathLength;
+            return this.shortestPathCost;
         }
     }
 }
