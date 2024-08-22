@@ -54,7 +54,7 @@ namespace PathFinder2D.UI
                     Y1 = i * nodeSize,
                     X2 = PathCanvas.Width,
                     Y2 = i * nodeSize,
-                    Stroke = Brushes.LightGray,
+                    Stroke = Brushes.Gray,
                     Tag = "GridLine"
                 };
                 PathCanvas.Children.Add(horizontalLine);
@@ -68,7 +68,7 @@ namespace PathFinder2D.UI
                     X2 = j * nodeSize,
                     Y1 = 0,
                     Y2 = PathCanvas.Height,
-                    Stroke = Brushes.LightGray,
+                    Stroke = Brushes.Gray,
                     Tag = "GridLine"
                 };
                 PathCanvas.Children.Add(verticalLine);
