@@ -1,8 +1,7 @@
-﻿namespace PathFinder.Managers
+﻿namespace PathFinder2D.Managers
 {
-    using PathFinder.Algorithms;
-    using PathFinder.DataStructures;
-    using System.Linq;
+    using PathFinder2D.DataStructures;
+    using PathFinder2D.PathFindingAlgorithms;
 
     /// <summary>
     /// Manages algorithm comparison.

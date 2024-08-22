@@ -1,7 +1,7 @@
-﻿using PathFinder.DataStructures;
-
-namespace PathFinder.Managers
+﻿namespace PathFinder2D.Managers
 {
+    using PathFinder2D.DataStructures;
+    
     /// <summary>
     /// A static class to reconstruct the shortest path
     /// </summary>

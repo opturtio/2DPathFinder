@@ -1,6 +1,6 @@
-﻿namespace PathFinder.Managers
+﻿namespace PathFinder2D.Managers
 {
-    using PathFinder.DataStructures;
+    using PathFinder2D.DataStructures;
 
     /// <summary>
     /// Manages the processing of user input commands.

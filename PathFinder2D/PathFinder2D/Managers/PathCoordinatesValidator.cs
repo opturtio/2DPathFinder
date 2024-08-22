@@ -1,6 +1,6 @@
-﻿namespace PathFinder.Managers
+﻿namespace PathFinder2D.Managers
 {
-    using PathFinder.DataStructures;
+    using PathFinder2D.DataStructures;
 
     /// <summary>
     /// Validates the start and the end coordinates given by the user.

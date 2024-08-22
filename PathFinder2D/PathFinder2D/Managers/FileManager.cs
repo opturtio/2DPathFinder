@@ -1,6 +1,6 @@
-﻿namespace PathFinder.Managers
+﻿namespace PathFinder2D.Managers
 {
-    using PathFinder.Services;
+    using PathFinder2D.Services;
 
     /// <summary>
     /// Manages file operations related to files.

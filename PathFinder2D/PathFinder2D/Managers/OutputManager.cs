@@ -1,8 +1,8 @@
-﻿namespace PathFinder.Managers
+﻿namespace PathFinder2D.Managers
 {
+    using PathFinder2D.DataStructures;
     using System.Reflection;
     using System.Resources;
-    using PathFinder.DataStructures;
 
     /// <summary>
     /// Manages the output of the text to the console.

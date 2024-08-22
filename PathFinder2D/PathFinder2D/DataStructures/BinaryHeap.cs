@@ -1,4 +1,4 @@
-﻿namespace PathFinder.DataStructures
+﻿namespace PathFinder2D.DataStructures
 {
     /// <summary>
     /// Represents a binary heap data structure.

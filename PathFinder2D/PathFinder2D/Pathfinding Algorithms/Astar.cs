@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
-using PathFinder.Managers;
-
-namespace PathFinder.DataStructures
+﻿namespace PathFinder2D.PathFindingAlgorithms
 {
+    using PathFinder2D.DataStructures;
+    using PathFinder2D.Managers;
+    using System.Diagnostics;
+
     /// <summary>
     /// A* algorithm.
     /// </summary>

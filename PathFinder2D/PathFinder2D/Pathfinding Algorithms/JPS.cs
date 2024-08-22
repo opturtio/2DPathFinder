@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
-using PathFinder.Managers;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace PathFinder.DataStructures
+﻿namespace PathFinder2D.PathFindingAlgorithms
 {
+    using PathFinder2D.DataStructures;
+    using PathFinder2D.Managers;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+
     /// <summary>
     /// Jump Point Search (JPS) algorithm implementation.
     /// </summary>

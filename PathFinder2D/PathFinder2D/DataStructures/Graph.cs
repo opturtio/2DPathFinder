@@ -1,4 +1,4 @@
-namespace PathFinder.DataStructures
+namespace PathFinder2D.DataStructures
 {
     /// <summary>
     /// Creates a graph object.

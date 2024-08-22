@@ -1,4 +1,4 @@
-﻿namespace PathFinder.Services
+﻿namespace PathFinder2D.Services
 {
     /// <summary>
     /// Provides functionality to modify files.

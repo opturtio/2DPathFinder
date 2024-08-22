@@ -1,4 +1,4 @@
-﻿namespace PathFinder.Services
+﻿namespace PathFinder2D.Services
 {
     using System.IO;
 

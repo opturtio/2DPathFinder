@@ -1,6 +1,6 @@
-﻿namespace PathFinder.Managers
+﻿namespace PathFinder2D.Managers
 {
-    using PathFinder.DataStructures;
+    using PathFinder2D.DataStructures;
     using System.Diagnostics;
     using System.Text;
 

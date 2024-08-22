@@ -1,7 +1,8 @@
-﻿using PathFinder.DataStructures;
-
-namespace PathFinder.Managers
+﻿
+namespace PathFinder2D.Managers
 {
+    using PathFinder2D.DataStructures;
+    
     /// <summary>
     /// Creates a graph from the chosen string.
     /// </summary>
