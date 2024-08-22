@@ -1,6 +1,6 @@
-﻿namespace PathFinder.UI
+﻿namespace PathFinder2D.UI
 {
-    using PathFinder.Managers;
+    using PathFinder2D.Managers;
 
     /// <summary>
     /// Manages the user interface, including displaying text and reading user input.

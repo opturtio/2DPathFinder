@@ -1,12 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using PathFinder.DataStructures;
-using PathFinder.Managers;
-
+﻿
 namespace PathFinder2D.UI
 {
+    using PathFinder2D.DataStructures;
+    using PathFinder2D.Managers;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Shapes;
+
     public class PathVisualizerWPF : PathVisualizer
     {
         private readonly Canvas canvas;

@@ -1,15 +1,16 @@
-﻿using PathFinder.Algorithms;
-using PathFinder.DataStructures;
-using PathFinder.Managers;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
-
+﻿
 namespace PathFinder2D.UI
 {
+    using PathFinder2D.DataStructures;
+    using PathFinder2D.Managers;
+    using PathFinder2D.PathFindingAlgorithms;
+    using System.Linq;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Shapes;
+
     public partial class MainWindow : Window
     {
         private Graph graph;
