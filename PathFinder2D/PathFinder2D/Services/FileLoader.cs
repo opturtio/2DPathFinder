@@ -1,5 +1,7 @@
 ﻿namespace PathFinder.Services
 {
+    using System.IO;
+
     /// <summary>
     /// Manages the loading of files from a specified directory.
     /// </summary>

@@ -102,7 +102,7 @@
         /// Visualizes the current state of the path on the map in the console if the debugger is turned on.
         /// </summary>
         /// <param name="currentNode">The node currently being visited or processed by the algorithm.</param>
-        public void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
+        public virtual void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
         {
             if (isDebug)
             {

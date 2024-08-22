@@ -1,12 +1,11 @@
-﻿using System.Windows;
+﻿using PathFinder.Algorithms;
+using PathFinder.DataStructures;
+using PathFinder.Managers;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using PathFinder.Algorithms;
 using System.Windows.Shapes;
-using PathFinder.DataStructures;
-using PathFinder.Managers;
-using PathFinder.Services;
 
 namespace PathFinder2D.UI
 {
@@ -14,11 +13,13 @@ namespace PathFinder2D.UI
     {
         private Graph graph;
         private Node startNode, endNode;
+        private FileManager fileManager;
         private bool isStartNodeSelected = false;
+        private int nodeSize = 20;
 
         public MainWindow()
         {
-            //InitializeComponent();
+            InitializeComponent();
             InitializeGraph();
             DrawGrid();
         }
@@ -26,7 +27,8 @@ namespace PathFinder2D.UI
         // Initialize the graph
         private void InitializeGraph()
         {
-            string mapString = this.fileManager.LoadMap(input);
+            fileManager = new FileManager();
+            string mapString = this.fileManager.LoadMap("1");
             graph = GraphBuilder.CreateGraphFromString(mapString);
         }
 
@@ -79,6 +81,42 @@ namespace PathFinder2D.UI
                 isStartNodeSelected = false;
                 DrawNode(x, y, Brushes.Red);
             }
+        }
+
+        // This method handles the DragEnter event
+        private void Window_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+
+        // This method handles the Drop event
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                // Assuming only one file is dropped
+                if (files.Length > 0)
+                {
+                    string filePath = files[0];
+                    ProcessDroppedFile(filePath);
+                }
+            }
+        }
+
+        // Method to process the dropped file
+        private void ProcessDroppedFile(string filePath)
+        {
+            // Logic to handle the file (e.g., load a map or data)
+            MessageBox.Show($"File dropped: {filePath}");
         }
 
         private void DrawNode(int x, int y, Brush color)
