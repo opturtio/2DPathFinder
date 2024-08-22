@@ -8,6 +8,8 @@
         <!-- Canvas for visualizing the path -->
         <Canvas Name="PathCanvas" Background="White" 
                 MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
+                MouseMove="Canvas_MouseMove"
+                MouseLeftButtonUp="Canvas_MouseLeftButtonUp"
                 Width="600" Height="600"/>
 
         <!-- StackPanel for controls -->
@@ -15,6 +17,7 @@
             <Button Content="Run Dijkstra" Click="RunDijkstra_Click" Margin="5"/>
             <Button Content="Run A*" Click="RunAStar_Click" Margin="5"/>
             <Button Content="Run JPS" Click="RunJPS_Click" Margin="5"/>
+            <Button Content="Clean" Click="ClearDrawnNodes" Margin="5"/>
             <Label Name="ResultLabel" Content="Results:" Margin="5"/>
         </StackPanel>
     </Grid>

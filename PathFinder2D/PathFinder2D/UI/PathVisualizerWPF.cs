@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using PathFinder.DataStructures;
@@ -20,40 +21,49 @@ namespace PathFinder2D.UI
         public override void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
         {
             // Draw the current node on the canvas
-            DrawNode(currentNode.X, currentNode.Y, Brushes.Blue);
+            DrawNode(currentNode.X, currentNode.Y, Brushes.LightGray, "TempNode");
 
             if (jps && currentNode.JumpPoint)
             {
-                DrawNode(currentNode.X, currentNode.Y, Brushes.Yellow);
+                Console.WriteLine($"Jump Point detected at ({currentNode.X}, {currentNode.Y})");
+                DrawNode(currentNode.X, currentNode.Y, Brushes.Yellow, "TempNode");
             }
             else if (currentNode == start)
             {
-                DrawNode(currentNode.X, currentNode.Y, Brushes.Green);
+                DrawNode(currentNode.X, currentNode.Y, Brushes.Green, "StartNode");
             }
             else if (currentNode == end)
             {
-                DrawNode(currentNode.X, currentNode.Y, Brushes.Red);
+                DrawNode(currentNode.X, currentNode.Y, Brushes.Red, "EndNode");
             }
         }
 
         // Method to draw a node on the canvas
-        private void DrawNode(int x, int y, Brush color)
+        private void DrawNode(int x, int y, Brush color, string tag)
         {
             Rectangle rect = new Rectangle
             {
                 Width = nodeSize,
                 Height = nodeSize,
-                Fill = color
+                Fill = color,
+                Tag = tag
             };
             Canvas.SetLeft(rect, x * nodeSize);
             Canvas.SetTop(rect, y * nodeSize);
             canvas.Children.Add(rect);
         }
 
-        // Method to clear the visualization
-        public void ClearCanvas()
+        // Method to clear temporary nodes from the canvas except grid lines and obstacles
+        public void ClearTemporaryNodes()
         {
-            canvas.Children.Clear();
+            for (int i = canvas.Children.Count - 1; i >= 0; i--)
+            {
+                UIElement child = canvas.Children[i];
+                if (child is FrameworkElement element && element.Tag?.ToString() == "TempNode")
+                {
+                    canvas.Children.RemoveAt(i);
+                }
+            }
         }
     }
 }

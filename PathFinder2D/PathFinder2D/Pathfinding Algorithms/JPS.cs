@@ -52,6 +52,7 @@ namespace PathFinder.DataStructures
                 if (currentNode == end)
                 {
                     this.pathFound = true;
+                    this.pathVisualizer.VisualizePath(end, start, end);
                     break;
                 }
 
@@ -78,6 +79,7 @@ namespace PathFinder.DataStructures
 
                         if (!openList.Contains(jumpPoint))
                         {
+                            this.pathVisualizer.VisualizePath(jumpPoint, start, end, true);
                             openList.Insert(jumpPoint);
                         }
                     }

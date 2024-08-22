@@ -1,6 +1,7 @@
 ﻿using PathFinder.Algorithms;
 using PathFinder.DataStructures;
 using PathFinder.Managers;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,8 +14,13 @@ namespace PathFinder2D.UI
     {
         private Graph graph;
         private Node startNode, endNode;
+        private PathVisualizerWPF visualizer;
         private FileManager fileManager;
-        private bool isStartNodeSelected = false;
+        private Dijkstra dijkstra;
+        private Astar aStar;
+        private JPS jps;
+        private bool isDraggingStartNode = false;
+        private bool isDraggingEndNode = false;
         private int nodeSize = 20;
 
         public MainWindow()
@@ -22,14 +28,18 @@ namespace PathFinder2D.UI
             InitializeComponent();
             InitializeGraph();
             DrawGrid();
+            DrawObstacles();
         }
 
-        // Initialize the graph
         private void InitializeGraph()
         {
             fileManager = new FileManager();
             string mapString = this.fileManager.LoadMap("1");
             graph = GraphBuilder.CreateGraphFromString(mapString);
+            visualizer = new PathVisualizerWPF(PathCanvas, graph);
+            dijkstra = new Dijkstra(graph, visualizer);
+            aStar = new Astar(graph, visualizer);
+            jps = new JPS(graph, visualizer);
         }
 
         // Draw the grid on the canvas
@@ -43,7 +53,8 @@ namespace PathFinder2D.UI
                     Y1 = i * nodeSize,
                     X2 = PathCanvas.Width,
                     Y2 = i * nodeSize,
-                    Stroke = Brushes.LightGray
+                    Stroke = Brushes.LightGray,
+                    Tag = "GridLine"
                 };
                 PathCanvas.Children.Add(horizontalLine);
             }
@@ -56,9 +67,25 @@ namespace PathFinder2D.UI
                     X2 = j * nodeSize,
                     Y1 = 0,
                     Y2 = PathCanvas.Height,
-                    Stroke = Brushes.LightGray
+                    Stroke = Brushes.LightGray,
+                    Tag = "GridLine"
                 };
                 PathCanvas.Children.Add(verticalLine);
+            }
+        }
+
+        // Draw obstacles on the canvas
+        private void DrawObstacles()
+        {
+            foreach (var row in graph.Nodes)
+            {
+                foreach (var node in row)
+                {
+                    if (node.IsObstacle)
+                    {
+                        DrawNode(node.X, node.Y, Brushes.Black, "Obstacle");
+                    }
+                }
             }
         }
 
@@ -69,18 +96,162 @@ namespace PathFinder2D.UI
             int x = (int)(clickPosition.X / nodeSize);
             int y = (int)(clickPosition.Y / nodeSize);
 
-            if (!isStartNodeSelected)
+            if (graph.Nodes[y][x].IsObstacle) return;
+
+            if (startNode != null && startNode.X == x && startNode.Y == y)
+            {
+                isDraggingStartNode = true;
+                PathCanvas.CaptureMouse();
+                return;
+            }
+
+            if (endNode != null && endNode.X == x && endNode.Y == y)
+            {
+                isDraggingEndNode = true;
+                PathCanvas.CaptureMouse();
+                return;
+            }
+
+            if (startNode == null)
             {
                 startNode = graph.Nodes[y][x];
-                isStartNodeSelected = true;
-                DrawNode(x, y, Brushes.Green);
+                DrawNode(x, y, Brushes.Green, "StartNode");
             }
-            else
+            else if (endNode == null)
             {
                 endNode = graph.Nodes[y][x];
-                isStartNodeSelected = false;
-                DrawNode(x, y, Brushes.Red);
+                DrawNode(x, y, Brushes.Red, "EndNode");
             }
+        }
+
+        private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDraggingStartNode || isDraggingEndNode)
+            {
+                Point position = e.GetPosition(PathCanvas);
+                int x = (int)(position.X / nodeSize);
+                int y = (int)(position.Y / nodeSize);
+
+                if (x >= 0 && x < graph.Nodes[0].Count && y >= 0 && y < graph.Nodes.Count && !graph.Nodes[y][x].IsObstacle)
+                {
+                    if (isDraggingStartNode && (startNode.X != x || startNode.Y != y))
+                    {
+                        ClearNode(startNode.X, startNode.Y);
+                        startNode = graph.Nodes[y][x];
+                        DrawNode(x, y, Brushes.Green, "StartNode");
+                    }
+
+                    if (isDraggingEndNode && (endNode.X != x || endNode.Y != y))
+                    {
+                        ClearNode(endNode.X, endNode.Y);
+                        endNode = graph.Nodes[y][x];
+                        DrawNode(x, y, Brushes.Red, "EndNode");
+                    }
+                }
+            }
+        }
+
+        private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (isDraggingStartNode || isDraggingEndNode)
+            {
+                isDraggingStartNode = false;
+                isDraggingEndNode = false;
+                PathCanvas.ReleaseMouseCapture();
+            }
+        }
+
+        private void DrawNode(int x, int y, Brush color, string tag)
+        {
+            Rectangle rect = new Rectangle
+            {
+                Width = nodeSize,
+                Height = nodeSize,
+                Fill = color,
+                Tag = tag
+            };
+            Canvas.SetLeft(rect, x * nodeSize);
+            Canvas.SetTop(rect, y * nodeSize);
+            PathCanvas.Children.Add(rect);
+        }
+
+        private void ClearNode(int x, int y)
+        {
+            foreach (var child in PathCanvas.Children.OfType<Rectangle>().ToList())
+            {
+                if (Canvas.GetLeft(child) == x * nodeSize && Canvas.GetTop(child) == y * nodeSize)
+                {
+                    PathCanvas.Children.Remove(child);
+                    break;
+                }
+            }
+        }
+
+        // Method to clear everything except the grid and obstacles
+        private void ClearAllExceptGridAndObstacles()
+        {
+            graph.ResetNodes();
+
+            for (int i = PathCanvas.Children.Count - 1; i >= 0; i--)
+            {
+                UIElement child = PathCanvas.Children[i];
+                if (child is FrameworkElement element && element.Tag?.ToString() != "GridLine" && element.Tag?.ToString() != "Obstacle")
+                {
+                    PathCanvas.Children.RemoveAt(i);
+                }
+            }
+        }
+
+        // Method to clear everything except the grid, obstacles, and start/end nodes
+        private void ClearAllExceptGridObstaclesAndNodes()
+        {
+            graph.ResetNodes();
+
+            for (int i = PathCanvas.Children.Count - 1; i >= 0; i--)
+            {
+                UIElement child = PathCanvas.Children[i];
+                if (child is FrameworkElement element && element.Tag?.ToString() != "GridLine" && element.Tag?.ToString() != "Obstacle" && element.Tag?.ToString() != "StartNode" && element.Tag?.ToString() != "EndNode")
+                {
+                    PathCanvas.Children.RemoveAt(i);
+                }
+            }
+        }
+
+        private void RunDijkstra_Click(object sender, RoutedEventArgs e)
+        {
+            if (startNode == null || endNode == null) return;
+            ClearAllExceptGridObstaclesAndNodes();
+
+            dijkstra.FindShortestPath(startNode, endNode);
+
+            ResultLabel.Content = $"Dijkstra Path Cost: {dijkstra.GetShortestPathCost()}";
+        }
+
+        private void RunAStar_Click(object sender, RoutedEventArgs e)
+        {
+            if (startNode == null || endNode == null) return;
+            ClearAllExceptGridObstaclesAndNodes();
+
+            aStar.FindShortestPath(startNode, endNode);
+
+            ResultLabel.Content = $"A* Path Cost: {aStar.GetShortestPathCost()}";
+        }
+
+        private void RunJPS_Click(object sender, RoutedEventArgs e)
+        {
+            if (startNode == null || endNode == null) return;
+            ClearAllExceptGridObstaclesAndNodes();
+
+            jps.FindShortestPath(startNode, endNode);
+
+            ResultLabel.Content = $"JPS Path Cost: {jps.GetShortestPathLength()}";
+        }
+
+        private void ClearDrawnNodes(object sender, RoutedEventArgs e)
+        {
+            ClearAllExceptGridAndObstacles();
+            startNode = null;
+            endNode = null;
         }
 
         // This method handles the DragEnter event
@@ -103,7 +274,6 @@ namespace PathFinder2D.UI
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                // Assuming only one file is dropped
                 if (files.Length > 0)
                 {
                     string filePath = files[0];
@@ -115,54 +285,9 @@ namespace PathFinder2D.UI
         // Method to process the dropped file
         private void ProcessDroppedFile(string filePath)
         {
-            // Logic to handle the file (e.g., load a map or data)
             MessageBox.Show($"File dropped: {filePath}");
-        }
-
-        private void DrawNode(int x, int y, Brush color)
-        {
-            Rectangle rect = new Rectangle
-            {
-                Width = nodeSize,
-                Height = nodeSize,
-                Fill = color
-            };
-            Canvas.SetLeft(rect, x * nodeSize);
-            Canvas.SetTop(rect, y * nodeSize);
-            PathCanvas.Children.Add(rect);
-        }
-
-        private void RunDijkstra_Click(object sender, RoutedEventArgs e)
-        {
-            if (startNode == null || endNode == null) return;
-
-            var visualizer = new PathVisualizerWPF(PathCanvas, graph);
-            var dijkstra = new Dijkstra(graph, visualizer);
-            dijkstra.FindShortestPath(startNode, endNode);
-
-            ResultLabel.Content = $"Dijkstra Path Cost: {dijkstra.GetShortestPathCost()}";
-        }
-
-        private void RunAStar_Click(object sender, RoutedEventArgs e)
-        {
-            if (startNode == null || endNode == null) return;
-
-            var visualizer = new PathVisualizerWPF(PathCanvas, graph);
-            var aStar = new Astar(graph, visualizer);
-            aStar.FindShortestPath(startNode, endNode);
-
-            ResultLabel.Content = $"A* Path Cost: {aStar.GetShortestPathCost()}";
-        }
-
-        private void RunJPS_Click(object sender, RoutedEventArgs e)
-        {
-            if (startNode == null || endNode == null) return;
-
-            var visualizer = new PathVisualizerWPF(PathCanvas, graph);
-            var jps = new JPS(graph, visualizer);
-            jps.FindShortestPath(startNode, endNode);
-
-            ResultLabel.Content = $"JPS Path Cost: {jps.GetShortestPathLength()}";
+            // Here I implement file processing logic
         }
     }
 }
+

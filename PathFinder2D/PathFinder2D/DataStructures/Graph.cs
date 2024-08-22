@@ -31,6 +31,7 @@ namespace PathFinder.DataStructures
                     node.Cost = double.MaxValue;
                     node.Parent = null;
                     node.Visited = false;
+                    node.JumpPoint = false;
                 }
             }
         }
