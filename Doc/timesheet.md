@@ -48,4 +48,7 @@ Date       | Time | Target |
 2024-08-16 | 5h | Trying to solve the problem of revisited nodes |
 2024-08-17 | 6h | Continued to solve the problem |
 2024-08-19 | 2h | Planned and updated documentation. Mainly updated desing documentation. |
-SUM | 209h | |
+2024-08-22 | 10h |Fixed the JPS and now it is working |
+2024-08-23 | 9h | Created GUI |
+2024-08-24 | 3h | Continued developing the GUI |
+SUM | 232h | |

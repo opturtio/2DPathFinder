@@ -190,30 +190,33 @@ namespace PathFinder2D.UI
 
             if (graph.Nodes[y][x].IsObstacle) return;
 
-            if (startNode != null && startNode.X == x && startNode.Y == y)
+            if (!IsRunning())
             {
-                isDraggingStartNode = true;
-                ClearAllExceptGridObstaclesAndNodes();
-                PathCanvas.CaptureMouse();
-                return;
-            }
+                if (startNode != null && startNode.X == x && startNode.Y == y)
+                {
+                    isDraggingStartNode = true;
+                    ClearAllExceptGridObstaclesAndNodes();
+                    PathCanvas.CaptureMouse();
+                    return;
+                }
 
-            if (endNode != null && endNode.X == x && endNode.Y == y)
-            {
-                isDraggingEndNode = true;
-                PathCanvas.CaptureMouse();
-                return;
-            }
+                if (endNode != null && endNode.X == x && endNode.Y == y)
+                {
+                    isDraggingEndNode = true;
+                    PathCanvas.CaptureMouse();
+                    return;
+                }
 
-            if (startNode == null)
-            {
-                startNode = graph.Nodes[y][x];
-                DrawNode(x, y, Brushes.Green, "StartNode");
-            }
-            else if (endNode == null)
-            {
-                endNode = graph.Nodes[y][x];
-                DrawNode(x, y, Brushes.Red, "EndNode");
+                if (startNode == null)
+                {
+                    startNode = graph.Nodes[y][x];
+                    DrawNode(x, y, Brushes.Green, "StartNode");
+                }
+                else if (endNode == null)
+                {
+                    endNode = graph.Nodes[y][x];
+                    DrawNode(x, y, Brushes.Red, "EndNode");
+                }
             }
         }
 
@@ -230,6 +233,7 @@ namespace PathFinder2D.UI
                     if (isDraggingStartNode && (startNode.X != x || startNode.Y != y))
                     {
                         ClearNode(startNode.X, startNode.Y);
+                        startNode = null;
                         startNode = graph.Nodes[y][x];
                         DrawNode(x, y, Brushes.Green, "StartNode");
                     }
@@ -349,6 +353,11 @@ namespace PathFinder2D.UI
             this.aStar.StopRunning();
             this.jps.StopRunning();
             ClearAllExceptGridObstaclesAndNodes();
+        }
+
+        private bool IsRunning()
+        {
+            return this.jps.IsRunning() || this.dijkstra.IsRunning() || this.aStar.IsRunning();
         }
 
         private void ClearDrawnNodes(object sender, RoutedEventArgs e)
