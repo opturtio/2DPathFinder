@@ -23,6 +23,12 @@ namespace PathFinder2D.UI
         private bool isDraggingStartNode = false;
         private bool isDraggingEndNode = false;
         private int nodeSize = 20;
+        private double zoomScale = 1.0;
+        private const double ZoomFactor = 1.1;
+
+        private ScaleTransform scaleTransform = new ScaleTransform();
+        private TranslateTransform translateTransform = new TranslateTransform();
+        private TransformGroup transformGroup = new TransformGroup();
 
         public MainWindow()
         {
@@ -30,6 +36,83 @@ namespace PathFinder2D.UI
             InitializeGraph();
             DrawGrid();
             DrawObstacles();
+
+            transformGroup.Children.Add(scaleTransform);
+            transformGroup.Children.Add(translateTransform);
+            PathCanvas.RenderTransform = transformGroup;
+
+            PathCanvas.MouseWheel += PathCanvas_MouseWheel;
+            this.KeyDown += MainWindow_KeyDown;
+        }
+
+        // Event handler for mouse wheel to handle zooming
+        private void PathCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // Get the current mouse position relative to the canvas
+            var mousePos = e.GetPosition(PathCanvas);
+
+            // Calculate the scale factor (zoom in or out)
+            double scale = (e.Delta > 0) ? ZoomFactor : 1.0 / ZoomFactor;
+
+            // Update the zoom scale
+            zoomScale *= scale;
+
+            // Get the transform group and the individual transforms
+            var transformGroup = PathCanvas.RenderTransform as TransformGroup;
+            if (transformGroup == null)
+            {
+                transformGroup = new TransformGroup();
+                transformGroup.Children.Add(new ScaleTransform(zoomScale, zoomScale));
+                transformGroup.Children.Add(new TranslateTransform());
+                PathCanvas.RenderTransform = transformGroup;
+            }
+
+            var scaleTransform = transformGroup.Children.OfType<ScaleTransform>().FirstOrDefault();
+            var translateTransform = transformGroup.Children.OfType<TranslateTransform>().FirstOrDefault();
+
+            // Adjust the translation so that the zoom is centered on the mouse pointer
+            if (scaleTransform != null && translateTransform != null)
+            {
+                // Adjust the translation to keep the zoom centered
+                Point relative = new Point(mousePos.X * scaleTransform.ScaleX, mousePos.Y * scaleTransform.ScaleY);
+                translateTransform.X = scale * (translateTransform.X - relative.X) + relative.X;
+                translateTransform.Y = scale * (translateTransform.Y - relative.Y) + relative.Y;
+
+                // Update scale
+                scaleTransform.ScaleX = zoomScale;
+                scaleTransform.ScaleY = zoomScale;
+            }
+
+            e.Handled = true; // Prevent further processing of the mouse wheel event
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            var transformGroup = PathCanvas.RenderTransform as TransformGroup;
+            var translateTransform = transformGroup?.Children.OfType<TranslateTransform>().FirstOrDefault();
+
+            if (translateTransform == null)
+                return;
+
+            double moveAmount = 10;
+
+            switch (e.Key)
+            {
+                case Key.Up:
+                    translateTransform.Y += moveAmount;
+                    break;
+                case Key.Down:
+                    translateTransform.Y -= moveAmount;
+                    break;
+                case Key.Left:
+                    translateTransform.X += moveAmount;
+                    break;
+                case Key.Right:
+                    translateTransform.X -= moveAmount;
+                    break;
+            }
+
+            e.Handled = true;
         }
 
         private void InitializeGraph()
@@ -41,18 +124,26 @@ namespace PathFinder2D.UI
             dijkstra = new Dijkstra(graph, visualizer);
             aStar = new Astar(graph, visualizer);
             jps = new JPS(graph, visualizer);
+
+            PathCanvas.Width = graph.Nodes[0].Count * nodeSize;
+            PathCanvas.Height = graph.Nodes.Count * nodeSize;
+
+            PathCanvas.ClipToBounds = true;
+            RectangleGeometry clipGeometry = new RectangleGeometry(new Rect(0, 0, PathCanvas.Width, PathCanvas.Height));
+            PathCanvas.Clip = clipGeometry;
         }
 
         // Draw the grid on the canvas
         private void DrawGrid()
         {
+            // Use the actual map size to draw the grid
             for (int i = 0; i <= graph.Nodes.Count; i++)
             {
                 Line horizontalLine = new Line
                 {
                     X1 = 0,
                     Y1 = i * nodeSize,
-                    X2 = PathCanvas.Width,
+                    X2 = graph.Nodes[0].Count * nodeSize, // Width based on the map size
                     Y2 = i * nodeSize,
                     Stroke = Brushes.Gray,
                     Tag = "GridLine"
@@ -67,7 +158,7 @@ namespace PathFinder2D.UI
                     X1 = j * nodeSize,
                     X2 = j * nodeSize,
                     Y1 = 0,
-                    Y2 = PathCanvas.Height,
+                    Y2 = graph.Nodes.Count * nodeSize, // Height based on the map size
                     Stroke = Brushes.Gray,
                     Tag = "GridLine"
                 };
@@ -102,6 +193,7 @@ namespace PathFinder2D.UI
             if (startNode != null && startNode.X == x && startNode.Y == y)
             {
                 isDraggingStartNode = true;
+                ClearAllExceptGridObstaclesAndNodes();
                 PathCanvas.CaptureMouse();
                 return;
             }
@@ -221,6 +313,7 @@ namespace PathFinder2D.UI
         private void RunDijkstra_Click(object sender, RoutedEventArgs e)
         {
             if (startNode == null || endNode == null) return;
+            StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
             dijkstra.FindShortestPath(startNode, endNode);
@@ -231,6 +324,7 @@ namespace PathFinder2D.UI
         private void RunAStar_Click(object sender, RoutedEventArgs e)
         {
             if (startNode == null || endNode == null) return;
+            StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
             aStar.FindShortestPath(startNode, endNode);
@@ -241,6 +335,7 @@ namespace PathFinder2D.UI
         private void RunJPS_Click(object sender, RoutedEventArgs e)
         {
             if (startNode == null || endNode == null) return;
+            StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
             jps.FindShortestPath(startNode, endNode);
@@ -248,8 +343,17 @@ namespace PathFinder2D.UI
             ResultLabel.Content = $"JPS Path Cost: {jps.GetShortestPathLength()}";
         }
 
+        private void StopRunning(object sender, RoutedEventArgs e)
+        {
+            this.dijkstra.StopRunning();
+            this.aStar.StopRunning();
+            this.jps.StopRunning();
+            ClearAllExceptGridObstaclesAndNodes();
+        }
+
         private void ClearDrawnNodes(object sender, RoutedEventArgs e)
         {
+            StopRunning(sender, e);
             ClearAllExceptGridAndObstacles();
             startNode = null;
             endNode = null;

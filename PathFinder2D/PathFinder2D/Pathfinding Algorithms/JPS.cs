@@ -17,6 +17,7 @@
         private double shortestPathCost = 0;
         private int visitedNodes = 0;
         private bool pathFound = false;
+        private bool running = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JPS"/> class.
@@ -39,13 +40,14 @@
         public (List<Node> Path, int Operations, double Cost, List<Node> Visited) FindShortestPath(Node start, Node end)
         {
             this.jpsStopwatch.Start();
+            this.running = true;
 
             start.Cost = 0;
             var gscore = new Dictionary<Node, double> { { start, 0 } };
             var openList = new BinaryHeap<Node>();
             openList.Insert(start);
 
-            while (openList.Count > 0)
+            while (openList.Count > 0 && this.running)
             {
                 var currentNode = openList.ExtractMin();
                 this.visitedNodes++;
@@ -87,6 +89,7 @@
                 }
             }
 
+            this.running = false;
             this.jpsStopwatch.Stop();
 
             if (this.pathFound)
@@ -127,6 +130,11 @@
         /// <returns>A list of neighboring nodes that are potential jump points.</returns>
         private List<Node> PruneNeighbors(Node current)
         {
+            if (!this.running)
+            {
+                return new List<Node>();
+            }
+
             List<Node> neighbors = new List<Node>();
 
             if (current.Parent != null)
@@ -251,7 +259,7 @@
             int dx = x - px;
             int dy = y - py;
 
-            if (!this.IsValidPosition(x, y))
+            if (!this.IsValidPosition(x, y) || !this.running)
             {
                 return null;
             }
@@ -359,6 +367,16 @@
         public double GetShortestPathLength()
         {
             return Math.Round(this.shortestPathCost, 1);
+        }
+
+        public bool IsRunning()
+        {
+            return this.running;
+        }
+
+        public void StopRunning()
+        {
+            this.running = false;
         }
     }
 }

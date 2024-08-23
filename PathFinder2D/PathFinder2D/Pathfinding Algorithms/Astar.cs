@@ -15,6 +15,7 @@
         private int visitedNodes = 0;
         private bool pathFound;
         private double shortestPathCost = 0;
+        private bool running = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Astar"/> class.
@@ -37,6 +38,8 @@
         public List<Node> FindShortestPath(Node start, Node end)
         {
             this.aStarStopwatch.Start();
+            this.running = true;
+
             start.Cost = 0;
             var gscore = new Dictionary<Node, double>();
             var priorityQueue = new PriorityQueue<Node, double>();
@@ -53,7 +56,7 @@
 
             gscore[start] = 0;
 
-            while (priorityQueue.Count > 0)
+            while (priorityQueue.Count > 0 && this.running)
             {
                 var currentNode = priorityQueue.Dequeue();
 
@@ -77,6 +80,10 @@
 
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
                 {
+                    if (!this.running)
+                    {
+                        break;
+                    }
                     if (neighborNode.Visited)
                     {
                         continue;
@@ -94,6 +101,7 @@
                 }
             }
 
+            this.running = false;
             this.aStarStopwatch.Stop();
 
             if (this.pathFound)
@@ -151,6 +159,16 @@
         public double GetShortestPathCost()
         {
             return Math.Round(this.shortestPathCost, 1);
+        }
+
+        public bool IsRunning()
+        {
+            return this.running;
+        }
+
+        public void StopRunning()
+        {
+            this.running = false;
         }
     }
 }

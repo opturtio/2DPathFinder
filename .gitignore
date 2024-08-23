@@ -4,10 +4,10 @@ bin
 obj
 
 # Coverage report
-PathFinder.Tests/CoverageReport
+PathFinder2D.Tests/CoverageReport
 
 # Test results
-PathFinder.Tests/PathFinder.Tests/Results
+PathFinder2D/PathFinder2D.Tests/PathFinder2D.Tests/Results
 
 # Specific files
 PathFinder.csproj.user
