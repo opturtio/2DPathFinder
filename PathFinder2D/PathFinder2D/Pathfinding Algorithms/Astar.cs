@@ -84,7 +84,7 @@
                         var fromNode = finalPath[i - 1];
                         var toNode = finalPath[i];
 
-                        ((PathVisualizerWPF)this.pathVisualizer).DrawLineBetweenNodes(fromNode, toNode, Brushes.Red, 1);
+                        ((PathVisualizerWPF)this.pathVisualizer).DrawLineBetweenNodes(fromNode, toNode, Brushes.Red);
                     }
 
                     this.running = false;

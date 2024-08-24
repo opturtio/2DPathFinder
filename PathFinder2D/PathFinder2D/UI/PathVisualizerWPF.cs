@@ -14,7 +14,7 @@
         private Node lastNode;
 
         public int Delay { get; set; } = 20;
-        public bool VisualizationEnabled { get; set; } = true;
+        public bool VisualizationEnabled { get; set; } = false;
 
         public PathVisualizerWPF(Canvas canvas, Graph graph) : base(graph, "")
         {
@@ -24,7 +24,11 @@
 
         public override void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
         {
-            // Draw the current node as before
+            if (!VisualizationEnabled)
+            {
+                return;
+            }
+
             DrawNode(currentNode.X, currentNode.Y, Brushes.Gray, "TempNode");
 
             if (lastNode != null && !lastNode.JumpPoint && lastNode != start && lastNode != end)
@@ -70,7 +74,7 @@
             canvas.Children.Add(rect);
         }
 
-        public void DrawLineBetweenNodes(Node fromNode, Node toNode, Brush color, double thickness)
+        public void DrawLineBetweenNodes(Node fromNode, Node toNode, Brush color)
         {
             Line line = new Line
             {
@@ -79,7 +83,7 @@
                 X2 = toNode.X * nodeSize + nodeSize / 2,
                 Y2 = toNode.Y * nodeSize + nodeSize / 2,
                 Stroke = color,
-                StrokeThickness = thickness
+                StrokeThickness = 5
             };
 
             canvas.Children.Add(line);
