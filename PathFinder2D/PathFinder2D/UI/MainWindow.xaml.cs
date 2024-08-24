@@ -40,6 +40,11 @@ namespace PathFinder2D.UI
             Speed.ValueChanged += Speed_ValueChanged;
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         // Event handler for mouse wheel to handle zooming
         private void PathCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
