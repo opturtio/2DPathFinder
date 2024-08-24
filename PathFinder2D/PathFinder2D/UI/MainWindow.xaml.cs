@@ -26,20 +26,12 @@ namespace PathFinder2D.UI
         private double zoomScale = 1.0;
         private const double ZoomFactor = 1.1;
 
-        private ScaleTransform scaleTransform = new ScaleTransform();
-        private TranslateTransform translateTransform = new TranslateTransform();
-        private TransformGroup transformGroup = new TransformGroup();
-
         public MainWindow()
         {
             InitializeComponent();
             InitializeGraph();
             DrawGrid();
             DrawObstacles();
-
-            transformGroup.Children.Add(scaleTransform);
-            transformGroup.Children.Add(translateTransform);
-            PathCanvas.RenderTransform = transformGroup;
 
             PathCanvas.MouseWheel += PathCanvas_MouseWheel;
             this.KeyDown += MainWindow_KeyDown;
@@ -48,67 +40,35 @@ namespace PathFinder2D.UI
         // Event handler for mouse wheel to handle zooming
         private void PathCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            // Get the current mouse position relative to the canvas
+            var scrollViewer = (ScrollViewer)PathCanvas.Parent;
             var mousePos = e.GetPosition(PathCanvas);
 
-            // Calculate the scale factor (zoom in or out)
             double scale = (e.Delta > 0) ? ZoomFactor : 1.0 / ZoomFactor;
-
-            // Update the zoom scale
             zoomScale *= scale;
 
-            // Get the transform group and the individual transforms
-            var transformGroup = PathCanvas.RenderTransform as TransformGroup;
-            if (transformGroup == null)
-            {
-                transformGroup = new TransformGroup();
-                transformGroup.Children.Add(new ScaleTransform(zoomScale, zoomScale));
-                transformGroup.Children.Add(new TranslateTransform());
-                PathCanvas.RenderTransform = transformGroup;
-            }
+            PathCanvas.LayoutTransform = new ScaleTransform(zoomScale, zoomScale, mousePos.X, mousePos.Y);
 
-            var scaleTransform = transformGroup.Children.OfType<ScaleTransform>().FirstOrDefault();
-            var translateTransform = transformGroup.Children.OfType<TranslateTransform>().FirstOrDefault();
-
-            // Adjust the translation so that the zoom is centered on the mouse pointer
-            if (scaleTransform != null && translateTransform != null)
-            {
-                // Adjust the translation to keep the zoom centered
-                Point relative = new Point(mousePos.X * scaleTransform.ScaleX, mousePos.Y * scaleTransform.ScaleY);
-                translateTransform.X = scale * (translateTransform.X - relative.X) + relative.X;
-                translateTransform.Y = scale * (translateTransform.Y - relative.Y) + relative.Y;
-
-                // Update scale
-                scaleTransform.ScaleX = zoomScale;
-                scaleTransform.ScaleY = zoomScale;
-            }
-
-            e.Handled = true; // Prevent further processing of the mouse wheel event
+            e.Handled = true;
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            var transformGroup = PathCanvas.RenderTransform as TransformGroup;
-            var translateTransform = transformGroup?.Children.OfType<TranslateTransform>().FirstOrDefault();
-
-            if (translateTransform == null)
-                return;
-
+            var scrollViewer = (ScrollViewer)PathCanvas.Parent;
             double moveAmount = 10;
 
             switch (e.Key)
             {
                 case Key.Up:
-                    translateTransform.Y += moveAmount;
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - moveAmount);
                     break;
                 case Key.Down:
-                    translateTransform.Y -= moveAmount;
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + moveAmount);
                     break;
                 case Key.Left:
-                    translateTransform.X += moveAmount;
+                    scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset - moveAmount);
                     break;
                 case Key.Right:
-                    translateTransform.X -= moveAmount;
+                    scrollViewer.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset + moveAmount);
                     break;
             }
 
@@ -127,10 +87,6 @@ namespace PathFinder2D.UI
 
             PathCanvas.Width = graph.Nodes[0].Count * nodeSize;
             PathCanvas.Height = graph.Nodes.Count * nodeSize;
-
-            PathCanvas.ClipToBounds = true;
-            RectangleGeometry clipGeometry = new RectangleGeometry(new Rect(0, 0, PathCanvas.Width, PathCanvas.Height));
-            PathCanvas.Clip = clipGeometry;
         }
 
         // Draw the grid on the canvas
