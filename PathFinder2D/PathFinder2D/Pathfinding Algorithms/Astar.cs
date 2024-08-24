@@ -2,7 +2,9 @@
 {
     using PathFinder2D.DataStructures;
     using PathFinder2D.Managers;
+    using PathFinder2D.UI;
     using System.Diagnostics;
+    using System.Windows.Media;
 
     /// <summary>
     /// A* algorithm.
@@ -11,6 +13,7 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
+        private readonly PathVisualizerWPF pathVisualizerWPF;
         private Stopwatch aStarStopwatch;
         private int visitedNodes = 0;
         private bool pathFound;
@@ -66,7 +69,6 @@
                 }
 
                 currentNode.Visited = true;
-
                 this.visitedNodes++;
 
                 this.pathVisualizer.VisualizePath(currentNode, start, end);
@@ -75,7 +77,20 @@
                 {
                     this.pathFound = true;
                     this.shortestPathCost = gscore[end];
-                    break;
+
+                    var finalPath = ShortestPathBuilder.ReconstructPath(end);
+                    for (int i = 1; i < finalPath.Count; i++)
+                    {
+                        var fromNode = finalPath[i - 1];
+                        var toNode = finalPath[i];
+
+                        ((PathVisualizerWPF)this.pathVisualizer).DrawLineBetweenNodes(fromNode, toNode, Brushes.Red, 1);
+                    }
+
+                    this.running = false;
+                    this.aStarStopwatch.Stop();
+
+                    return finalPath;
                 }
 
                 foreach (var (neighborNode, cost) in this.graph.GetNeighborsWithCosts(currentNode))
@@ -84,6 +99,7 @@
                     {
                         break;
                     }
+
                     if (neighborNode.Visited)
                     {
                         continue;
@@ -104,13 +120,10 @@
             this.running = false;
             this.aStarStopwatch.Stop();
 
-            if (this.pathFound)
-            {
-                return ShortestPathBuilder.ShortestPath(end);
-            }
-
+            // If the end node wasn't reached, return an empty path
             return new List<Node>();
         }
+
 
         /// <summary>
         /// Retrieves the total number of nodes that have been visited during the pathfinding.

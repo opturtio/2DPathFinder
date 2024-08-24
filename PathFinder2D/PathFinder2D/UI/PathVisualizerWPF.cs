@@ -2,8 +2,6 @@
 {
     using PathFinder2D.DataStructures;
     using PathFinder2D.Managers;
-    using System.Diagnostics;
-    using System.Security.Cryptography;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
@@ -16,7 +14,7 @@
         private Node lastNode;
 
         public int Delay { get; set; } = 20;
-        public bool VisualizationEnabled { get; set; } = false;
+        public bool VisualizationEnabled { get; set; } = true;
 
         public PathVisualizerWPF(Canvas canvas, Graph graph) : base(graph, "")
         {
@@ -24,11 +22,9 @@
             this.lastNode = null;
         }
 
-        // Override to pathvisualizer
         public override void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
         {
-            if (!VisualizationEnabled) { return; }
-
+            // Draw the current node as before
             DrawNode(currentNode.X, currentNode.Y, Brushes.Gray, "TempNode");
 
             if (lastNode != null && !lastNode.JumpPoint && lastNode != start && lastNode != end)
@@ -48,17 +44,18 @@
             {
                 DrawNode(currentNode.X, currentNode.Y, Brushes.Red, "EndNode");
             }
+
             this.lastNode = currentNode;
 
             DoEvents();
             Thread.Sleep(Delay);
         }
 
-        // Method to draw a node on the canvas
+
         private void DrawNode(int x, int y, Brush color, string tag)
         {
-            int rectSize = 18; // Slightly larger than before to fill more of the grid cell
-            int offset = (nodeSize - rectSize) / 2; // Adjust position to keep it centered
+            int rectSize = 18;
+            int offset = (nodeSize - rectSize) / 2;
 
             Rectangle rect = new Rectangle
             {
@@ -73,14 +70,27 @@
             canvas.Children.Add(rect);
         }
 
-        // Method to process all pending UI events
+        public void DrawLineBetweenNodes(Node fromNode, Node toNode, Brush color, double thickness)
+        {
+            Line line = new Line
+            {
+                X1 = fromNode.X * nodeSize + nodeSize / 2,
+                Y1 = fromNode.Y * nodeSize + nodeSize / 2,
+                X2 = toNode.X * nodeSize + nodeSize / 2,
+                Y2 = toNode.Y * nodeSize + nodeSize / 2,
+                Stroke = color,
+                StrokeThickness = thickness
+            };
+
+            canvas.Children.Add(line);
+        }
+
         private void DoEvents()
         {
             Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Background,
-                new Action(delegate { }));
+                new System.Action(delegate { }));
         }
 
-        // Method to clear temporary nodes from the canvas except grid lines and obstacles
         public void ClearTemporaryNodes()
         {
             for (int i = canvas.Children.Count - 1; i >= 0; i--)
