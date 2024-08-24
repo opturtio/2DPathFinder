@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PathFinder2D.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PathFinder" Height="618" Width="800"
+        Title="PathFinder" Height="700" Width="800"
         AllowDrop="True" DragEnter="Window_DragEnter" Drop="Window_Drop">
 
     <Grid>
@@ -11,14 +11,58 @@
         </Grid.ColumnDefinitions>
 
         <!-- StackPanel for controls -->
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" Height="206" Width="160">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" Height="Auto" Width="160">
             <Button Content="Run Dijkstra" Click="RunDijkstra_Click" Margin="5"/>
             <Button Content="Run A*" Click="RunAStar_Click" Margin="5"/>
             <Button Content="Run JPS" Click="RunJPS_Click" Margin="5"/>
             <Button Content="Clean" Click="ClearDrawnNodes" Margin="5"/>
             <Button Content="Stop" Click="StopRunning" Margin="5"/>
             <Slider Minimum="1" Maximum="100" Width="150" Height="10" Name="Speed" Margin="5"/>
+            <CheckBox Content="Visualization" Checked="VisualizationToggle"/>
+
             <Label Name="ResultLabel" Content="Results:" Margin="5"/>
+
+            <!-- Grid for Dijkstra results -->
+            <Grid Name="DijkstraGrid" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Dijkstra" FontWeight="Bold" Grid.Row="0"/>
+                <TextBlock Name="DijkstraTime" Grid.Row="1" Text="Time: 0ms"/>
+                <TextBlock Name="DijkstraCost" Grid.Row="2" Text="Cost: 0"/>
+                <TextBlock Name="DijkstraNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
+            </Grid>
+
+            <!-- Grid for A* results -->
+            <Grid Name="AStarGrid" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="A*" FontWeight="Bold" Grid.Row="0"/>
+                <TextBlock Name="AStarTime" Grid.Row="1" Text="Time: 0ms"/>
+                <TextBlock Name="AStarCost" Grid.Row="2" Text="Cost: 0"/>
+                <TextBlock Name="AStarNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
+            </Grid>
+
+            <!-- Grid for JPS results -->
+            <Grid Name="JPSGrid" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="JPS" FontWeight="Bold" Grid.Row="0"/>
+                <TextBlock Name="JPSTime" Grid.Row="1" Text="Time: 0ms"/>
+                <TextBlock Name="JPSCost" Grid.Row="2" Text="Cost: 0"/>
+                <TextBlock Name="JPSNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
+            </Grid>
         </StackPanel>
 
         <!-- Canvas for visualizing the path -->

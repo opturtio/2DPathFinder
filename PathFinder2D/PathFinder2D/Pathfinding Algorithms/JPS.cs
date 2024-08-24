@@ -270,6 +270,8 @@
             currentNode.Parent = parentNode;
             currentNode.Visited = true;
 
+            this.visitedNodes++;
+
             this.pathVisualizer.VisualizePath(currentNode, start, end, true);
 
             if (currentNode == end)

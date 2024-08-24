@@ -4,6 +4,7 @@ namespace PathFinder2D.UI
     using PathFinder2D.DataStructures;
     using PathFinder2D.Managers;
     using PathFinder2D.PathFindingAlgorithms;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -281,9 +282,13 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
+            var stopwatch = Stopwatch.StartNew();
             dijkstra.FindShortestPath(startNode, endNode);
+            stopwatch.Stop();
 
-            ResultLabel.Content = $"Dijkstra Path Cost: {dijkstra.GetShortestPathCost()}";
+            DijkstraTime.Text = $"Time: {this.dijkstra.GetStopwatchTime()}ms";
+            DijkstraCost.Text = $"Cost: {dijkstra.GetShortestPathCost()}";
+            DijkstraNodes.Text = $"Processed Nodes: {this.dijkstra.GetVisitedNodes()}";
         }
 
         private void RunAStar_Click(object sender, RoutedEventArgs e)
@@ -292,9 +297,13 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
+            var stopwatch = Stopwatch.StartNew();
             aStar.FindShortestPath(startNode, endNode);
+            stopwatch.Stop();
 
-            ResultLabel.Content = $"A* Path Cost: {aStar.GetShortestPathCost()}";
+            AStarTime.Text = $"Time: {this.aStar.GetStopwatchTime()}ms";
+            AStarCost.Text = $"Cost: {this.aStar.GetShortestPathCost()}";
+            AStarNodes.Text = $"Processed Nodes: {this.aStar.GetVisitedNodes()}";
         }
 
         private void RunJPS_Click(object sender, RoutedEventArgs e)
@@ -303,9 +312,13 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
+            var stopwatch = Stopwatch.StartNew();
             jps.FindShortestPath(startNode, endNode);
+            stopwatch.Stop();
 
-            ResultLabel.Content = $"JPS Path Cost: {jps.GetShortestPathLength()}";
+            JPSTime.Text = $"Time: {this.jps.GetStopwatchTime()}ms";
+            JPSCost.Text = $"Cost: {this.jps.GetShortestPathLength()}";
+            JPSNodes.Text = $"Processed Nodes: {this.jps.GetVisitedNodes()}";
         }
 
         private void Speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -313,6 +326,18 @@ namespace PathFinder2D.UI
             if (visualizer != null)
             {
                 visualizer.Delay = 101 - (int)e.NewValue;
+            }
+        }
+
+        private void VisualizationToggle(object sender, RoutedEventArgs e)
+        {
+            if (visualizer != null)
+            {
+                CheckBox checkbox = sender as CheckBox;
+                if (checkbox != null)
+                {
+                    visualizer.VisualizationEnabled = checkbox.IsChecked == true;
+                }
             }
         }
 
@@ -335,6 +360,19 @@ namespace PathFinder2D.UI
             ClearAllExceptGridAndObstacles();
             startNode = null;
             endNode = null;
+
+            // Reset results
+            DijkstraTime.Text = "Time: 0ms";
+            DijkstraCost.Text = "Cost: 0";
+            DijkstraNodes.Text = "Processed Nodes: 0";
+
+            AStarTime.Text = "Time: 0ms";
+            AStarCost.Text = "Cost: 0";
+            AStarNodes.Text = "Processed Nodes: 0";
+
+            JPSTime.Text = "Time: 0ms";
+            JPSCost.Text = "Cost: 0";
+            JPSNodes.Text = "Processed Nodes: 0";
         }
 
         // This method handles the DragEnter event

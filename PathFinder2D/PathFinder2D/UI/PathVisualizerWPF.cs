@@ -16,6 +16,7 @@
         private Node lastNode;
 
         public int Delay { get; set; } = 20;
+        public bool VisualizationEnabled { get; set; } = false;
 
         public PathVisualizerWPF(Canvas canvas, Graph graph) : base(graph, "")
         {
@@ -26,6 +27,8 @@
         // Override to pathvisualizer
         public override void VisualizePath(Node currentNode, Node start, Node end, bool jps = false)
         {
+            if (!VisualizationEnabled) { return; }
+
             DrawNode(currentNode.X, currentNode.Y, Brushes.Gray, "TempNode");
 
             if (lastNode != null && !lastNode.JumpPoint && lastNode != start && lastNode != end)
@@ -70,7 +73,7 @@
             canvas.Children.Add(rect);
         }
 
-        // Method to process all pending UI events (equivalent to DoEvents in WinForms)
+        // Method to process all pending UI events
         private void DoEvents()
         {
             Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Background,
