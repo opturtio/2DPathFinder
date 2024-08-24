@@ -15,6 +15,8 @@
         private readonly int nodeSize = 20;
         private Node lastNode;
 
+        public int Delay { get; set; } = 20;
+
         public PathVisualizerWPF(Canvas canvas, Graph graph) : base(graph, "")
         {
             this.canvas = canvas;
@@ -46,7 +48,7 @@
             this.lastNode = currentNode;
 
             DoEvents();
-            Thread.Sleep(20);
+            Thread.Sleep(Delay);
         }
 
         // Method to draw a node on the canvas

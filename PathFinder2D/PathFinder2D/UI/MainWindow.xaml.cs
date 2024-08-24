@@ -35,6 +35,8 @@ namespace PathFinder2D.UI
 
             PathCanvas.MouseWheel += PathCanvas_MouseWheel;
             this.KeyDown += MainWindow_KeyDown;
+
+            Speed.ValueChanged += Speed_ValueChanged;
         }
 
         // Event handler for mouse wheel to handle zooming
@@ -80,7 +82,10 @@ namespace PathFinder2D.UI
             fileManager = new FileManager();
             string mapString = this.fileManager.LoadMap("1");
             graph = GraphBuilder.CreateGraphFromString(mapString);
-            visualizer = new PathVisualizerWPF(PathCanvas, graph);
+            visualizer = new PathVisualizerWPF(PathCanvas, graph)
+            {
+                Delay = 101 - (int)Speed.Value
+            };
             dijkstra = new Dijkstra(graph, visualizer);
             aStar = new Astar(graph, visualizer);
             jps = new JPS(graph, visualizer);
@@ -301,6 +306,14 @@ namespace PathFinder2D.UI
             jps.FindShortestPath(startNode, endNode);
 
             ResultLabel.Content = $"JPS Path Cost: {jps.GetShortestPathLength()}";
+        }
+
+        private void Speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (visualizer != null)
+            {
+                visualizer.Delay = 101 - (int)e.NewValue;
+            }
         }
 
         private void StopRunning(object sender, RoutedEventArgs e)
