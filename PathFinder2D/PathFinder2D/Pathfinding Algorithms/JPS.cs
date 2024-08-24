@@ -92,9 +92,17 @@
             this.running = false;
             this.jpsStopwatch.Stop();
 
-            if (this.pathFound)
+            if (gscore.ContainsKey(end))
             {
                 this.shortestPathCost = Math.Round(gscore[end], 1);
+            }
+            else
+            {
+                return (new List<Node>(), this.visitedNodes, this.shortestPathCost, new List<Node>());
+            }
+
+            if (this.pathFound)
+            {
                 return (null, this.visitedNodes, gscore[end], gscore.Keys.ToList());
             }
 

@@ -276,15 +276,24 @@ namespace PathFinder2D.UI
             }
         }
 
+        private void CompareAlgorithms(object sender, RoutedEventArgs e)
+        {
+            if (startNode == null || endNode == null) return;
+            StopRunning(sender, e);
+            ClearAllExceptGridObstaclesAndNodes();
+
+            RunDijkstra_Click(sender, e);
+            RunAStar_Click(sender, e);
+            RunJPS_Click(sender, e);
+        }
+
         private void RunDijkstra_Click(object sender, RoutedEventArgs e)
         {
             if (startNode == null || endNode == null) return;
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
-            var stopwatch = Stopwatch.StartNew();
             dijkstra.FindShortestPath(startNode, endNode);
-            stopwatch.Stop();
 
             DijkstraTime.Text = $"Time: {this.dijkstra.GetStopwatchTime()}ms";
             DijkstraCost.Text = $"Cost: {dijkstra.GetShortestPathCost()}";
@@ -297,9 +306,7 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
-            var stopwatch = Stopwatch.StartNew();
             aStar.FindShortestPath(startNode, endNode);
-            stopwatch.Stop();
 
             AStarTime.Text = $"Time: {this.aStar.GetStopwatchTime()}ms";
             AStarCost.Text = $"Cost: {this.aStar.GetShortestPathCost()}";
@@ -312,9 +319,7 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
-            var stopwatch = Stopwatch.StartNew();
             jps.FindShortestPath(startNode, endNode);
-            stopwatch.Stop();
 
             JPSTime.Text = $"Time: {this.jps.GetStopwatchTime()}ms";
             JPSCost.Text = $"Cost: {this.jps.GetShortestPathLength()}";

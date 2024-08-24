@@ -12,62 +12,72 @@
 
         <!-- StackPanel for controls -->
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" Height="Auto" Width="160">
+            <Button Content="Compare" Click="CompareAlgorithms" Margin="5"/>
             <Button Content="Run Dijkstra" Click="RunDijkstra_Click" Margin="5"/>
             <Button Content="Run A*" Click="RunAStar_Click" Margin="5"/>
             <Button Content="Run JPS" Click="RunJPS_Click" Margin="5"/>
             <Button Content="Clean" Click="ClearDrawnNodes" Margin="5"/>
             <Button Content="Stop" Click="StopRunning" Margin="5"/>
-            <Slider Minimum="1" Maximum="100" Width="150" Height="10" Name="Speed" Margin="5"/>
-            <CheckBox Content="Visualization" Checked="VisualizationToggle"/>
 
-            <Label Name="ResultLabel" Content="Results:" Margin="5"/>
+            <!-- StackPanel for Slider and its Label -->
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+                <TextBlock Text="Visualization Speed" FontWeight="Bold" Margin="0,0,0,5"/>
+                <Slider Minimum="1" Maximum="100" Width="140" Height="20" Value="70" Name="Speed" Margin="2,5,2,5" Cursor="Hand" SmallChange="1" TickPlacement="TopLeft" TickFrequency="10" LargeChange="20"/>
+            </StackPanel>
 
-            <!-- Grid for Dijkstra results -->
-            <Grid Name="DijkstraGrid" Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Dijkstra" FontWeight="Bold" Grid.Row="0"/>
-                <TextBlock Name="DijkstraTime" Grid.Row="1" Text="Time: 0ms"/>
-                <TextBlock Name="DijkstraCost" Grid.Row="2" Text="Cost: 0"/>
-                <TextBlock Name="DijkstraNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
-            </Grid>
+            <CheckBox Content="Visualization" Checked="VisualizationToggle"  Margin="5,5,0,0"/>
 
-            <!-- Grid for A* results -->
-            <Grid Name="AStarGrid" Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="A*" FontWeight="Bold" Grid.Row="0"/>
-                <TextBlock Name="AStarTime" Grid.Row="1" Text="Time: 0ms"/>
-                <TextBlock Name="AStarCost" Grid.Row="2" Text="Cost: 0"/>
-                <TextBlock Name="AStarNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
-            </Grid>
+            <!-- StackPanel for ResultLabel and algorithm results -->
+            <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Top">
+                <Label Name="ResultLabel" Content="Results:" FontWeight="Bold" FontSize="13" Margin="0,5,0,0"/>
 
-            <!-- Grid for JPS results -->
-            <Grid Name="JPSGrid" Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="JPS" FontWeight="Bold" Grid.Row="0"/>
-                <TextBlock Name="JPSTime" Grid.Row="1" Text="Time: 0ms"/>
-                <TextBlock Name="JPSCost" Grid.Row="2" Text="Cost: 0"/>
-                <TextBlock Name="JPSNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
-            </Grid>
+                <!-- Grid for Dijkstra results -->
+                <Grid Name="DijkstraGrid" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Dijkstra" FontWeight="Bold" Grid.Row="0"/>
+                    <TextBlock Name="DijkstraTime" Grid.Row="1" Text="Time: 0ms"/>
+                    <TextBlock Name="DijkstraCost" Grid.Row="2" Text="Cost: 0"/>
+                    <TextBlock Name="DijkstraNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
+                </Grid>
+
+                <!-- Grid for A* results -->
+                <Grid Name="AStarGrid" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="A*" FontWeight="Bold" Grid.Row="0"/>
+                    <TextBlock Name="AStarTime" Grid.Row="1" Text="Time: 0ms"/>
+                    <TextBlock Name="AStarCost" Grid.Row="2" Text="Cost: 0"/>
+                    <TextBlock Name="AStarNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
+                </Grid>
+
+                <!-- Grid for JPS results -->
+                <Grid Name="JPSGrid" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="JPS" FontWeight="Bold" Grid.Row="0"/>
+                    <TextBlock Name="JPSTime" Grid.Row="1" Text="Time: 0ms"/>
+                    <TextBlock Name="JPSCost" Grid.Row="2" Text="Cost: 0"/>
+                    <TextBlock Name="JPSNodes" Grid.Row="3" Text="Processed Nodes: 0"/>
+                </Grid>
+            </StackPanel>
         </StackPanel>
 
         <!-- Canvas for visualizing the path -->
         <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Canvas Name="PathCanvas" Background="White" 
+            <Canvas Name="PathCanvas" Background="White"
                     MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
                     MouseMove="Canvas_MouseMove"
                     MouseLeftButtonUp="Canvas_MouseLeftButtonUp"
