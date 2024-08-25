@@ -4,7 +4,9 @@ namespace PathFinder2D.UI
     using PathFinder2D.DataStructures;
     using PathFinder2D.Managers;
     using PathFinder2D.PathFindingAlgorithms;
+    using PathFinder2D.Services;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -18,6 +20,8 @@ namespace PathFinder2D.UI
         private Node startNode, endNode;
         private PathVisualizerWPF visualizer;
         private FileManager fileManager;
+        private FileLoader fileLoader;
+        private FileModifier fileModifier;
         private Dijkstra dijkstra;
         private Astar aStar;
         private JPS jps;
@@ -38,6 +42,9 @@ namespace PathFinder2D.UI
             this.KeyDown += MainWindow_KeyDown;
 
             Speed.ValueChanged += Speed_ValueChanged;
+
+            this.fileModifier = new FileModifier();
+            this.fileLoader = new FileLoader();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -85,8 +92,8 @@ namespace PathFinder2D.UI
 
         private void InitializeGraph()
         {
-            fileManager = new FileManager();
-            string mapString = this.fileManager.LoadMap("1");
+            var fileManager = new FileManager();
+            string mapString = fileManager.LoadMap("1");
             graph = GraphBuilder.CreateGraphFromString(mapString);
             visualizer = new PathVisualizerWPF(PathCanvas, graph)
             {
@@ -416,8 +423,32 @@ namespace PathFinder2D.UI
         // Method to process the dropped file
         private void ProcessDroppedFile(string filePath)
         {
-            MessageBox.Show($"File dropped: {filePath}");
-            // Here I implement file processing logic
+            try
+            {
+                // Get the file name
+                string fileName = System.IO.Path.GetFileName(filePath);
+
+                // Get the target directory from FileLoader
+                string targetDirectory = fileLoader.ReturnDirectoryPath();
+
+                // Ensure the directory exists
+                if (!Directory.Exists(targetDirectory))
+                {
+                    Directory.CreateDirectory(targetDirectory);
+                }
+
+                // Create the target file path
+                string targetFilePath = System.IO.Path.Combine(targetDirectory, fileName);
+
+                // Copy the file to the target directory
+                File.Copy(filePath, targetFilePath, overwrite: true);
+
+                MessageBox.Show($"File successfully dropped and saved to: {targetFilePath}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error processing dropped file: {ex.Message}");
+            }
         }
     }
 }

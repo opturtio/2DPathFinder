@@ -29,6 +29,11 @@
             }
             return cleanMapNames;
         }
+
+        public string ModifyMap(string map)
+        {
+            return map;
+        }
     }
 }
 
