@@ -77,6 +77,52 @@
             }
         }
 
+        public string LoadMapByName(string mapName)
+        {
+            try
+            {
+                string mapFilePath = Path.Combine(this.mapsDirectory, mapName);
+
+                if (File.Exists(mapFilePath))
+                {
+                    this.map = File.ReadAllText(mapFilePath);
+
+                    string[] rows = this.map.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (rows.Length >= 5)
+                    {
+                        string heightLine = rows[1];
+                        string widthLine = rows[2];
+
+                        int height = int.Parse(heightLine.Split(' ')[1]);
+                        int width = int.Parse(widthLine.Split(' ')[1]);
+
+                        string[] mapData = rows.Skip(4).ToArray();
+
+                        this.map = string.Join("\n", mapData);
+
+                        return this.map;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Map file '{mapName}' is not in the expected format.");
+                        return string.Empty;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Map file '{mapName}' not found in directory '{this.mapsDirectory}'.");
+                    return string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading map by name: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
+
         /// <summary>
         /// Sets the maps directory path. This method is used for testing.
         /// </summary>

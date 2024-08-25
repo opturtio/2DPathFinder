@@ -33,8 +33,14 @@ namespace PathFinder2D.UI
 
         public MainWindow()
         {
+            this.fileModifier = new FileModifier();
+            this.fileLoader = new FileLoader();
+            this.fileManager = new FileManager();
+
+            string mapString = this.fileLoader.LoadMapByName("Berlin_256x256.map");
+
             InitializeComponent();
-            InitializeGraph();
+            InitializeGraph(mapString);
             DrawGrid();
             DrawObstacles();
 
@@ -43,8 +49,6 @@ namespace PathFinder2D.UI
 
             Speed.ValueChanged += Speed_ValueChanged;
 
-            this.fileModifier = new FileModifier();
-            this.fileLoader = new FileLoader();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -90,10 +94,8 @@ namespace PathFinder2D.UI
             e.Handled = true;
         }
 
-        private void InitializeGraph()
+        private void InitializeGraph(string mapString)
         {
-            var fileManager = new FileManager();
-            string mapString = fileManager.LoadMap("1");
             graph = GraphBuilder.CreateGraphFromString(mapString);
             visualizer = new PathVisualizerWPF(PathCanvas, graph)
             {
@@ -105,6 +107,19 @@ namespace PathFinder2D.UI
 
             PathCanvas.Width = graph.Nodes[0].Count * nodeSize;
             PathCanvas.Height = graph.Nodes.Count * nodeSize;
+        }
+
+        private void ClearCanvas()
+        {
+            PathCanvas.Children.Clear();
+
+            if (graph != null)
+            {
+                graph.ResetNodes();
+            }
+
+            startNode = null;
+            endNode = null;
         }
 
         // Draw the grid on the canvas
@@ -425,25 +440,28 @@ namespace PathFinder2D.UI
         {
             try
             {
-                // Get the file name
                 string fileName = System.IO.Path.GetFileName(filePath);
 
-                // Get the target directory from FileLoader
                 string targetDirectory = fileLoader.ReturnDirectoryPath();
 
-                // Ensure the directory exists
-                if (!Directory.Exists(targetDirectory))
-                {
-                    Directory.CreateDirectory(targetDirectory);
-                }
-
-                // Create the target file path
                 string targetFilePath = System.IO.Path.Combine(targetDirectory, fileName);
 
-                // Copy the file to the target directory
-                File.Copy(filePath, targetFilePath, overwrite: true);
+                if (File.Exists(targetFilePath))
+                {
+                    string loadedMap = fileLoader.LoadMapByName(fileName);
+                    MessageBox.Show($"Map '{fileName}' already exists and has been loaded.", "Map Loaded", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                MessageBox.Show($"File successfully dropped and saved to: {targetFilePath}");
+                    ClearCanvas();
+                    InitializeGraph(loadedMap);
+                    DrawGrid();
+                    DrawObstacles();
+                }
+                else
+                {
+                    // If it doesn't exist, copy the new file to the target directory
+                    File.Copy(filePath, targetFilePath, overwrite: false);
+                    MessageBox.Show($"File successfully dropped and saved to: {targetFilePath}");
+                }
             }
             catch (Exception ex)
             {
