@@ -101,6 +101,7 @@ namespace PathFinder2D.UI
             {
                 Delay = 101 - (int)Speed.Value
             };
+
             dijkstra = new Dijkstra(graph, visualizer);
             aStar = new Astar(graph, visualizer);
             jps = new JPS(graph, visualizer);
@@ -320,9 +321,10 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
+            dijkstra = new Dijkstra(graph, visualizer);
             dijkstra.FindShortestPath(startNode, endNode);
 
-            DijkstraTime.Text = $"Time: {this.dijkstra.GetStopwatchTime()}ms";
+            DijkstraTime.Text = $"Time: {this.dijkstra.GetStopwatchTime()} ms";
             DijkstraCost.Text = $"Cost: {dijkstra.GetShortestPathCost()}";
             DijkstraNodes.Text = $"Processed Nodes: {this.dijkstra.GetVisitedNodes()}";
         }
@@ -333,9 +335,10 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
+            aStar = new Astar(graph, visualizer);
             aStar.FindShortestPath(startNode, endNode);
 
-            AStarTime.Text = $"Time: {this.aStar.GetStopwatchTime()}ms";
+            AStarTime.Text = $"Time: {this.aStar.GetStopwatchTime()} ms";
             AStarCost.Text = $"Cost: {this.aStar.GetShortestPathCost()}";
             AStarNodes.Text = $"Processed Nodes: {this.aStar.GetVisitedNodes()}";
         }
@@ -346,9 +349,10 @@ namespace PathFinder2D.UI
             StopRunning(sender, e);
             ClearAllExceptGridObstaclesAndNodes();
 
+            jps = new JPS(graph, visualizer);
             jps.FindShortestPath(startNode, endNode);
 
-            JPSTime.Text = $"Time: {this.jps.GetStopwatchTime()}ms";
+            JPSTime.Text = $"Time: {this.jps.GetStopwatchTime()} ms";
             JPSCost.Text = $"Cost: {this.jps.GetShortestPathLength()}";
             JPSNodes.Text = $"Processed Nodes: {this.jps.GetVisitedNodes()}";
         }
