@@ -19,7 +19,6 @@ namespace PathFinder2D.UI
         private Graph graph;
         private Node startNode, endNode;
         private PathVisualizerWPF visualizer;
-        private FileManager fileManager;
         private FileLoader fileLoader;
         private FileModifier fileModifier;
         private Dijkstra dijkstra;
@@ -35,7 +34,6 @@ namespace PathFinder2D.UI
         {
             this.fileModifier = new FileModifier();
             this.fileLoader = new FileLoader();
-            this.fileManager = new FileManager();
 
             string mapString = this.fileLoader.LoadMapByName("Berlin_256x256.map");
 
@@ -326,7 +324,7 @@ namespace PathFinder2D.UI
 
             DijkstraTime.Text = $"Time: {this.dijkstra.GetStopwatchTime()} ms";
             DijkstraCost.Text = $"Cost: {dijkstra.GetShortestPathCost()}";
-            DijkstraNodes.Text = $"Processed Nodes: {this.dijkstra.GetVisitedNodes()}";
+            DijkstraNodes.Text = $"Visited Nodes: {this.dijkstra.GetVisitedNodes()}";
         }
 
         private void RunAStar_Click(object sender, RoutedEventArgs e)
@@ -340,7 +338,7 @@ namespace PathFinder2D.UI
 
             AStarTime.Text = $"Time: {this.aStar.GetStopwatchTime()} ms";
             AStarCost.Text = $"Cost: {this.aStar.GetShortestPathCost()}";
-            AStarNodes.Text = $"Processed Nodes: {this.aStar.GetVisitedNodes()}";
+            AStarNodes.Text = $"Visited Nodes: {this.aStar.GetVisitedNodes()}";
         }
 
         private void RunJPS_Click(object sender, RoutedEventArgs e)
@@ -354,7 +352,7 @@ namespace PathFinder2D.UI
 
             JPSTime.Text = $"Time: {this.jps.GetStopwatchTime()} ms";
             JPSCost.Text = $"Cost: {this.jps.GetShortestPathLength()}";
-            JPSNodes.Text = $"Processed Nodes: {this.jps.GetVisitedNodes()}";
+            JPSNodes.Text = $"Visited Nodes: {this.jps.GetVisitedNodes()}";
         }
 
         private void Speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
