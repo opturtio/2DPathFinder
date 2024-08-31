@@ -4,6 +4,7 @@
     using PathFinder2D.Managers;
     using PathFinder2D.UI;
     using System.Diagnostics;
+    using System.Windows;
     using System.Windows.Media;
 
     /// <summary>
@@ -19,6 +20,7 @@
         private bool pathFound;
         private double shortestPathCost = 0;
         private bool running = false;
+        private bool testOn = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Astar"/> class.
@@ -120,6 +122,11 @@
             this.running = false;
             this.aStarStopwatch.Stop();
 
+            if (!this.testOn)
+            {
+                MessageBox.Show($"Path not found!");
+            }
+
             // If the end node wasn't reached, return an empty path
             return new List<Node>();
         }
@@ -182,6 +189,11 @@
         public void StopRunning()
         {
             this.running = false;
+        }
+
+        public void TurnOnTesting()
+        {
+            this.testOn = true;
         }
     }
 }

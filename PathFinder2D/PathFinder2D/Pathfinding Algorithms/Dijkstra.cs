@@ -4,6 +4,7 @@
     using PathFinder2D.Managers;
     using PathFinder2D.UI;
     using System.Diagnostics;
+    using System.Windows;
     using System.Windows.Media;
 
     /// <summary>
@@ -18,6 +19,7 @@
         private bool pathFound = false;
         private double shortestPathCost = 0;
         private bool running = false;
+        private bool testOn = false;
 
         public Dijkstra(Graph graph, PathVisualizer visualizer)
         {
@@ -107,6 +109,11 @@
             this.running = false;
             this.dijkstraStopwatch.Stop();
 
+            if (!this.testOn)
+            {
+                MessageBox.Show($"Path not found!");
+            }
+
             return new List<Node>();
         }
 
@@ -154,6 +161,11 @@
         public void StopRunning()
         {
             this.running = false;
+        }
+
+        public void TurnOnTesting()
+        {
+            this.testOn = true;
         }
     }
 }

@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Windows;
     using System.Windows.Media;
 
     /// <summary>
@@ -21,6 +22,7 @@
         private int visitedNodes = 0;
         private bool pathFound = false;
         private bool running = false;
+        private bool testOn = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JPS"/> class.
@@ -107,6 +109,11 @@
 
             this.running = false;
             this.jpsStopwatch.Stop();
+
+            if (!this.testOn)
+            {
+                MessageBox.Show($"Path not found!");
+            }
 
             return (new List<Node>(), this.visitedNodes, 0, gscore.Keys.ToList());
         }
@@ -386,6 +393,11 @@
         public void StopRunning()
         {
             this.running = false;
+        }
+
+        public void TurnOnTesting()
+        {
+            this.testOn = true;
         }
     }
 }
