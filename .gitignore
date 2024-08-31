@@ -7,10 +7,10 @@ obj
 .csv
 
 # Coverage report
-PathFinder2D.Tests/CoverageReport
+CoverageReport/
 
 # Test results
-PathFinder2D/PathFinder2D.Tests/PathFinder2D.Tests/Results
+PathFinder2D/PathFinder2D.Tests/PathFinder2D.Tests/Results/
 
 # Specific files
 PathFinder.csproj.user
