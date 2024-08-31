@@ -1,7 +1,10 @@
 # Folders
-.vs
 bin
 obj
+
+# File types
+.vs
+.csv
 
 # Coverage report
 PathFinder2D.Tests/CoverageReport

@@ -1,1 +1,11 @@
-JPS time, Dijkstra time, JPS jump points, Dijkstra visited nodes, Dijkstra path found, JPS path found, Dijkstra shortest path length, JPS shortest path length
+JPS time, Dijkstra time, JPS visited nodes, Dijkstra visited nodes, Dijkstra path found, JPS path found, Dijkstra shortest path length, JPS shortest path length
+8.6751,75.1902,63217,56177,True,True,2540.1,2540.1
+8.1628,44.56,63487,58870,True,True,1858.7,1858.7
+5.0429,28.2338,37941,42735,True,True,805.2,805.2
+4.791,21.8013,35944,28819,True,True,1891.5,1891.5
+6.2152,33.6477,43444,41317,True,True,2058.8,2058.8
+0.4145,9.8457,2433,2855,True,True,355.3,355.3
+0.9487,12.1809,6642,6131,True,True,651.1,651.1
+8.1149,36.419,60703,53798,True,True,2357.9,2357.9
+6.4923,31.677,50357,51158,True,True,1287.3,1287.3
+22.5922,60.7446,161801,116938,True,True,2948.1,2948.1
