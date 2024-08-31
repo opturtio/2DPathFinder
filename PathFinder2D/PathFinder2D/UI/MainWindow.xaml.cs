@@ -450,13 +450,7 @@ namespace PathFinder2D.UI
 
                 if (File.Exists(targetFilePath))
                 {
-                    string loadedMap = fileLoader.LoadMapByName(fileName);
                     MessageBox.Show($"Map '{fileName}' already exists and has been loaded.", "Map Loaded", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    ClearCanvas();
-                    InitializeGraph(loadedMap);
-                    DrawGrid();
-                    DrawObstacles();
                 }
                 else
                 {
@@ -464,12 +458,20 @@ namespace PathFinder2D.UI
                     File.Copy(filePath, targetFilePath, overwrite: false);
                     MessageBox.Show($"File successfully dropped and saved to: {targetFilePath}");
                 }
+
+                // Load and initialize the newly dropped map
+                string loadedMap = fileLoader.LoadMapByName(fileName);
+                ClearCanvas();
+                InitializeGraph(loadedMap);
+                DrawGrid();
+                DrawObstacles();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error processing dropped file: {ex.Message}");
             }
         }
+
     }
 }
 
