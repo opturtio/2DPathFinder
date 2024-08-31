@@ -276,10 +276,6 @@
             }
 
             Node currentNode = this.graph.Nodes[y][x];
-            Node parentNode = this.graph.Nodes[py][px];
-
-            currentNode.Parent = parentNode;
-            currentNode.Visited = true;
 
             this.visitedNodes++;
 
