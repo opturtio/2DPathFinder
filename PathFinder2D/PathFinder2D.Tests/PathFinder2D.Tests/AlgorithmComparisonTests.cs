@@ -28,7 +28,9 @@ namespace TestProject1
         private string testMap;
         private string expectedMapContent = string.Empty;
         private string speedComparisonDirectoryPath;
-        private string combinedSpeedComparisonFilePath;
+        private string londonSpeedComparisonFilePath;
+        private string mazeSpeedComparisonFilePath;
+        private string blackLotusSpeedComparisonFilePath;
         private int rounds;
 
         [SetUp]
@@ -38,7 +40,9 @@ namespace TestProject1
             this.fileLoader.SetMapsDirectoryPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "TestData", "Maps"));
             this.speedComparisonDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Results");
             Directory.CreateDirectory(this.speedComparisonDirectoryPath);
-            this.combinedSpeedComparisonFilePath = Path.Combine(this.speedComparisonDirectoryPath, "JPSvsDijkstraAndAstar-SpeedComparison.csv");
+            this.londonSpeedComparisonFilePath = Path.Combine(this.speedComparisonDirectoryPath, "JPSvsDijkstraAndAstar-SpeedComparison-London.csv");
+            this.mazeSpeedComparisonFilePath = Path.Combine(this.speedComparisonDirectoryPath, "JPSvsDijkstraAndAstar-SpeedComparison-Maze.csv");
+            this.blackLotusSpeedComparisonFilePath = Path.Combine(this.speedComparisonDirectoryPath, "JPSvsDijkstraAndAstar-SpeedComparison-BlackLotus.csv");
 
             // Load maps
             this.londonMap = this.fileLoader.LoadMapByName("London_1024x1024.map");
@@ -50,7 +54,7 @@ namespace TestProject1
             this.graphBlackLotus = GraphBuilder.CreateGraphFromString(this.blackLotusMap);
 
             // Rounds
-            this.rounds = 10;
+            this.rounds = 100;
 
             // Expected content of the test map
             this.expectedMapContent =
@@ -132,8 +136,8 @@ namespace TestProject1
             int aStarFaster = 0;
 
             // Initializing StreamWriter
-            using StreamWriter speedComparisonWriter = new StreamWriter(this.combinedSpeedComparisonFilePath, false);
-            speedComparisonWriter.WriteLine($"Map, JPS time, Dijkstra time, A* time, JPS visited nodes, Dijkstra visited nodes, A* visited nodes, Dijkstra path found, A* path found, JPS path found, Dijkstra shortest path length, A* shortest path length, JPS shortest path length");
+            using StreamWriter speedComparisonWriter = new StreamWriter(this.londonSpeedComparisonFilePath, false);
+            speedComparisonWriter.WriteLine($"JPS time, Dijkstra time, A* time, JPS visited nodes, Dijkstra visited nodes, A* visited nodes, Dijkstra path found, A* path found, JPS path found, Dijkstra shortest path length, A* shortest path length, JPS shortest path length");
 
             for (int i = 0; i < this.rounds; i++)
             {
@@ -175,7 +179,7 @@ namespace TestProject1
                     aStarFaster++;
                 }
 
-                speedComparisonWriter.WriteLine($"London, {this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathCost()},{this.aStar.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
+                speedComparisonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathCost()},{this.aStar.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
             }
 
             Console.WriteLine("London map result:");
@@ -311,8 +315,8 @@ namespace TestProject1
             int aStarFaster = 0;
 
             // Initializing StreamWriter
-            using StreamWriter speedComparisonWriter = new StreamWriter(this.combinedSpeedComparisonFilePath, true); // Appending to the same file
-            speedComparisonWriter.WriteLine($"Maze, JPS time, Dijkstra time, A* time, JPS visited nodes, Dijkstra visited nodes, A* visited nodes, Dijkstra path found, A* path found, JPS path found, Dijkstra shortest path length, A* shortest path length, JPS shortest path length");
+            using StreamWriter speedComparisonWriter = new StreamWriter(this.mazeSpeedComparisonFilePath, false);
+            speedComparisonWriter.WriteLine($"JPS time, Dijkstra time, A* time, JPS visited nodes, Dijkstra visited nodes, A* visited nodes, Dijkstra path found, A* path found, JPS path found, Dijkstra shortest path length, A* shortest path length, JPS shortest path length");
 
             for (int i = 0; i < this.rounds; i++)
             {
@@ -354,7 +358,7 @@ namespace TestProject1
                     aStarFaster++;
                 }
 
-                speedComparisonWriter.WriteLine($"Maze, {this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathCost()},{this.aStar.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
+                speedComparisonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathCost()},{this.aStar.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
             }
 
             Console.WriteLine("Maze map result:");
@@ -419,12 +423,11 @@ namespace TestProject1
             int aStarFaster = 0;
 
             // Initializing StreamWriter
-            using StreamWriter speedComparisonWriter = new StreamWriter(this.combinedSpeedComparisonFilePath, true); // Appending to the same file
-            speedComparisonWriter.WriteLine($"BlackLotus, JPS time, Dijkstra time, A* time, JPS visited nodes, Dijkstra visited nodes, A* visited nodes, Dijkstra path found, A* path found, JPS path found, Dijkstra shortest path length, A* shortest path length, JPS shortest path length");
+            using StreamWriter speedComparisonWriter = new StreamWriter(this.blackLotusSpeedComparisonFilePath, false);
+            speedComparisonWriter.WriteLine($"JPS time, Dijkstra time, A* time, JPS visited nodes, Dijkstra visited nodes, A* visited nodes, Dijkstra path found, A* path found, JPS path found, Dijkstra shortest path length, A* shortest path length, JPS shortest path length");
 
             for (int i = 0; i < this.rounds; i++)
             {
-
                 this.dijkstra = new Dijkstra(this.graphBlackLotus, this.pathVisualizer);
                 this.aStar = new Astar(this.graphBlackLotus, this.pathVisualizer);
                 this.jps = new JPS(this.graphBlackLotus, this.pathVisualizer);
@@ -463,7 +466,7 @@ namespace TestProject1
                     aStarFaster++;
                 }
 
-                speedComparisonWriter.WriteLine($"BlackLotus, {this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathCost()},{this.aStar.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
+                speedComparisonWriter.WriteLine($"{this.jps.GetStopwatchTime()},{this.dijkstra.GetStopwatchTime()},{this.aStar.GetStopwatchTime()},{this.jps.GetVisitedNodes()},{this.dijkstra.GetVisitedNodes()},{this.aStar.GetVisitedNodes()},{this.dijkstra.IsPathFound()},{this.aStar.IsPathFound()},{this.jps.IsPathFound()},{this.dijkstra.GetShortestPathCost()},{this.aStar.GetShortestPathCost()},{this.jps.GetShortestPathLength()}");
             }
 
             Console.WriteLine("BlackLotus map result:");
