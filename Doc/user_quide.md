@@ -50,6 +50,8 @@ git clone https://github.com/opturtio/PathFinder.git
 
 ### The main window
 
+#### You can zoom in and out using the mouse wheel. Move around the screen with the arrow keys. To set the start and end points, first left-click on a free spots(white) on the map to choose the start point, and then left-click again to choose the end point. Black areas are the walls.
+
 ![](./Pics/MainScreen.png)
 
 ### Drag and drop the map
@@ -58,9 +60,15 @@ git clone https://github.com/opturtio/PathFinder.git
 
 ### Algorithm comparison
 
-Choose the start and end points on the map, then press the "Compare" button to compare algorithms. You can also select a specific algorithm to run by pressing "Run Dijkstra", "Run A*" or "Run JPS".
+#### Choose the start and end points on the map, then press the "Compare" button to compare algorithms. You can also select a specific algorithm to run by pressing "Run Dijkstra", "Run A*" or "Run JPS". You can stop the algorithm by pressing stop and clean the whole screen by pressing clean.
+
+### Visualization
+
+#### To enable visualization, select the checkbox. Once enabled, you can see the visualization when comparing algorithms. You can adjust the speed of the visualization using the slider.
+
+![](./Pics/Visualization.png)
 
 ### Result screen
 
-#### Finally, view the search results. You may need to scroll up to see other algorithms' shortest paths.
+#### Finally, view the results. You can see the results under the buttons.
 ![](./Pics/Result.png)
