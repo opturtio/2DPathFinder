@@ -56,7 +56,7 @@ You can zoom in and out using the mouse wheel. Move around the screen with the a
 
 ### Drag and drop the map
 
-You can select any map from the [2D Pathfinding Benchmarks](https://www.movingai.com/benchmarks/grids.html) website. To add a map to the program, simply download and unzip the file, then drag and drop it onto the canvas.
+You can select any map from the [2D Pathfinding Benchmarks](https://www.movingai.com/benchmarks/grids.html) website. To add a map to the program, simply download and unzip the file, then drag and drop it onto the canvas. Berlin map size 256x256 is the default map.
 
 ### Algorithm comparison
 
