@@ -52,27 +52,13 @@ git clone https://github.com/opturtio/PathFinder.git
 
 ![](./Pics/MainScreen.png)
 
-### Choosing the map
+### Drag and drop the map
 
-#### First, the user has to choose the map for comparison by selecting 2 and then choose the map by its ID.
-
-![](./Pics/ChooseMap.png)
-
-### Show the map
-
-#### After choosing the map, you can see the map by pressing 3. This step is optional. Remember, you can zoom in and out on the console screen to see the maps better, which is essential for large maps.
-
-![](./Pics/ShowMap.png)
+#### You can select any map from the ![2D Pathfinding Benchmarks](https://www.movingai.com/benchmarks/grids.html) website. To add a map to the program, simply download and unzip the file, then drag and drop it onto the canvas.
 
 ### Algorithm comparison
 
-#### Compare algorithms by pressing 1. Decide whether to turn on the debug mode by selecting `y` or `n`. Then, enter the coordinates.
-
-![](./Pics/ChoosingCoordinates.png)
-
-#### Choosing out-of-bound coordinates lets you choose coordinates again. The coordinates are given between zero and max value.
-
-![](./Pics/WrongCoordinate.png)
+Choose the start and end points on the map, then press the "Compare" button to compare algorithms. You can also select a specific algorithm to run by pressing "Run Dijkstra", "Run A*" or "Run JPS".
 
 ### Result screen
 
