@@ -46,21 +46,6 @@ git clone https://github.com/opturtio/PathFinder.git
 5. Press ![](./Pics/PlayButton.png) button to start the program.
 
 
-## Debugger: Character Representation
-
-#### Wall: `@`
-
-#### Visited: `#`
-
-#### Current: `X`
-
-#### Start: `E`
-
-#### Goal: `G`
-
-#### Jump Point: `J`
-
-
 ## How to use the program
 
 ### The main window
