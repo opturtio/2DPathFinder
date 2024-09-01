@@ -78,10 +78,8 @@ namespace PathFinder2D.DataStructures
         /// <returns>An IEnumerable of tuples, where each tuple contains a Node (representing a neighbor) and a double (representing the movement cost to that neighbor).</returns>
         public IEnumerable<(Node, double)> GetNeighborsWithCosts(Node node)
         {
-            // Defines all eight directions and their costs
             var directions = new (int deltaX, int deltaY, double cost)[] { (1, 0, 1), (-1, 0, 1), (0, 1, 1), (0, -1, 1), (1, 1, Math.Sqrt(2)), (-1, 1, Math.Sqrt(2)), (1, -1, Math.Sqrt(2)), (-1, -1, Math.Sqrt(2)) };
 
-            // Iterates over each defined direction to find the neighboring nodes.
             foreach (var (deltaX, deltaY, cost) in directions)
             {
                 int neighborX = node.X + deltaX;
@@ -92,17 +90,6 @@ namespace PathFinder2D.DataStructures
                     continue;
                 }
 
-                // Check is the movement diagonal and prevents jumping over corners.
-                /*
-                if (Math.Abs(deltaX) == 1 && Math.Abs(deltaY) == 1)
-                {
-                    // Check if adjacent nodes are obstacles or out of bound in diagonal movement.
-                    if (!this.CanMove(node.X + deltaX, node.Y) || !this.CanMove(node.X, node.Y + deltaY))
-                    {
-                        continue;
-                    }
-                }
-                */
                 yield return (this.Nodes[neighborY][neighborX], cost);
             }
         }

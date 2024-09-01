@@ -1,7 +1,7 @@
 ﻿namespace PathFinder2D.Services
 {
     /// <summary>
-    /// Provides functionality to modify files.
+    /// Provides functionality to modify files. LEGACY CODE! LEFT FOR FUTURE!
     /// </summary>
     public class FileModifier
     {

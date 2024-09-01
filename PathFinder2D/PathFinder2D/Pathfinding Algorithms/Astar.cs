@@ -127,7 +127,6 @@
                 MessageBox.Show($"Path not found!");
             }
 
-            // If the end node wasn't reached, return an empty path
             return new List<Node>();
         }
 
@@ -142,16 +141,19 @@
         }
 
         /// <summary>
-        /// This method estimates how close a node is to the end point. It uses the Euclidean distance,
-        /// which is just adding up the horizontal and vertical distances. This helps the algorithm
-        /// decide which paths are worth looking at first to find the shortest route faster.
+        /// Estimates the cost to reach the end node from the current node using the Octile heuristic.
         /// </summary>
-        /// <param name="end">The end point given by the user.</param>
-        /// <param name="node">The node currently processed.</param>
-        /// <returns>An estimated distance from the current node to the end point.</returns>
+        /// <param name="end">The end node.</param>
+        /// <param name="node">The current node being evaluated.</param>
+        /// <returns>The estimated cost to reach the end node from the current node.</returns>
         private double Heuristic(Node end, Node node)
         {
-            return Math.Sqrt(Math.Pow(end.X - node.X, 2) + Math.Pow(end.Y - node.Y, 2));
+            int dx = Math.Abs(end.X - node.X);
+            int dy = Math.Abs(end.Y - node.Y);
+            double D = 1.0;
+            double D2 = Math.Sqrt(2);
+
+            return D * (dx + dy) + (D2 - 2 * D) * Math.Min(dx, dy);
         }
 
         /// <summary>
@@ -181,16 +183,26 @@
             return Math.Round(this.shortestPathCost, 1);
         }
 
+        /// <summary>
+        /// Determines if the A* algorithm is currently running.
+        /// </summary>
+        /// <returns>A boolean value indicating if the algorithm is running. Returns true if running, otherwise false.</returns>
         public bool IsRunning()
         {
             return this.running;
         }
 
+        /// <summary>
+        /// Stops the execution of the A* algorithm.
+        /// </summary>
         public void StopRunning()
         {
             this.running = false;
         }
 
+        /// <summary>
+        /// Enables testing mode to prevent certain UI interactions, such as message boxes.
+        /// </summary>
         public void TurnOnTesting()
         {
             this.testOn = true;

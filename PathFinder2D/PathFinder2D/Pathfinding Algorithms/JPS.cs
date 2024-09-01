@@ -385,16 +385,26 @@
             return Math.Round(this.shortestPathCost, 1);
         }
 
+        /// <summary>
+        /// Determines if the JPS algorithm is currently running.
+        /// </summary>
+        /// <returns>A boolean value indicating if the algorithm is running. Returns true if running, otherwise false.</returns>
         public bool IsRunning()
         {
             return this.running;
         }
 
+        /// <summary>
+        /// Stops the execution of the JPS algorithm.
+        /// </summary>
         public void StopRunning()
         {
             this.running = false;
         }
 
+        /// <summary>
+        /// Enables testing mode to prevent certain UI interactions, such as message boxes.
+        /// </summary>
         public void TurnOnTesting()
         {
             this.testOn = true;

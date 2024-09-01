@@ -77,6 +77,11 @@
             }
         }
 
+        /// <summary>
+        /// Loads the content of a map file by its name and converts it to a string.
+        /// </summary>
+        /// <param name="mapName">The name of the map file.</param>
+        /// <returns>The content of the map file as a string, or an empty string if the file is not found or an error occurs.</returns>
         public string LoadMapByName(string mapName)
         {
             try
