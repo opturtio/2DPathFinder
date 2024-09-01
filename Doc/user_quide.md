@@ -72,5 +72,5 @@ To enable visualization, select the checkbox. Once enabled, you can see the visu
 
 ### Result screen
 
-Finally, view the results. You can see the results under the visulization checkbox.
+Finally, view the results. The results are displayed below the visualization checkbox. The red line between the start and end nodes represents the shortest path.
 ![](./Pics/Result.png)
