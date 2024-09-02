@@ -52,14 +52,15 @@ JPS stays fast even as the path gets longer, while A* and Dijkstra algorithms sl
 ## Improvement Suggestions
 
 - The first node from the left should not be added to the open list.
+
 ![](./Pics/my_jps.png)
+
 - The Jump method working without recursion could solve this.
 
-
 ## Use of Large Language Models
-- Used to improve comments and method names. I asked what is the right way to write comments on C#.
-- Used to find better words for text, e.g., synonyms, word order, and how to sound more fluent.
-- Used for debugging the problems with JPS at some point in the course, but it did not really help. It was always I who found the problem.
-- Used to ask where the specific class should belong and why, e.g., should GraphBuilder be in services or managers.
-- Used to help to create GUI because I had little time.
+- I used to improve comments and method names. I asked what is the right way to write comments on C#.
+- I used to find better words for text, e.g., synonyms, word order, and how to sound more fluent.
+- I used for debugging the problems with JPS at some point in the course, but it did not really help. It was always I who found the problem.
+- I used to ask where the specific class should belong and why, e.g., should GraphBuilder be in services or managers.
+- I used to help to create GUI because I had little time.
 - I used ChatGPT to educate myself, not solve my problems, but to create better comments and text. I write much better comments after this course :)
