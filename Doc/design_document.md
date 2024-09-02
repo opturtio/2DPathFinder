@@ -62,7 +62,7 @@ The `MainWindow.xaml.cs` file is the code-behind for the `MainWindow.xaml` file 
 `PathVisualizerWPF` is a specialized class that extends the base `PathVisualizer` class to provide visual feedback on a WPF canvas. It is responsible for rendering the pathfinding process in real-time on the UI, showing the progression of the algorithms visually.
 
 ## **Resources**
-**The Resources folder holds resource files for the program, including maps for pathfinding and strings used in the application.**
+**The Resources folder holds resource files for the program, including maps for pathfinding.**
 
 ### **Maps folder**
 Contains all the maps used in the program.
