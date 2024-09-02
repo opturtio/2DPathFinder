@@ -16,7 +16,6 @@
     {
         private readonly Graph graph;
         private readonly PathVisualizer pathVisualizer;
-        private readonly PathVisualizerWPF pathVisualizerWPF;
         private Stopwatch jpsStopwatch;
         private double shortestPathCost = 0;
         private int visitedNodes = 0;
@@ -165,7 +164,6 @@
                 int dx = this.MovementDirection(x, px);
                 int dy = this.MovementDirection(y, py);
 
-                // Diagonal movement
                 if (dx != 0 && dy != 0)
                 {
                     if (this.IsValidPosition(x, y + dy))
@@ -193,8 +191,6 @@
                         neighbors.Add(this.graph.Nodes[y - dy][x + dx]);
                     }
                 }
-
-                // Horizontal or vertical movement
                 else
                 {
                     if (dx == 0)
@@ -294,7 +290,28 @@
                 return (x, y);
             }
 
-            // Check for forced neighbors when moving diagonally
+            var forcedNeighbor = GetForcedNeighbors(x, y, dx, dy, start, end);
+
+            if (forcedNeighbor != null)
+            {
+                return forcedNeighbor;
+            }
+
+            return this.Jump(x + dx, y + dy, x, y, start, end);
+        }
+
+        /// <summary>
+        /// Checks for forced neighbors based on the current movement direction.
+        /// </summary>
+        /// <param name="x">The current X-coordinate in the grid.</param>
+        /// <param name="y">The current Y-coordinate in the grid.</param>
+        /// <param name="dx">The change in the X-coordinate from the parent node.</param>
+        /// <param name="dy">The change in the Y-coordinate from the parent node.</param>
+        /// <param name="start">The starting node of the path.</param>
+        /// <param name="end">The target end node of the path.</param>
+        /// <returns>A tuple containing the coordinates of a forced neighbor if one exists, otherwise returns null.</returns>
+        private (int x, int y)? GetForcedNeighbors(int x, int y, int dx, int dy, Node start, Node end)
+        {
             if (dx != 0 && dy != 0)
             {
                 if ((this.IsValidPosition(x - dx, y + dy) && !this.IsValidPosition(x - dx, y)) ||
@@ -303,7 +320,6 @@
                     return (x, y);
                 }
 
-                // When moving diagonally, must check for vertical/horizontal jump points
                 if (this.Jump(x + dx, y, x, y, start, end) != null || this.Jump(x, y + dy, x, y, start, end) != null)
                 {
                     return (x, y);
@@ -311,7 +327,6 @@
             }
             else
             {
-                // Check for forced neighbors when moving horizontally or vertically
                 if (dx != 0)
                 {
                     if ((this.IsValidPosition(x + dx, y + 1) && !this.IsValidPosition(x, y + 1)) ||
@@ -330,7 +345,7 @@
                 }
             }
 
-            return this.Jump(x + dx, y + dy, x, y, start, end);
+            return null;
         }
 
         /// <summary>

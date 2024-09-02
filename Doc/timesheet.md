@@ -52,4 +52,6 @@ Date       | Time | Target |
 2024-08-22 | 9h | Created GUI |
 2024-08-23 | 3h | Continued developing the GUI |
 2024-08-24 | 8h | Created the most important features to GUI |
-SUM | 240h | |
+2024-09-01 | 6h | Created more documentary |
+2024-09-02 | 5h | Finished documentation |
+SUM | 251h | Project finished |
