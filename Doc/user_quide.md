@@ -1,8 +1,9 @@
 # User Guide
 
-#### This program is developed using Windows, thus it is recommended to use it. To test the program on Linux or Mac, follow the installation instructions below.
+#### This program is developed for Windows
+<!-- This program is developed using Windows, thus it is recommended to use it. To test the program on Linux or Mac, follow the installation instructions below. -->
 
-## Installation to Linux, Mac or Windows
+## Install and run on Windows
 
 1. Choose correct OS, download latest [dotnet SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and install it.
 
@@ -13,7 +14,7 @@ git clone https://github.com/opturtio/PathFinder.git
 
 3. Navigate to the project directory:
 ```bash
-cd PathFinder/PathFinder
+cd PathFinder/PathFinder2D
 ```
 
 4. Build the project:
@@ -21,7 +22,12 @@ cd PathFinder/PathFinder
 dotnet build
 ```
 
-5. Run the project:
+5. Go to subfolder:
+```bash
+cd PathFinder2D
+```
+
+6. Run the project:
 ```bash
 dotnet run
 ```
