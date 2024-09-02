@@ -56,6 +56,9 @@ JPS stays fast even as the path gets longer, while A* and Dijkstra algorithms sl
 ![](./Pics/my_jps.png)
 
 - The Jump method working without recursion could solve this.
+- Splitting MainWindow.xaml.cs into smaller classes
+- Add the ability to view and select maps
+- Information panel displaying map name and size
 
 ## Use of Large Language Models
 - I used to improve comments and method names. I asked what is the right way to write comments on C#.

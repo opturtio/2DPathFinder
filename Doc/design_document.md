@@ -2,7 +2,7 @@
 #### This document outlines the structure, components, and functionalities of the project. 
 
 ## **Design**
-The PathFinder program is structured into six main parts: Pathfinding Algorithms for finding the shortest paths, Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, User Interface for user interaction and display, and Resources to store all the resource files, such as maps and strings used in the program.
+The PathFinder program is structured into six main parts: Pathfinding Algorithms for finding the shortest paths, Data Structures for graph and node management, Managers for coordinating algorithms and user interactions, Services for file handling, User Interface for user interaction and display, and Resources to store all the resource files.
 
 ## **Pathfinding Algorithms**
 The Pathfinding Algorithms contains classes to determine the shortest or most efficient paths in a graph.
@@ -31,26 +31,11 @@ Represents a node in the graph.
 ## **Managers**
 Manager classes in PathFinder coordinate the application's logic and user interactions.
 
-### **AlgorithmComparisonManager**
-Compares different pathfinding algorithms.
-
-### **CommandManager**
-Handles user commands and interactions.
-
-### **FileManager**
-Manages file operations, especially with map files.
-
 ### **GraphBuilder**
 Creates a graph from a given string.
 
-### **OutputManager**
-Displays information and messages to the user.
-
-### **PathCoordinatesValidator**
-Checks if the start and end points are valid and within the map.
-
 ### **PathVisualizer**
-Visualizes how the pathfinding works on a map and helps with debugging.
+LEGACY CODE! A base class that provides minimal functionality for path visualization, mainly serving as a foundation for the more detailed PathVisualizerWPF implementation.
 
 ### **ShortestPathBuilder**
 Builds the shortest path from the end node back to the start.
@@ -62,19 +47,22 @@ Service classes in PathFinder provide functionalities such as file loading and m
 Loads map files from a directory.
 
 ### **FileModifier**
-Modifies and cleans up map file names for display.
+LEGACY CODE! Left for the future. Modifies and cleans up map file names for display.
 
 ## **UI**
 The User Interface is the front-end component that interacts with the user.
 
-### **UserInterface**
-Handles user interactions, displays menus, and captures input. It uses OutputManager for displaying text and CommandManager for processing user inputs.
+### **MainWindow.xaml**
+The `MainWindow.xaml` file defines the UI layout, including buttons for running the algorithms, a canvas for visualizing paths, and controls for adjusting the speed of the visualization.
+
+### **MainWindow.xaml.cs**
+The `MainWindow.xaml.cs` file is the code-behind for the `MainWindow.xaml` file and manages the user interactions and the dynamic behavior of the UI. It initializes the graph and visualizer, handles user inputs, and connects the UI controls with the corresponding pathfinding algorithms.
+
+### **PathVisualizerWPF**
+`PathVisualizerWPF` is a specialized class that extends the base `PathVisualizer` class to provide visual feedback on a WPF canvas. It is responsible for rendering the pathfinding process in real-time on the UI, showing the progression of the algorithms visually.
 
 ## **Resources**
 The Resources folder holds resource files for the program, including maps for pathfinding and strings used in the application.
-
-### **AllStrings.resx**
-Contains all the strings used in the program.
 
 ### **Maps folder**
 Contains all the maps used in the program.
