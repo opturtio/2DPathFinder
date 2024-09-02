@@ -51,7 +51,7 @@ JPS stays fast even as the path gets longer, while A* and Dijkstra algorithms sl
 
 ## Improvement Suggestions
 
-- The first node from the left should not be added to the open list.
+- The first jump point(lightblue node) from the left should not be added to the open list.
 
 ![](./Pics/my_jps.png)
 
