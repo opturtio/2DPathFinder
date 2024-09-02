@@ -57,7 +57,7 @@ JPS stays fast even as the path gets longer, while A* and Dijkstra algorithms sl
 
 - The Jump method working without recursion could solve this.
 - Splitting MainWindow.xaml.cs into smaller classes
-- Add the ability to view and select maps
+- Add an ability to view and select maps
 - Information panel displaying map name and size
 
 ## Use of Large Language Models
