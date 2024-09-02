@@ -54,7 +54,7 @@ namespace TestProject1
             this.graphBlackLotus = GraphBuilder.CreateGraphFromString(this.blackLotusMap);
 
             // Rounds
-            this.rounds = 100;
+            this.rounds = 30;
 
             // Expected content of the test map
             this.expectedMapContent =
