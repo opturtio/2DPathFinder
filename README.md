@@ -1,19 +1,19 @@
-# PathFinder
+# PathFinder2D
 
 ## Dijkstra vs A* vs JPS Algorithms Comparison
 
 Language of implementation is C#. This project is for the Algorithms and AI Lab, part of the Bachelor of Computer Science program.
 
 ## Documentation
-[Requirement Specification](./Doc/requirement_specification.md)
-
-[User Guide](./Doc/user_quide.md)
-
 [Implementation Document](./Doc/implementation_document.md)
+
+[Requirement Specification](./Doc/requirement_specification.md)
 
 [Testing Document](./Doc/testing_document.md)
 
 [Timesheet](./Doc/timesheet.md)
+
+[User Guide](./Doc/user_quide.md)
 
 ## Weekly reports
 [Week 1](./Doc/weekly_reports/weekly_report_1.md)
