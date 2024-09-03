@@ -25,9 +25,9 @@ selected_data <- cleaned_data %>%
          Dijkstra_length = `Dijkstra.shortest.path.length`, 
          A_star_length = `A..shortest.path.length`)
 
-# Filter the data to remove rows with path lengths under 5
+# Filter the data to remove rows with path lengths under 1
 filtered_data <- selected_data %>%
-  filter(JPS_length >= 1 & Dijkstra_length >= 1 & A_star_length >= 1)
+  filter(JPS_length > 1 & Dijkstra_length > 1 & A_star_length > 1)
 
 # Combine the times and lengths into a single dataframe
 combined_data <- data.frame(
