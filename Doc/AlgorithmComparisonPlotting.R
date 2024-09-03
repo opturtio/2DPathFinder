@@ -3,7 +3,7 @@ library(ggplot2)
 library(dplyr)
 library(reshape2)
 
-data <- read.csv("DIRECTORY PATH HERE")
+data <- read.csv("/DIRECTORY PATH HERE/FILENAME(e.g. /PATH/JPSvsDijkstraAndAstar-SpeedComparison-BlackLotus.csv)")
 
 # Step 2: Convert relevant columns to numeric, coercing non-numeric values to NA
 data$JPS.time <- as.numeric(as.character(data$JPS.time))
@@ -40,6 +40,6 @@ combined_data <- data.frame(
 ggplot(combined_data, aes(x = Length, y = Time, color = Algorithm)) +
   geom_point() +
   geom_smooth(method = "loess", se = FALSE) +
-  labs(x = "Path Length", y = "Time (ms)", title = "Speed comparison (for MAP NAME HERE) map") +
+  labs(x = "Path Length", y = "Time (ms)", title = "Speed comparison for (MAP NAME HERE) map") +
   theme_minimal()
 
