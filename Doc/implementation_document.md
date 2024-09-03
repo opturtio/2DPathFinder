@@ -27,7 +27,7 @@ When obstacles are detected, the algorithm identifies "forced neighbors"—nodes
 JPS is generally faster than A* on grid-based maps because it skips over large grid sections, reducing the number of nodes needing processing. In tests, it was usually ten times faster than Dijkstra or A*
 
 ## Performance and Comparison Analysis
-A comparison is made using three different maps. London map size 1024x1024, a big wide open map. Maze map size 512x512, a big maze map. Black Lotus map size 768x768, something between London and Maze maps. The algorithms make the tests by choosing 500 random starting and ending points. The results show that JPS is mostly always faster than Dijkstra and A*.
+A comparison is made using three different maps. London map size 1024x1024, a big wide open map. Maze map size 512x512, a big maze map. Black Lotus map size 768x768, something between London and Maze maps. The algorithms make the tests by choosing 500 random starting and ending points. The results show that JPS is mostly always faster than Dijkstra and A*. I created the graphs by using R language [](./AlgorithmComparisonPlotting.R).
 
 ### London Map
 The difference in performance between the algorithms is clear. Dijkstra's performance falls rapidly with increasing path lengths, while JPS maintains low computation times.
@@ -59,6 +59,7 @@ JPS stays fast even as the path gets longer, while A* and Dijkstra algorithms sl
 - Splitting MainWindow.xaml.cs into smaller classes
 - Add an ability to view and select maps
 - Information panel displaying map name and size
+- Program would run on Linux and Mac
 
 ## Use of Large Language Models
 - I used to improve comments and method names. I asked what is the right way to write comments on C#.

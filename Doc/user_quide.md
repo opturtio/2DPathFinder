@@ -5,7 +5,7 @@
 
 ## Install and run on Windows
 
-1. Choose correct OS, download latest [dotnet SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and install it.
+1. Choose correct OS, download latest [.NET](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and install it.
 
 2. Open CLI or CMD and clone the repository:
 ```bash
